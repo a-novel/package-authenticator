@@ -1,0 +1,28 @@
+title: Register
+form:
+  submit: Receive a link
+  submitting: Sending link...
+  login:
+    label: Already have an account ?
+    action: Log in
+  toLogin:
+    action: Go to login page
+  errors:
+    generic: |
+      An unknwon error interfered with the registration request.
+      We are sorry for the inconvenience, and will work to resolve this soon !
+fields:
+  email:
+    label: Email
+    helper: You'll receive a link to a custom registration form at this address.
+    placeholder: sam@mail.com
+    errors:
+      invalid: The email format is invalid.
+      field: Email
+success:
+  title: Form sent!
+  content: |
+    You'll soon receive a new message at your address <strong>{{mail}}</strong>.<br/><br/>
+    Don't forget to check your spam folder, our messages may unfortunately land there.<br/><br/>
+    If you don't receive anything within a few minutes, you can always ask for a new registration link.
+  signature: See you soon! The Agora team.

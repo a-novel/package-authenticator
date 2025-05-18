@@ -1,0 +1,7 @@
+status:
+  loading: Connexion au serveur...
+  error: |
+    Une erreur empêche la connexion au serveur. Vérifies ton réseau, ou reviens dans quelques instants. 
+    Notre équipe technique est prévenue, et traitera le problème au plus vite. Nous sommes désolés pour le désagrément !
+actions:
+  retry: Réessayer

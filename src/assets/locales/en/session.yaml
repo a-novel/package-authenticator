@@ -1,0 +1,7 @@
+status:
+  loading: Connecting to server...
+  error: |
+    An error occurred while reaching the server. Please check your network, or come back sometime later. 
+    Our technical team has been notified, and will handle it as soon as possible. We apologize for the inconvenience!
+actions:
+  retry: Retry

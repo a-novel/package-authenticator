@@ -1,0 +1,27 @@
+title: Connexion
+form:
+  submit: Me connecter
+  submitting: Connexion...
+  register:
+    label: Pas encore inscrit ?
+    action: Créer mon compte
+  errors:
+    generic: |
+      Une erreur inconnue a empêché l'authentification.
+      Nous sommes désolés pour le désagrément, et travaillons à résoudre ce problème au plus vite !
+fields:
+  email:
+    label: Courriel
+    placeholder: camille@mail.com
+    errors:
+      invalid: Le format du courriel est invalide.
+      notFound: Aucun compte n'est associé à ce courriel.
+      field: Le courriel
+  password:
+    label: Mot de passe
+    helper:
+      text: Mot de passe oublié ?
+      action: Recevoir un lien de réinitialisation
+    errors:
+      field: Le mot de passe
+      invalid: Le mot de passe est incorrect.

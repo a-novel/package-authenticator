@@ -1,0 +1,8 @@
+action:
+  login: Login
+  logout: Logout
+  register: Register
+  manageAccount: Manage Account
+userInfo:
+  connectedAs: Connected as <strong>{{user}}</strong>.
+  error: User information failed to load.

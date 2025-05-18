@@ -1,0 +1,27 @@
+title: Login
+form:
+  submit: Log in
+  submitting: Authentication...
+  register:
+    label: Not registered yet ?
+    action: Create my account
+  errors:
+    generic: |
+      An unknwon error prevented the authentication.
+      We are sorry for the inconvenience, and will work to resolve this soon !
+fields:
+  email:
+    label: Email
+    placeholder: sam@mail.com
+    errors:
+      invalid: The email format is invalid.
+      notFound: There is no account for this email address.
+      field: Email
+  password:
+    label: Password
+    helper:
+      text: Password forgotten ?
+      action: Receive a reset link
+    errors:
+      field: Password
+      invalid: The password is incorrect.

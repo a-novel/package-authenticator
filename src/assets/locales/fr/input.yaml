@@ -1,0 +1,6 @@
+text:
+  errors:
+    tooShort_one: "{{field}} doit contenir au moins {{count}} caractère."
+    tooShort_other: "{{field}} doit contenir au moins {{count}} caractères."
+    tooLong: "Ce champ a atteint la limite de {{count}} caractères."
+    required: "{{field}} est requis."

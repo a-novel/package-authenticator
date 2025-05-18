@@ -1,0 +1,4 @@
+title:
+  login: Login
+  register: Register request
+  resetPassword: Password reset request
