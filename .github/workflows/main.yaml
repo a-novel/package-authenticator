@@ -63,3 +63,18 @@ jobs:
       - uses: a-novel-kit/workflows/node-actions/auto-tag@master
         with:
           pat: ${{ secrets.ACTION_PAT }}
+
+  pages:
+    if: github.ref == 'refs/heads/master' && success()
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: a-novel-kit/workflows/github-pages-actions/publish-storybook@master
+        with:
+          build_path: storybook-static
+          pat: ${{ secrets.ACTION_PAT }}
