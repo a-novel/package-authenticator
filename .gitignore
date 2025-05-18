@@ -28,5 +28,6 @@ storybook-static
 .envrc
 
 coverage
+storybook-static
 
 *storybook.log
