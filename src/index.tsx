@@ -4,7 +4,9 @@ import { AuthFormProvider, SessionProvider, SessionSuspense, SyncI18n, SyncSessi
 import { init as initAuthAPI } from "@a-novel/connector-authentication";
 import type { CountryType } from "@a-novel/neon-ui";
 
-import type { ReactNode } from "react";
+import type { ElementType, ReactNode } from "react";
+
+import type { ButtonTypeMap } from "@mui/material";
 
 export interface InitProps {
   authURL: string;
@@ -15,9 +17,15 @@ export const init = (props: InitProps) => {
   initAuthAPI({ baseURL: props.authURL });
 };
 
-export interface WithSessionProps<Langs extends Record<string, CountryType>> {
+export interface WithSessionProps<
+  Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+> {
   children: ReactNode;
-  navProps: AuthNavProps<Langs>;
+  navProps: AuthNavProps<Langs, LoginButtonProps, RegisterButtonProps, LogoutButtonProps, ManageAccountButtonProps>;
   setTitle?: (title: string | undefined) => void;
 }
 

@@ -13,7 +13,7 @@ importers:
         version: 1.2.4(@tanstack/react-query@5.76.1(react@19.1.0))(react@19.1.0)
       '@a-novel/neon-ui':
         specifier: ^2.4.2
-        version: 2.5.3(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.5.4(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.4)(react@19.1.0)
@@ -157,8 +157,8 @@ packages:
       '@tanstack/react-query': ^5.75.0
       react: ^19.1.0
 
-  '@a-novel/neon-ui@2.5.3':
-    resolution: {integrity: sha512-DDp0G3ZFpEFWKH5USW3/f7f9heNSiLYt0lAqG7P0PxKjrmg/nIL8oEiteKJ0F6lfym9wWpXGySplBg+560J25Q==, tarball: https://npm.pkg.github.com/download/@a-novel/neon-ui/2.5.3/6105dd06c2880e39f799a9f15c199da2614db044}
+  '@a-novel/neon-ui@2.5.4':
+    resolution: {integrity: sha512-EiWlFA++etspBdcQ6XiK7GdSNxJecXHbwGFrKeuQYUjLimEuJ25nTICK36oWnS88117N71qA65/WVeUyEBhB2Q==, tarball: https://npm.pkg.github.com/download/@a-novel/neon-ui/2.5.4/b1d5cfe8fbfb83431e18f9becc0ae092c870e464}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@emotion/react': ^11.14.0
@@ -3627,7 +3627,7 @@ snapshots:
       react: 19.1.0
       zod: 3.24.4
 
-  '@a-novel/neon-ui@2.5.3(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@a-novel/neon-ui@2.5.4(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.4)(react@19.1.0)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(@types/react@19.1.4)(react@19.1.0)

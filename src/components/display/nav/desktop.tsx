@@ -14,8 +14,8 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
       <Button
         variant="outlined"
         color="info"
-        onClick={manageAccount}
         sx={{ display: "flex", flexDirection: "column", gap: 0, padding: 0 }}
+        {...manageAccount}
       >
         <Skeleton variant="rectangular" width="15rem" height="4rem" />
       </Button>
@@ -27,8 +27,9 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
   return (
     <Button
       variant="outlined"
-      onClick={manageAccount}
+      color="primary"
       sx={{ display: "flex", flexDirection: "column", gap: 0, padding: "0.4rem 0.8rem" }}
+      {...manageAccount}
     >
       <Typography
         variant="h6"
@@ -64,10 +65,10 @@ export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, reg
   if (!user) {
     return (
       <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
-        <Button variant="contained" color="primary" onClick={login}>
+        <Button variant="contained" color="primary" {...login}>
           <Typography>{t("nav:action.login")}</Typography>
         </Button>
-        <Button variant="contained" color="success" onClick={register}>
+        <Button variant="contained" color="success" {...register}>
           <Typography>{t("nav:action.register")}</Typography>
         </Button>
       </Stack>
@@ -77,7 +78,7 @@ export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, reg
   return (
     <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
       <UserButton user={user} manageAccount={manageAccount} />
-      <Button variant="contained" color="error" onClick={logout}>
+      <Button variant="contained" color="error" {...logout}>
         <MaterialSymbol icon="logout" style={{ fontSize: "1.2rem", width: "1rem" }} />
       </Button>
     </Stack>
