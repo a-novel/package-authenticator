@@ -1,5 +1,5 @@
 import { i18nPKG } from "../../../shared/i18n";
-import type { AuthNavProps } from "./common";
+import type { AuthNavDisplayProps } from "./common";
 
 import { SPACINGS } from "@a-novel/neon-ui";
 
@@ -8,10 +8,10 @@ import type { FC } from "react";
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { Trans, useTranslation } from "react-i18next";
 
-const UserInfo: FC<Pick<AuthNavProps, "user" | "userError">> = ({ user, userError }) => {
+const UserInfo: FC<Pick<AuthNavDisplayProps, "user">> = ({ user }) => {
   const { t } = useTranslation("nav", { i18n: i18nPKG });
 
-  if (user) {
+  if (user?.data) {
     return (
       <Typography
         color="textSecondary"
@@ -24,12 +24,12 @@ const UserInfo: FC<Pick<AuthNavProps, "user" | "userError">> = ({ user, userErro
           },
         })}
       >
-        <Trans i18n={i18nPKG} i18nKey="nav:userInfo.connectedAs" ns="nav" values={{ user: user.email }} />
+        <Trans i18n={i18nPKG} i18nKey="nav:userInfo.connectedAs" ns="nav" values={{ user: user.data.email }} />
       </Typography>
     );
   }
 
-  if (userError) {
+  if (user?.error) {
     return (
       <Typography color="error" textAlign="center">
         {t("nav:userInfo.error")}
@@ -39,24 +39,16 @@ const UserInfo: FC<Pick<AuthNavProps, "user" | "userError">> = ({ user, userErro
 
   return (
     <>
-      <Skeleton variant="rectangular" width="100%" height="1rem" />
-      <Skeleton variant="rectangular" width="100%" height="1rem" />
+      <Skeleton variant="rounded" width="100%" height="1rem" />
+      <Skeleton variant="rounded" width="100%" height="1rem" />
     </>
   );
 };
 
-export const AuthNavMobileAction: FC<AuthNavProps> = ({
-  user,
-  userLoading,
-  userError,
-  login,
-  register,
-  logout,
-  manageAccount,
-}) => {
+export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, manageAccount }) => {
   const { t } = useTranslation("nav", { i18n: i18nPKG });
 
-  if (!user && !userLoading && !userError) {
+  if (!user) {
     return (
       <Stack flexDirection="column" alignItems="stretch" padding={0} gap={SPACINGS.MEDIUM}>
         <Button variant="contained" color="primary" onClick={login}>
@@ -71,7 +63,7 @@ export const AuthNavMobileAction: FC<AuthNavProps> = ({
 
   return (
     <Stack flexDirection="column" alignItems="stretch" padding={0} gap={SPACINGS.MEDIUM}>
-      <UserInfo user={user} userError={userError} />
+      <UserInfo user={user} />
       <span />
       <Button variant="outlined" color="primary" onClick={manageAccount}>
         <Typography>{t("nav:action.manageAccount")}</Typography>
