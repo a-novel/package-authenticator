@@ -20,10 +20,10 @@ export const init = (props: InitProps) => {
 export interface WithSessionProps<
   Langs extends Record<string, CountryType> = Record<string, CountryType>,
   HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
 > {
   children: ReactNode;
   navProps: AuthNavProps<
@@ -40,10 +40,10 @@ export interface WithSessionProps<
 export const WithSession = <
   Langs extends Record<string, CountryType> = Record<string, CountryType>,
   HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
 >({
   children,
   setTitle,
@@ -51,10 +51,10 @@ export const WithSession = <
 }: WithSessionProps<
   Langs,
   HomeButtonProps,
+  ManageAccountButtonProps,
   LoginButtonProps,
   RegisterButtonProps,
-  LogoutButtonProps,
-  ManageAccountButtonProps
+  LogoutButtonProps
 >) => (
   <SessionProvider>
     <SyncI18n />

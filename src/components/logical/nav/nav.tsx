@@ -18,9 +18,12 @@ export interface AuthNavProps<
   ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
 > extends NavBarProps<Langs, HomeButtonProps> {
   authNavProps: {
-    login: Omit<ButtonProps<LoginButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
-    register: Omit<ButtonProps<RegisterButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
-    logout: Omit<ButtonProps<LogoutButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+    login?: Omit<ButtonProps<LoginButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+    register?: Omit<
+      ButtonProps<RegisterButtonProps>,
+      "children" | "variant" | "color" | "sx" | "onClick" | "component"
+    >;
+    logout?: Omit<ButtonProps<LogoutButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
     manageAccount: Omit<ButtonProps<ManageAccountButtonProps>, "children" | "variant" | "color" | "sx">;
   };
 }
