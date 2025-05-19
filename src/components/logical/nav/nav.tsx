@@ -11,11 +11,12 @@ import type { ButtonProps, ButtonTypeMap } from "@mui/material";
 
 export interface AuthNavProps<
   Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-> extends NavBarProps<Langs> {
+> extends NavBarProps<Langs, HomeButtonProps> {
   authNavProps: {
     login: Omit<ButtonProps<LoginButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
     register: Omit<ButtonProps<RegisterButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
@@ -26,6 +27,7 @@ export interface AuthNavProps<
 
 export const AuthNav = <
   Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
@@ -35,7 +37,14 @@ export const AuthNav = <
   desktopActions,
   mobileActions,
   ...props
-}: AuthNavProps<Langs, LoginButtonProps, RegisterButtonProps, LogoutButtonProps, ManageAccountButtonProps>) => {
+}: AuthNavProps<
+  Langs,
+  HomeButtonProps,
+  LoginButtonProps,
+  RegisterButtonProps,
+  LogoutButtonProps,
+  ManageAccountButtonProps
+>) => {
   const { selectForm } = useAuthForm();
 
   const { session, setSession } = useSession();
