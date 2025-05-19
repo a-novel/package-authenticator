@@ -1,5 +1,5 @@
 import { i18nPKG } from "../../../shared/i18n";
-import type { AuthNavProps } from "./common";
+import type { AuthNavDisplayProps } from "./common";
 
 import { SPACINGS, MaterialSymbol } from "@a-novel/neon-ui";
 
@@ -8,8 +8,8 @@ import type { FC } from "react";
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-const UserButton: FC<Pick<AuthNavProps, "user" | "manageAccount">> = ({ user, manageAccount }) => {
-  if (!user) {
+const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ user, manageAccount }) => {
+  if (!user?.data) {
     return (
       <Button
         variant="outlined"
@@ -22,7 +22,7 @@ const UserButton: FC<Pick<AuthNavProps, "user" | "manageAccount">> = ({ user, ma
     );
   }
 
-  const [username, provider] = user.email.split("@");
+  const [username, provider] = user.data.email.split("@");
 
   return (
     <Button
@@ -58,18 +58,10 @@ const UserButton: FC<Pick<AuthNavProps, "user" | "manageAccount">> = ({ user, ma
   );
 };
 
-export const AuthNavDesktopAction: FC<AuthNavProps> = ({
-  user,
-  userLoading,
-  userError,
-  login,
-  register,
-  logout,
-  manageAccount,
-}) => {
+export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, manageAccount }) => {
   const { t } = useTranslation("nav", { i18n: i18nPKG });
 
-  if (!user && !userLoading && !userError) {
+  if (!user) {
     return (
       <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
         <Button variant="contained" color="primary" onClick={login}>

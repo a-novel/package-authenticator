@@ -86,7 +86,9 @@ export const Primary: Story = {
 export const Authenticated: Story = {
   args: {
     user: {
-      email: "user@provider.com",
+      data: {
+        email: "user@provider.com",
+      },
     },
     login: () => {},
     register: () => {},
@@ -98,8 +100,10 @@ export const Authenticated: Story = {
 export const VeryLongName: Story = {
   args: {
     user: {
-      email:
-        "superLongUserNameWithSoManyWordsItWillBlowYourMindBecauseHonestlyThisIsSoAmazingLol@qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm.com",
+      data: {
+        email:
+          "superLongUserNameWithSoManyWordsItWillBlowYourMindBecauseHonestlyThisIsSoAmazingLol@qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm.com",
+      },
     },
     login: () => {},
     register: () => {},
@@ -110,7 +114,9 @@ export const VeryLongName: Story = {
 
 export const UserLoading: Story = {
   args: {
-    userLoading: true,
+    user: {
+      loading: true,
+    },
     login: () => {},
     register: () => {},
     logout: () => {},
@@ -120,7 +126,9 @@ export const UserLoading: Story = {
 
 export const UserError: Story = {
   args: {
-    userError: true,
+    user: {
+      error: true,
+    },
     login: () => {},
     register: () => {},
     logout: () => {},

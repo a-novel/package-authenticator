@@ -17,6 +17,7 @@ export default defineConfig([
     "**/build/**",
     "**/*.gen.ts",
     "**/coverage/**",
+    "**/storybook-static/**",
   ]),
   { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
   {
