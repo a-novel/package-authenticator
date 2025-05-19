@@ -5,18 +5,37 @@ import type { AuthNavDisplayProps } from "../../display/nav/common";
 import { GetUser } from "@a-novel/connector-authentication/hooks";
 import { type NavBarProps, type CountryType, NavBar } from "@a-novel/neon-ui";
 
-import { useMemo } from "react";
+import { type ElementType, useMemo } from "react";
 
-export interface AuthNavProps<Langs extends Record<string, CountryType>> extends NavBarProps<Langs> {
-  manageAccount: () => void;
+import type { ButtonProps, ButtonTypeMap } from "@mui/material";
+
+export interface AuthNavProps<
+  Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+> extends NavBarProps<Langs> {
+  authNavProps: {
+    login: Omit<ButtonProps<LoginButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+    register: Omit<ButtonProps<RegisterButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+    logout: Omit<ButtonProps<LogoutButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+    manageAccount: Omit<ButtonProps<ManageAccountButtonProps>, "children" | "variant" | "color" | "sx">;
+  };
 }
 
-export const AuthNav = <Langs extends Record<string, CountryType>>({
-  manageAccount,
+export const AuthNav = <
+  Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+>({
+  authNavProps,
   desktopActions,
   mobileActions,
   ...props
-}: AuthNavProps<Langs>) => {
+}: AuthNavProps<Langs, LoginButtonProps, RegisterButtonProps, LogoutButtonProps, ManageAccountButtonProps>) => {
   const { selectForm } = useAuthForm();
 
   const { session, setSession } = useSession();
@@ -44,10 +63,10 @@ export const AuthNav = <Langs extends Record<string, CountryType>>({
           {desktopActions}
           <AuthNavDesktopAction
             user={user}
-            login={() => selectForm("login")}
-            register={() => selectForm("register")}
-            logout={() => setSession(undefined)}
-            manageAccount={manageAccount}
+            login={{ onClick: () => selectForm("login"), ...authNavProps.login }}
+            register={{ onClick: () => selectForm("register"), ...authNavProps.register }}
+            logout={{ onClick: () => setSession(undefined), ...authNavProps.logout }}
+            manageAccount={authNavProps.manageAccount}
           />
         </>
       }
@@ -56,10 +75,10 @@ export const AuthNav = <Langs extends Record<string, CountryType>>({
           {mobileActions}
           <AuthNavMobileAction
             user={user}
-            login={() => selectForm("login")}
-            register={() => selectForm("register")}
-            logout={() => setSession(undefined)}
-            manageAccount={manageAccount}
+            login={{ onClick: () => selectForm("login"), ...authNavProps.login }}
+            register={{ onClick: () => selectForm("register"), ...authNavProps.register }}
+            logout={{ onClick: () => setSession(undefined), ...authNavProps.logout }}
+            manageAccount={authNavProps.manageAccount}
           />
         </>
       }

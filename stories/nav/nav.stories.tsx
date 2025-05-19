@@ -75,12 +75,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {
-    login: () => {},
-    register: () => {},
-    logout: () => {},
-    manageAccount: () => {},
-  },
+  args: {},
 };
 
 export const Authenticated: Story = {
@@ -90,10 +85,6 @@ export const Authenticated: Story = {
         email: "user@provider.com",
       },
     },
-    login: () => {},
-    register: () => {},
-    logout: () => {},
-    manageAccount: () => {},
   },
 };
 
@@ -105,10 +96,6 @@ export const VeryLongName: Story = {
           "superLongUserNameWithSoManyWordsItWillBlowYourMindBecauseHonestlyThisIsSoAmazingLol@qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm.com",
       },
     },
-    login: () => {},
-    register: () => {},
-    logout: () => {},
-    manageAccount: () => {},
   },
 };
 
@@ -117,10 +104,6 @@ export const UserLoading: Story = {
     user: {
       loading: true,
     },
-    login: () => {},
-    register: () => {},
-    logout: () => {},
-    manageAccount: () => {},
   },
 };
 
@@ -129,9 +112,5 @@ export const UserError: Story = {
     user: {
       error: true,
     },
-    login: () => {},
-    register: () => {},
-    logout: () => {},
-    manageAccount: () => {},
   },
 };

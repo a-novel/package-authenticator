@@ -51,10 +51,10 @@ export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, regi
   if (!user) {
     return (
       <Stack flexDirection="column" alignItems="stretch" padding={0} gap={SPACINGS.MEDIUM}>
-        <Button variant="contained" color="primary" onClick={login}>
+        <Button variant="contained" color="primary" {...login}>
           <Typography>{t("nav:action.login")}</Typography>
         </Button>
-        <Button variant="contained" color="success" onClick={register}>
+        <Button variant="contained" color="success" {...register}>
           <Typography>{t("nav:action.register")}</Typography>
         </Button>
       </Stack>
@@ -65,10 +65,10 @@ export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, regi
     <Stack flexDirection="column" alignItems="stretch" padding={0} gap={SPACINGS.MEDIUM}>
       <UserInfo user={user} />
       <span />
-      <Button variant="outlined" color="primary" onClick={manageAccount}>
+      <Button variant="outlined" color="primary" {...manageAccount}>
         <Typography>{t("nav:action.manageAccount")}</Typography>
       </Button>
-      <Button variant="contained" color="error" onClick={logout}>
+      <Button variant="contained" color="error" {...logout}>
         <Typography>{t("nav:action.logout")}</Typography>
       </Button>
     </Stack>
