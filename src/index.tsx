@@ -19,21 +19,43 @@ export const init = (props: InitProps) => {
 
 export interface WithSessionProps<
   Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
 > {
   children: ReactNode;
-  navProps: AuthNavProps<Langs, LoginButtonProps, RegisterButtonProps, LogoutButtonProps, ManageAccountButtonProps>;
+  navProps: AuthNavProps<
+    Langs,
+    HomeButtonProps,
+    LoginButtonProps,
+    RegisterButtonProps,
+    LogoutButtonProps,
+    ManageAccountButtonProps
+  >;
   setTitle?: (title: string | undefined) => void;
 }
 
-export const WithSession = <Langs extends Record<string, CountryType>>({
+export const WithSession = <
+  Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+>({
   children,
   setTitle,
   navProps,
-}: WithSessionProps<Langs>) => (
+}: WithSessionProps<
+  Langs,
+  HomeButtonProps,
+  LoginButtonProps,
+  RegisterButtonProps,
+  LogoutButtonProps,
+  ManageAccountButtonProps
+>) => (
   <SessionProvider>
     <SyncI18n />
     <SyncSessionClaims />
