@@ -2,7 +2,8 @@ import logo from "../../src/assets/images/banner.png";
 
 import { AuthNavDesktopAction, AuthNavMobileAction } from "../../src/components/ui/nav";
 
-import { SPACINGS, NavBar } from "@a-novel/neon-ui";
+import { SPACINGS } from "@a-novel/neon-ui";
+import { NavBar } from "@a-novel/neon-ui/ui";
 
 import { Stack, Typography } from "@mui/material";
 import { type Meta, type StoryObj } from "@storybook/react";
