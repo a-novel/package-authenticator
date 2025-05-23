@@ -8,7 +8,7 @@ import {
   NewRefreshToken,
   RefreshSession,
 } from "@a-novel/connector-authentication/hooks";
-import { StatusPage, MaterialSymbol } from "@a-novel/neon-ui";
+import { StatusPage, MaterialSymbol } from "@a-novel/neon-ui/ui";
 
 import { type FC, type ReactNode, useCallback, useEffect, useRef } from "react";
 

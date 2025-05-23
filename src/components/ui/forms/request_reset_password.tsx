@@ -3,7 +3,7 @@ import { EmailInput } from "../inputs";
 import { PopupForm, PopupFormFooter, SuccessMessage } from "./common";
 
 import { RequestPasswordResetForm as RequestPasswordResetRequest } from "@a-novel/connector-authentication/api";
-import { MaterialSymbol } from "@a-novel/neon-ui";
+import { MaterialSymbol } from "@a-novel/neon-ui/ui";
 
 import { type MouseEventHandler } from "react";
 

@@ -1,8 +1,8 @@
-import { AuthNav, type AuthNavProps } from "./components/logical/nav";
+import { AuthNav, type AuthNavProps } from "./components/ux/nav";
 import { AuthFormProvider, SessionProvider, SessionSuspense, SyncI18n, SyncSessionClaims } from "./contexts";
 
 import { init as initAuthAPI } from "@a-novel/connector-authentication";
-import type { CountryType } from "@a-novel/neon-ui";
+import type { CountryType } from "@a-novel/neon-ui/ui";
 
 import type { ElementType, ReactNode } from "react";
 

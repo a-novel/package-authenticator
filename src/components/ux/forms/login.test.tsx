@@ -91,7 +91,7 @@ describe("LoginForm", () => {
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/input:text\.errors\.tooLong/)).length(0);
+          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
         });
 
         // Update the fields with a too long value.
@@ -101,7 +101,7 @@ describe("LoginForm", () => {
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("a".repeat(field.max));
-          expect(screen.queryAllByText(/input:text\.errors\.tooLong/)).length(1);
+          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(1);
         });
 
         // Reverse the fields to a normal value.
@@ -111,7 +111,7 @@ describe("LoginForm", () => {
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/input:text\.errors\.tooLong/)).length(0);
+          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
         });
       });
     }

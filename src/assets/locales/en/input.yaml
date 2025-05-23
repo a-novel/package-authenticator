@@ -1,5 +1,0 @@
-text:
-  errors:
-    tooShort: "{{field}} must be at least {{count}} characters long."
-    tooLong: "This field has reached its limit of {{count}} characters."
-    required: "{{field}} is required."

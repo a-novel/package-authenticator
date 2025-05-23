@@ -1,5 +1,5 @@
-import { FormPage, type FormPageProps } from "../components/display/pages";
-import { LoginForm, RequestRegisterForm, RequestResetPasswordForm } from "../components/logical/forms";
+import { FormPage, type FormPageProps } from "../components/ui/pages";
+import { LoginForm, RequestRegisterForm, RequestResetPasswordForm } from "../components/ux/forms";
 import { i18nPKG } from "../shared/i18n";
 
 import {

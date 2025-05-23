@@ -1,6 +1,6 @@
 import { useAccessToken } from "../../../contexts";
 import { getLang, i18nPKG } from "../../../shared/i18n";
-import { RequestRegistrationForm as RequestRegisterFormComponent } from "../../display/forms";
+import { RequestRegistrationForm as RequestRegisterFormComponent } from "../../ui/forms";
 
 import { BINDINGS_VALIDATION, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestRegister } from "@a-novel/connector-authentication/hooks";

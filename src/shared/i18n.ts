@@ -3,14 +3,12 @@
 // That's why we don't use the http backend optimization, but load translations synchronously. Keep in mind this only
 // loads the translation used by the auth component and its dependencies, NOT the standalone website.
 import formEn from "../assets/locales/en/form.yaml";
-import inputEn from "../assets/locales/en/input.yaml";
 import loginEn from "../assets/locales/en/login.yaml";
 import navEn from "../assets/locales/en/nav.yaml";
 import registerEn from "../assets/locales/en/register.yaml";
 import resetPasswordEn from "../assets/locales/en/reset-password.yaml";
 import sessionEn from "../assets/locales/en/session.yaml";
 import formFr from "../assets/locales/fr/form.yaml";
-import inputFr from "../assets/locales/fr/input.yaml";
 import loginFr from "../assets/locales/fr/login.yaml";
 import navFr from "../assets/locales/fr/nav.yaml";
 import registerFr from "../assets/locales/fr/register.yaml";
@@ -35,7 +33,6 @@ i18nPKG
 
     resources: {
       en: {
-        input: inputEn,
         login: loginEn,
         register: registerEn,
         resetPassword: resetPasswordEn,
@@ -44,7 +41,6 @@ i18nPKG
         nav: navEn,
       },
       fr: {
-        input: inputFr,
         login: loginFr,
         register: registerFr,
         resetPassword: resetPasswordFr,

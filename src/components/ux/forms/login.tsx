@@ -1,9 +1,10 @@
 import { useSession } from "../../../contexts";
 import { i18nPKG } from "../../../shared/i18n";
-import { LoginForm as LoginFormComponent } from "../../display/forms";
+import { LoginForm as LoginFormComponent } from "../../ui/forms";
 
 import { BINDINGS_VALIDATION, isForbiddenError, isUserNotFoundError } from "@a-novel/connector-authentication/api";
 import { CreateSession } from "@a-novel/connector-authentication/hooks";
+import { i18nUI } from "@a-novel/neon-ui/ux";
 
 import { type FC, type MouseEventHandler } from "react";
 
@@ -38,15 +39,8 @@ const formValidator = (t: FormTFunction) =>
       .string()
       .min(
         BINDINGS_VALIDATION.EMAIL.MIN,
-        t("input:text.errors.tooShort", {
+        i18nUI.t("input:text.errors.tooShort", {
           count: BINDINGS_VALIDATION.EMAIL.MIN,
-          field: t("login:fields.email.errors.field"),
-        })
-      )
-      .max(
-        BINDINGS_VALIDATION.EMAIL.MAX,
-        t("input:text.errors.tooLong", {
-          count: BINDINGS_VALIDATION.EMAIL.MAX,
           field: t("login:fields.email.errors.field"),
         })
       )
@@ -55,14 +49,14 @@ const formValidator = (t: FormTFunction) =>
       .string()
       .min(
         BINDINGS_VALIDATION.PASSWORD.MIN,
-        t("input:text.errors.tooShort", {
+        i18nUI.t("input:text.errors.tooShort", {
           count: BINDINGS_VALIDATION.EMAIL.MIN,
           field: t("login:fields.password.errors.field"),
         })
       )
       .max(
         BINDINGS_VALIDATION.PASSWORD.MAX,
-        t("input:text.errors.tooLong", {
+        i18nUI.t("input:text.errors.tooLong", {
           count: BINDINGS_VALIDATION.EMAIL.MAX,
           field: t("login:fields.password.errors.field"),
         })

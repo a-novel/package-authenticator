@@ -1,10 +1,10 @@
-import { type AnyFormAPI, RenderFormErrors } from "../inputs";
-
-import { ContainerSX, FONTS, InfoBox, SPACINGS } from "@a-novel/neon-ui";
+import { ContainerSX, FONTS, SPACINGS } from "@a-novel/neon-ui";
+import { InfoBox, MaterialSymbol } from "@a-novel/neon-ui/ui";
 
 import type { FC, ReactNode } from "react";
 
 import { Button, Stack, type StackProps, Typography } from "@mui/material";
+import type { ReactFormExtendedApi } from "@tanstack/react-form";
 
 export const FORM_WIDTH = "64ch";
 
@@ -37,7 +37,7 @@ export interface PopupFormProps {
   children: ReactNode;
   submitButton: ReactNode;
   footer?: ReactNode;
-  form: AnyFormAPI;
+  form: ReactFormExtendedApi<any, any, any, any, any, any, any, any, any, any>;
 }
 
 export const PopupForm: FC<PopupFormProps> = ({ children, title, form, submitButton, footer }) => (
@@ -99,7 +99,11 @@ export const PopupForm: FC<PopupFormProps> = ({ children, title, form, submitBut
 
       {footer}
     </Stack>
-    <RenderFormErrors form={form} />
+    {form.state.errorMap.onSubmit && (
+      <InfoBox icon={<MaterialSymbol icon="heart_broken" />} color="error">
+        {form.state.errorMap.onSubmit}
+      </InfoBox>
+    )}
   </Stack>
 );
 

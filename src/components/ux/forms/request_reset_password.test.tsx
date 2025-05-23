@@ -3,7 +3,7 @@ import "../../../../__test__/mocks/react_it18next";
 import { genericSetup } from "../../../../__test__/utils/setup";
 import { QueryWrapper } from "../../../../__test__/utils/wrapper";
 import { SESSION_STORAGE_KEY } from "../../../contexts";
-import { RequestRegisterForm } from "./request_register";
+import { RequestResetPasswordForm } from "./request_reset_password";
 
 import { BINDINGS_VALIDATION, LangEnum } from "@a-novel/connector-authentication/api";
 
@@ -14,7 +14,7 @@ import { describe, expect, it, vi } from "vitest";
 
 let nockAPI: nock.Scope;
 
-describe("RequestRegistrationForm", () => {
+describe("RequestResetPasswordForm", () => {
   genericSetup({
     setNockAPI: (newScope) => {
       nockAPI = newScope;
@@ -26,11 +26,13 @@ describe("RequestRegistrationForm", () => {
 
     const queryClient = new QueryClient(MockQueryClient);
 
-    const screen = render(<RequestRegisterForm loginAction={loginAction} />, { wrapper: QueryWrapper(queryClient) });
+    const screen = render(<RequestResetPasswordForm loginAction={loginAction} />, {
+      wrapper: QueryWrapper(queryClient),
+    });
 
-    expect(screen.getByLabelText(/register:fields\.email\.label/)).toBeDefined();
+    expect(screen.getByLabelText(/resetPassword:fields\.email\.label/)).toBeDefined();
 
-    const loginButton = screen.getByText(/register:form\.login\.action/, { selector: "button" });
+    const loginButton = screen.getByText(/resetPassword:form\.backToLogin\.action/, { selector: "button" });
     expect(loginButton).toBeDefined();
 
     // Click on button to trigger the action.
@@ -50,12 +52,12 @@ describe("RequestRegistrationForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const screen = render(<RequestRegisterForm loginAction={loginAction} />, {
+        const screen = render(<RequestResetPasswordForm loginAction={loginAction} />, {
           wrapper: QueryWrapper(queryClient),
         });
 
         const fieldInput = screen.getByLabelText(
-          new RegExp(`register:fields\\.${field.name}\\.label`)
+          new RegExp(`resetPassword:fields\\.${field.name}\\.label`)
         ) as HTMLInputElement;
         expect(fieldInput).toBeDefined();
 
@@ -66,7 +68,7 @@ describe("RequestRegistrationForm", () => {
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/input:text\.errors\.tooLong/)).length(0);
+          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
         });
 
         // Update the fields with a too long value.
@@ -76,7 +78,7 @@ describe("RequestRegistrationForm", () => {
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("a".repeat(field.max));
-          expect(screen.queryAllByText(/input:text\.errors\.tooLong/)).length(1);
+          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(1);
         });
 
         // Reverse the fields to a normal value.
@@ -86,7 +88,7 @@ describe("RequestRegistrationForm", () => {
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/input:text\.errors\.tooLong/)).length(0);
+          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
         });
       });
     }
@@ -98,9 +100,11 @@ describe("RequestRegistrationForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const screen = render(<RequestRegisterForm loginAction={loginAction} />, { wrapper: QueryWrapper(queryClient) });
+      const screen = render(<RequestResetPasswordForm loginAction={loginAction} />, {
+        wrapper: QueryWrapper(queryClient),
+      });
 
-      const emailInput = screen.getByLabelText(/register:fields\.email\.label/) as HTMLInputElement;
+      const emailInput = screen.getByLabelText(/resetPassword:fields\.email\.label/) as HTMLInputElement;
 
       act(() => {
         fireEvent.change(emailInput, { target: { value: "" } });
@@ -108,7 +112,7 @@ describe("RequestRegistrationForm", () => {
 
       await waitFor(() => {
         expect(
-          screen.queryByText(/input:text\.errors\.tooShort.+register:fields\.email\.errors\.invalid/)
+          screen.queryByText(/input:text\.errors\.tooShort.+resetPassword:fields\.email\.errors\.invalid/)
         ).toBeDefined();
       });
 
@@ -118,7 +122,7 @@ describe("RequestRegistrationForm", () => {
 
       await waitFor(() => {
         expect(
-          screen.queryByText(/input:text\.errors\.tooShort.+register:fields\.email\.errors\.invalid/)
+          screen.queryByText(/input:text\.errors\.tooShort.+resetPassword:fields\.email\.errors\.invalid/)
         ).toBeDefined();
       });
     });
@@ -128,16 +132,18 @@ describe("RequestRegistrationForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const screen = render(<RequestRegisterForm loginAction={loginAction} />, { wrapper: QueryWrapper(queryClient) });
+      const screen = render(<RequestResetPasswordForm loginAction={loginAction} />, {
+        wrapper: QueryWrapper(queryClient),
+      });
 
-      const emailInput = screen.getByLabelText(/register:fields\.email\.label/) as HTMLInputElement;
+      const emailInput = screen.getByLabelText(/resetPassword:fields\.email\.label/) as HTMLInputElement;
 
       act(() => {
         fireEvent.change(emailInput, { target: { value: "123456789" } });
       });
 
       await waitFor(() => {
-        expect(screen.queryByText(/register:fields\.email\.errors\.invalid/)).toBeDefined();
+        expect(screen.queryByText(/resetPassword:fields\.email\.errors\.invalid/)).toBeDefined();
       });
     });
   });
@@ -156,10 +162,15 @@ describe("RequestRegistrationForm", () => {
         responseStatus: 204,
         expectErrors: [],
       },
+      "sets email incorrect on not found error": {
+        form: { email: "user@provider.com" },
+        responseStatus: 404,
+        expectErrors: [/resetPassword:fields\.email\.errors\.notFound/],
+      },
       "sets global error on unknown error": {
         form: { email: "user@provider.com" },
         responseStatus: 500,
-        expectErrors: [/register:form\.errors\.generic/],
+        expectErrors: [/resetPassword:form\.errors\.generic/],
       },
     };
 
@@ -171,20 +182,20 @@ describe("RequestRegistrationForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const screen = render(<RequestRegisterForm loginAction={loginAction} />, {
+        const screen = render(<RequestResetPasswordForm loginAction={loginAction} />, {
           wrapper: QueryWrapper(queryClient),
         });
 
-        const nockRegister = nockAPI
+        const nockResetPassword = nockAPI
           .put(
-            "/short-code/register",
+            "/short-code/update-password",
             { ...form, lang: LangEnum.En },
             { reqheaders: { Authorization: "Bearer anon-access-token" } }
           )
           .reply(responseStatus);
 
-        const emailInput = screen.getByLabelText(/register:fields\.email\.label/) as HTMLInputElement;
-        const submitButton = screen.getByText(/register:form\.submit/, { selector: "button" });
+        const emailInput = screen.getByLabelText(/resetPassword:fields\.email\.label/) as HTMLInputElement;
+        const submitButton = screen.getByText(/resetPassword:form\.submit/, { selector: "button" });
 
         // Update the fields with a normal value.
         act(() => {
@@ -203,17 +214,19 @@ describe("RequestRegistrationForm", () => {
 
         // Wait for the form to submit.
         await waitFor(() => {
-          nockRegister.done();
+          nockResetPassword.done();
         });
 
         if (expectErrors.length === 0) {
           // Check the session context.
           await waitFor(() => {
-            expect(screen.queryByText(/register:success\.title/)).toBeDefined();
-            expect(screen.queryByText(/register:success\.content/)).toBeDefined();
-            expect(screen.queryByText(/register:success\.signature/)).toBeDefined();
+            expect(screen.queryByText(/resetPassword:success\.title/)).toBeDefined();
+            expect(screen.queryByText(/resetPassword:success\.content/)).toBeDefined();
+            expect(screen.queryByText(/resetPassword:success\.signature/)).toBeDefined();
 
-            const backToLoginButton = screen.getByText(/register:form\.toLogin\.action/, { selector: "button" });
+            const backToLoginButton = screen.getByText(/resetPassword:form\.backToLogin\.action/, {
+              selector: "button",
+            });
             expect(loginAction).not.toHaveBeenCalled();
             act(() => {
               backToLoginButton.click();
