@@ -1,4 +1,3 @@
-export * from "./i18n.sync";
 export * from "./auth.form";
 export * from "./session";
 export * from "./session.suspense";
