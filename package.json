@@ -1,7 +1,7 @@
 {
   "name": "@a-novel/package-authenticator",
   "private": false,
-  "version": "1.0.6",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
