@@ -1,4 +1,4 @@
-import { type AnyFormAPI } from "../../src/components/display/inputs";
+import { type AnyFormAPI } from "../../src/components/ui/inputs";
 
 import { type ComponentType } from "react";
 

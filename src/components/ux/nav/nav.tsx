@@ -1,9 +1,9 @@
 import { useAccessToken, useAuthForm, useSession } from "../../../contexts";
-import { AuthNavDesktopAction, AuthNavMobileAction } from "../../display/nav";
-import type { AuthNavDisplayProps } from "../../display/nav/common";
+import { AuthNavDesktopAction, AuthNavMobileAction } from "../../ui/nav";
+import type { AuthNavDisplayProps } from "../../ui/nav/common";
 
 import { GetUser } from "@a-novel/connector-authentication/hooks";
-import { type NavBarProps, type CountryType, NavBar } from "@a-novel/neon-ui";
+import { type NavBarProps, type CountryType, NavBar } from "@a-novel/neon-ui/ui";
 
 import { type ElementType, useMemo } from "react";
 

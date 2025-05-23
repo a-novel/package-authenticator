@@ -1,5 +1,5 @@
-import { RequestRegistrationForm, type RegisterFormProps } from "../../src/components/display/forms";
-import { FormPage } from "../../src/components/display/pages";
+import { RequestRegistrationForm, type RegisterFormProps } from "../../src/components/ui/forms";
+import { FormPage } from "../../src/components/ui/pages";
 import { FormRenderer, NewMockForm } from "../__utils/form";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";

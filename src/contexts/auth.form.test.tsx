@@ -1,5 +1,5 @@
 import { genericSetup } from "../../__test__/utils/setup";
-import * as forms from "../components/logical/forms";
+import * as forms from "../components/ux/forms";
 import { AuthFormProvider, type AuthFormSelect, useAuthForm } from "./auth.form";
 
 import { type FC, type ReactNode, useEffect } from "react";

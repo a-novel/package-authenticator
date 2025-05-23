@@ -1,7 +1,8 @@
 import { i18nPKG } from "../../../shared/i18n";
 import type { AuthNavDisplayProps } from "./common";
 
-import { SPACINGS, MaterialSymbol } from "@a-novel/neon-ui";
+import { SPACINGS } from "@a-novel/neon-ui";
+import { MaterialSymbol } from "@a-novel/neon-ui/ui";
 
 import type { FC } from "react";
 

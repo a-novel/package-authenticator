@@ -1,6 +1,6 @@
 import { useAccessToken } from "../../../contexts";
 import { getLang, i18nPKG } from "../../../shared/i18n";
-import { RequestResetPasswordForm as RequestResetPasswordFormComponent } from "../../display/forms";
+import { RequestResetPasswordForm as RequestResetPasswordFormComponent } from "../../ui/forms";
 
 import { BINDINGS_VALIDATION, isUserNotFoundError, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestPasswordReset } from "@a-novel/connector-authentication/hooks";
