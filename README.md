@@ -52,6 +52,8 @@ You also need to import material symbols in your app.
 In your entry file.
 
 ```tsx
+import i18n from "./locale_i18n_instance";
+
 import { theme } from "@a-novel/neon-ui";
 import { init, WithSession } from "@a-novel/package-authenticator";
 
@@ -61,6 +63,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 
 init({
   authURL: "https://auth.example.com",
+  i18n,
 });
 
 export const App: FC<{ children: ReactNode }> = ({ children }) => (
