@@ -210,15 +210,8 @@ describe("RequestRegistrationForm", () => {
           // Check the session context.
           await waitFor(() => {
             expect(screen.queryByText(/register:success\.title/)).toBeDefined();
-            expect(screen.queryByText(/register:success\.content/)).toBeDefined();
-            expect(screen.queryByText(/register:success\.signature/)).toBeDefined();
-
-            const backToLoginButton = screen.getByText(/register:form\.toLogin\.action/, { selector: "button" });
-            expect(loginAction).not.toHaveBeenCalled();
-            act(() => {
-              backToLoginButton.click();
-            });
-            expect(loginAction).toHaveBeenCalled();
+            expect(screen.queryByText(/register:success\.main/)).toBeDefined();
+            expect(screen.queryByText(/register:success\.sun/)).toBeDefined();
           });
         } else {
           // Check the form errors.

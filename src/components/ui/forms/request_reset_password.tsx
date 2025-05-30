@@ -1,13 +1,14 @@
 import { i18nPKG } from "../../../shared/i18n";
 import { EmailInput } from "../inputs";
-import { PopupForm, PopupFormFooter, SuccessMessage } from "./common";
+import { PopupForm, PopupFormFooter } from "./common";
 
 import { RequestPasswordResetForm as RequestPasswordResetRequest } from "@a-novel/connector-authentication/api";
-import { MaterialSymbol } from "@a-novel/neon-ui/ui";
+import { SPACINGS } from "@a-novel/neon-ui";
+import { MaterialSymbol, Modal } from "@a-novel/neon-ui/ui";
 
 import { type MouseEventHandler } from "react";
 
-import { Button, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import {
   type FormAsyncValidateOrFn,
   type FormValidateOrFn,
@@ -71,57 +72,52 @@ export const RequestResetPasswordForm = <
 
   const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
   const isSubmitSuccessful = useStore(form.store, (state) => state.isSubmitSuccessful);
-
-  if (isSubmitSuccessful) {
-    return (
-      <SuccessMessage
-        icon={<MaterialSymbol icon="mark_email_read" />}
-        footer={
-          <Button variant="text" type="button" color="primary" onClick={loginAction}>
-            {t("resetPassword:form.backToLogin.action")}
-          </Button>
-        }
-      >
-        <Typography variant="h6">{t("resetPassword:success.title")}</Typography>
-        <Typography>
-          <Trans
-            i18n={i18nPKG}
-            ns="resetPassword"
-            i18nKey="resetPassword:success.content"
-            values={{ mail: form.state.values.email }}
-          />
-          <br />
-          <br />
-          <i>{t("resetPassword:success.signature")}</i>
-        </Typography>
-      </SuccessMessage>
-    );
-  }
+  const userEmail = useStore(form.store, (state) => state.values.email);
 
   return (
-    <PopupForm
-      title={t("resetPassword:title")}
-      form={form}
-      submitButton={isSubmitting ? t("resetPassword:form.submitting") : t("resetPassword:form.submit")}
-      footer={
-        <PopupFormFooter>
-          <Typography textAlign="center">
-            <Button variant="text" type="button" color="primary" onClick={loginAction}>
-              {t("resetPassword:form.backToLogin.action")}
-            </Button>
-          </Typography>
-        </PopupFormFooter>
-      }
-    >
-      <form.Field name="email">
-        {(field) => (
-          <EmailInput
-            field={field}
-            label={t("resetPassword:fields.email.label")}
-            placeholder={t("resetPassword:fields.email.placeholder")}
-          />
-        )}
-      </form.Field>
-    </PopupForm>
+    <>
+      <PopupForm
+        title={t("resetPassword:title")}
+        form={form}
+        submitButton={isSubmitting ? t("resetPassword:form.submitting") : t("resetPassword:form.submit")}
+        footer={
+          <PopupFormFooter>
+            <Typography textAlign="center">
+              <Button variant="text" type="button" color="primary" onClick={loginAction}>
+                {t("resetPassword:form.backToLogin.action")}
+              </Button>
+            </Typography>
+          </PopupFormFooter>
+        }
+      >
+        <form.Field name="email">
+          {(field) => (
+            <EmailInput
+              field={field}
+              label={t("resetPassword:fields.email.label")}
+              placeholder={t("resetPassword:fields.email.placeholder")}
+            />
+          )}
+        </form.Field>
+      </PopupForm>
+
+      <Modal
+        title={t("resetPassword:success.title")}
+        icon={<MaterialSymbol icon="mark_email_read" />}
+        open={isSubmitSuccessful}
+      >
+        <Typography sx={{ "> strong": { color: (theme) => theme.palette.primary.main } }}>
+          <Trans i18nKey="resetPassword:success.main" values={{ mail: userEmail }} />
+        </Typography>
+        <br />
+        <Typography color="textSecondary">{t("resetPassword:success.sub")}</Typography>
+        <br />
+        <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
+          <Button type="button" color="primary" onClick={loginAction}>
+            {t("resetPassword:form.backToLogin.action")}
+          </Button>
+        </Stack>
+      </Modal>
+    </>
   );
 };

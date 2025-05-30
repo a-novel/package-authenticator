@@ -21,8 +21,11 @@ fields:
       field: Le courriel
 success:
   title: Formulaire envoyé !
-  content: |
-    Un courriel va t'être envoyé, à l'adresse <strong>{{mail}}</strong>.<br/><br/>
-    Penses à vérifier tes courriers indésirables.<br/><br/>
-    Si tu ne reçois rien d'ici quelques minutes, tu peux toujours demander un nouveau lien d'inscription.
-  signature: À très vite ! L'équipe Agora.
+  main: |
+    Un lien d'inscription personnalisé a été envoyé à <strong>{{mail}}</strong>.
+    Suis les instructions dans le courriel pour compléter ton inscription.
+    Ce lien expirera après un certain temps, alors ne tardes pas à vérifier ta boîte de réception.
+  sub: |
+    Le lien est associé à ton courriel, et permet d'en valider l'autenticité.
+    Si tu ne reçois pas de lien dans les prochaines minutes, tu peux toujours t'inscrire à nouveau et en obtenir un
+    nouveau. Assures-toi également de vérifier tes courriers indésirables.
