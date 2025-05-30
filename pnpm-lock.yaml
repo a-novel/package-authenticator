@@ -12,8 +12,8 @@ importers:
         specifier: ^1.1.0
         version: 1.2.4(@tanstack/react-query@5.79.0(react@19.1.0))(react@19.1.0)
       '@a-novel/neon-ui':
-        specifier: ^2.4.2
-        version: 2.6.6(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-form@1.12.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
+        specifier: ^2.6.8
+        version: 2.6.8(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-form@1.12.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.6)(react@19.1.0)
@@ -139,8 +139,8 @@ packages:
       '@tanstack/react-query': ^5.75.0
       react: ^19.1.0
 
-  '@a-novel/neon-ui@2.6.6':
-    resolution: {integrity: sha512-2O/nA5bFNMUB3R5VkrqmQP7PunOq4DnJaiYh9SrBK6A00kx0Mrf30EVUK7kjaYAfvbsT/YwOG3+Xx7hhcuevnA==, tarball: https://npm.pkg.github.com/download/@a-novel/neon-ui/2.6.6/af090f6780df039f462fc86812ab764001c85e73}
+  '@a-novel/neon-ui@2.6.8':
+    resolution: {integrity: sha512-eLQvA2nfDCjO27gO1IxjjubAqTA7DrV+Z5+r3rJTvscbHzgATe+2GC+JyDl3lfLN21fbCTVu1J1+ZtTnihOKmg==, tarball: https://npm.pkg.github.com/download/@a-novel/neon-ui/2.6.8/2943d2c6a4bb995d4bba195131a00c5987bb9be4}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@emotion/react': ^11.14.0
@@ -3463,7 +3463,7 @@ snapshots:
       react: 19.1.0
       zod: 3.25.42
 
-  '@a-novel/neon-ui@2.6.6(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-form@1.12.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)':
+  '@a-novel/neon-ui@2.6.8(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-form@1.12.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.6)(react@19.1.0)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0)
