@@ -2,7 +2,7 @@ import { i18nPKG } from "../src/shared/i18n";
 
 import { Suspense, useEffect } from "react";
 
-import type { Decorator } from "@storybook/react";
+import type { Decorator } from "@storybook/react-vite";
 import { I18nextProvider } from "react-i18next";
 
 export const WithI18next: Decorator = (Story, context) => {

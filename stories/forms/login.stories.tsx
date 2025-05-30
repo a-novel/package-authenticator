@@ -1,12 +1,12 @@
 import { LoginForm, type LoginFormProps } from "../../src/components/ui/forms";
 import { FormPage } from "../../src/components/ui/pages";
-import { FormRenderer, NewMockForm } from "../__utils/form";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
+import { FormRenderer, NewMockForm } from "@a-novel/neon-ui/storybook";
 
 import { type FC } from "react";
 
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/react-vite";
 
 const RenderComponents: FC<LoginFormProps<any, any, any, any, any, any, any, any, any>> = (props) => (
   <FormPage minHeight="100vh">

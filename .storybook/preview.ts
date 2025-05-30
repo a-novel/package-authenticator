@@ -1,9 +1,9 @@
 import { WithI18next } from "./i18n";
 import { WithMui } from "./mui";
 
-import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
-import type { Preview } from "@storybook/react";
-import { themes } from "@storybook/theming";
+import type { Preview } from "@storybook/react-vite";
+import { themes } from "storybook/theming";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 themes.dark.appContentBg = "#000000";
 themes.dark.appPreviewBg = "#000000";
