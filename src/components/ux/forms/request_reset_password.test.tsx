@@ -221,17 +221,8 @@ describe("RequestResetPasswordForm", () => {
           // Check the session context.
           await waitFor(() => {
             expect(screen.queryByText(/resetPassword:success\.title/)).toBeDefined();
-            expect(screen.queryByText(/resetPassword:success\.content/)).toBeDefined();
-            expect(screen.queryByText(/resetPassword:success\.signature/)).toBeDefined();
-
-            const backToLoginButton = screen.getByText(/resetPassword:form\.backToLogin\.action/, {
-              selector: "button",
-            });
-            expect(loginAction).not.toHaveBeenCalled();
-            act(() => {
-              backToLoginButton.click();
-            });
-            expect(loginAction).toHaveBeenCalled();
+            expect(screen.queryByText(/resetPassword:success\.main/)).toBeDefined();
+            expect(screen.queryByText(/resetPassword:success\.sub/)).toBeDefined();
           });
         } else {
           // Check the form errors.

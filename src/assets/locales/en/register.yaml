@@ -21,8 +21,11 @@ fields:
       field: Email
 success:
   title: Form sent!
-  content: |
-    You'll soon receive a new message at your address <strong>{{mail}}</strong>.<br/><br/>
-    Don't forget to check your spam folder, our messages may unfortunately land there.<br/><br/>
-    If you don't receive anything within a few minutes, you can always ask for a new registration link.
-  signature: See you soon! The Agora team.
+  main: |
+    A custom link for registration has been sent to <strong>{{mail}}</strong>. 
+    Follow the instructions in the mail to complete your registration.
+    The link will expire after a period of time, so make sure to check your inbox soon.
+  sub: |
+    The link is tied to your email address, and acts as a validation that the address you provided is valid.
+    If you don't receive a link in the next minutes, you can always register again to get a new link. Also make sure to
+    check your spam folder.

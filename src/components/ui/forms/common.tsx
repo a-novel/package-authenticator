@@ -8,30 +8,6 @@ import type { ReactFormExtendedApi } from "@tanstack/react-form";
 
 export const FORM_WIDTH = "64ch";
 
-export interface SuccessMessageProps {
-  icon: ReactNode;
-  children: ReactNode;
-  footer?: ReactNode;
-}
-
-export const SuccessMessage: FC<SuccessMessageProps> = ({ icon, children, footer }) => (
-  <Stack
-    alignItems="stretch"
-    direction="column"
-    gap={SPACINGS.LARGE}
-    padding={SPACINGS.SMALL}
-    width={FORM_WIDTH}
-    maxWidth="100vw"
-    boxSizing="border-box"
-  >
-    <InfoBox icon={icon} color="success">
-      {children}
-    </InfoBox>
-
-    {footer}
-  </Stack>
-);
-
 export interface PopupFormProps {
   title: ReactNode;
   children: ReactNode;
