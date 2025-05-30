@@ -6,7 +6,7 @@ import { SPACINGS } from "@a-novel/neon-ui";
 import { NavBar } from "@a-novel/neon-ui/ui";
 
 import { Stack, Typography } from "@mui/material";
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof AuthNavDesktopAction> = {
   component: AuthNavDesktopAction,
