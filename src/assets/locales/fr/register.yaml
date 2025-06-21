@@ -26,6 +26,6 @@ success:
     Suis les instructions dans le courriel pour compléter ton inscription.
     Ce lien expirera après un certain temps, alors ne tardes pas à vérifier ta boîte de réception.
   sub: |
-    Le lien est associé à ton courriel, et permet d'en valider l'autenticité.
+    Le lien est associé à ton courriel, et permet d'en valider l'authenticité.
     Si tu ne reçois pas de lien dans les prochaines minutes, tu peux toujours t'inscrire à nouveau et en obtenir un
     nouveau. Assures-toi également de vérifier tes courriers indésirables.
