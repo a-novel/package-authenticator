@@ -1,10 +1,13 @@
 import { i18nPKG } from "../../../shared/i18n";
-import { EmailInput } from "../inputs";
 import { PopupForm, PopupFormFooter } from "./common";
 
-import { RequestPasswordResetForm as RequestPasswordResetRequest } from "@a-novel/connector-authentication/api";
+import {
+  BINDINGS_VALIDATION,
+  RequestPasswordResetForm as RequestPasswordResetRequest,
+} from "@a-novel/connector-authentication/api";
 import { SPACINGS } from "@a-novel/neon-ui";
 import { MaterialSymbol, Modal } from "@a-novel/neon-ui/ui";
+import { EmailInput } from "@a-novel/neon-ui/ux";
 
 import { type MouseEventHandler } from "react";
 
@@ -96,6 +99,7 @@ export const RequestResetPasswordForm = <
               field={field}
               label={t("resetPassword:fields.email.label")}
               placeholder={t("resetPassword:fields.email.placeholder")}
+              maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
         </form.Field>

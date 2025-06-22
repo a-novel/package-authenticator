@@ -1,8 +1,8 @@
 import { i18nPKG } from "../../../shared/i18n";
-import { EmailInput, PasswordInput } from "../inputs";
 import { PopupForm, PopupFormFooter } from "./common";
 
-import { LoginForm as LoginRequest } from "@a-novel/connector-authentication/api";
+import { BINDINGS_VALIDATION, LoginForm as LoginRequest } from "@a-novel/connector-authentication/api";
+import { EmailInput, PasswordInput } from "@a-novel/neon-ui/ux";
 
 import { type MouseEventHandler } from "react";
 
@@ -94,6 +94,7 @@ export const LoginForm = <
             field={field}
             label={t("login:fields.email.label")}
             placeholder={t("login:fields.email.placeholder")}
+            maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
           />
         )}
       </form.Field>
@@ -110,6 +111,7 @@ export const LoginForm = <
                 </Button>
               </>
             }
+            maxLength={BINDINGS_VALIDATION.PASSWORD.MAX}
           />
         )}
       </form.Field>
