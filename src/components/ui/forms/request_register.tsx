@@ -1,10 +1,13 @@
 import { i18nPKG } from "../../../shared/i18n";
-import { EmailInput } from "../inputs";
 import { PopupForm, PopupFormFooter } from "./common";
 
-import { RequestRegistrationForm as RequestRegistrationRequest } from "@a-novel/connector-authentication/api";
+import {
+  BINDINGS_VALIDATION,
+  RequestRegistrationForm as RequestRegistrationRequest,
+} from "@a-novel/connector-authentication/api";
 import { SPACINGS } from "@a-novel/neon-ui";
 import { MaterialSymbol, Modal } from "@a-novel/neon-ui/ui";
+import { EmailInput } from "@a-novel/neon-ui/ux";
 
 import { type MouseEventHandler } from "react";
 
@@ -97,6 +100,7 @@ export const RequestRegistrationForm = <
               field={field}
               label={t("register:fields.email.label")}
               placeholder={t("register:fields.email.placeholder")}
+              maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
         </form.Field>
