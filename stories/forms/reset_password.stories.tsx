@@ -7,10 +7,15 @@ import { FormRenderer, NewMockForm } from "@a-novel/neon-ui/storybook";
 import { type FC } from "react";
 
 import { type Meta, type StoryObj } from "@storybook/react-vite";
+import type { ReactFormExtendedApi } from "@tanstack/react-form";
 
-const RenderComponents: FC<RequestResetPasswordFormProps<any, any, any, any, any, any, any, any, any>> = (props) => (
+const RenderComponents: FC<
+  RequestResetPasswordFormProps<any, any, any, any, any, any, any, any, any> & {
+    form: ReactFormExtendedApi<any, any, any, any, any, any, any, any, any, any>;
+  }
+> = (props) => (
   <FormPage minHeight="100vh">
-    <RequestResetPasswordForm connector={props.connector} />
+    <RequestResetPasswordForm connector={{ ...props.connector, form: props.form }} />
   </FormPage>
 );
 

@@ -33,8 +33,8 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
       {...manageAccount}
     >
       <Typography
-        variant="h6"
         lineHeight="1.4em"
+        color="primary"
         margin={0}
         textAlign="right"
         whiteSpace="nowrap"
@@ -47,7 +47,7 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
       <Typography
         textAlign="right"
         color="textSecondary"
-        variant="caption"
+        fontSize="0.8rem!important"
         whiteSpace="nowrap"
         overflow="hidden"
         textOverflow="ellipsis"
