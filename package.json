@@ -15,9 +15,9 @@
     "storybook:dev": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "build-storybook": "storybook build",
-    "publish:patch": "pnpm version patch && git push",
-    "publish:minor": "pnpm version minor && git push",
-    "publish:major": "pnpm version major && git push"
+    "publish:patch": "pnpm version patch && git push --follow-tags",
+    "publish:minor": "pnpm version minor && git push --follow-tags",
+    "publish:major": "pnpm version major && git push --follow-tags"
   },
   "license": "AGPL-3.0",
   "packageManager": "pnpm@10.12.2",
