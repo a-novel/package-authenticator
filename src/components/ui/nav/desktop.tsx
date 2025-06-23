@@ -18,7 +18,7 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
         sx={{ display: "flex", flexDirection: "column", gap: 0, padding: 0 }}
         {...manageAccount}
       >
-        <Skeleton variant="rectangular" width="15rem" height="4rem" />
+        <Skeleton variant="rectangular" width="15rem" height="3.6rem" />
       </Button>
     );
   }
