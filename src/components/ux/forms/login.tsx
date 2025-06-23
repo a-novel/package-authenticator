@@ -1,19 +1,19 @@
 import { useSession } from "../../../contexts";
 import { i18nPKG } from "../../../shared/i18n";
-import { LoginForm as LoginFormComponent } from "../../ui/forms";
+import { type LoginFormConnector } from "../../ui/forms";
 
 import { BINDINGS_VALIDATION, isForbiddenError, isUserNotFoundError } from "@a-novel/connector-authentication/api";
 import { CreateSession } from "@a-novel/connector-authentication/hooks";
 import { i18nUI } from "@a-novel/neon-ui/ux";
 
-import { type FC, type MouseEventHandler } from "react";
+import { type MouseEventHandler } from "react";
 
 import { useForm } from "@tanstack/react-form";
 import { type TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export interface LoginFormProps {
+export interface LoginFormConnectorParams {
   /**
    * The action used to switch to the reset password form.
    */
@@ -82,7 +82,11 @@ const handleSubmitError = (t: FormTFunction) => (error: any) => {
   return t("login:form.errors.generic");
 };
 
-export const LoginForm: FC<LoginFormProps> = ({ resetPasswordAction, registerAction, onLogin }) => {
+export const useLoginFormConnector = ({
+  resetPasswordAction,
+  registerAction,
+  onLogin,
+}: LoginFormConnectorParams): LoginFormConnector<any, any, any, any, any, any, any, any, any> => {
   const { t } = useTranslation(["login", "input"], { i18n: i18nPKG });
 
   const createSession = CreateSession.useAPI();
@@ -112,5 +116,9 @@ export const LoginForm: FC<LoginFormProps> = ({ resetPasswordAction, registerAct
     onSubmit: onLogin,
   });
 
-  return <LoginFormComponent form={form} resetPasswordAction={resetPasswordAction} registerAction={registerAction} />;
+  return {
+    form,
+    resetPasswordAction,
+    registerAction,
+  };
 };

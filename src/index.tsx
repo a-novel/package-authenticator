@@ -1,13 +1,10 @@
-import { AuthNav, type AuthNavProps } from "./components/ux/nav";
 import { AuthFormProvider, SessionProvider, SessionSuspense, SyncSessionClaims } from "./contexts";
 import { i18nPKG } from "./shared/i18n";
 
 import { init as initAuthAPI } from "@a-novel/connector-authentication";
-import type { CountryType } from "@a-novel/neon-ui/ui";
 
-import type { ElementType, ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 
-import type { ButtonTypeMap } from "@mui/material";
 import { type i18n } from "i18next";
 
 export interface InitProps {
@@ -23,61 +20,24 @@ export const init = (props: InitProps) => {
   });
 };
 
-export interface WithSessionProps<
-  Langs extends Record<string, CountryType> = Record<string, CountryType>,
-  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-> {
+export interface WithSessionProps {
   children: ReactNode;
-  navProps: AuthNavProps<
-    Langs,
-    HomeButtonProps,
-    LoginButtonProps,
-    RegisterButtonProps,
-    LogoutButtonProps,
-    ManageAccountButtonProps
-  >;
+  layout?: ComponentType<{ children: ReactNode }>;
   setTitle?: (title: string | undefined) => void;
 }
 
-export const WithSession = <
-  Langs extends Record<string, CountryType> = Record<string, CountryType>,
-  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
->({
-  children,
-  setTitle,
-  navProps,
-}: WithSessionProps<
-  Langs,
-  HomeButtonProps,
-  ManageAccountButtonProps,
-  LoginButtonProps,
-  RegisterButtonProps,
-  LogoutButtonProps
->) => (
+export const WithSession = ({ children, layout, setTitle }: WithSessionProps) => (
   <SessionProvider>
     <SyncSessionClaims />
     <SessionSuspense>
-      <AuthFormProvider
-        setTitle={setTitle}
-        layout={({ children }) => (
-          <>
-            <AuthNav {...navProps} />
-            {children}
-          </>
-        )}
-      >
+      <AuthFormProvider setTitle={setTitle} layout={layout}>
         {children}
       </AuthFormProvider>
     </SessionSuspense>
   </SessionProvider>
 );
+
+export { useAuthNavConnector } from "./components/ux/nav";
+export { AuthNav } from "./components/ui/nav";
 
 export { SessionPrivateSuspense } from "./contexts";

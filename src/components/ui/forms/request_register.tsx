@@ -21,7 +21,7 @@ import {
 import { Trans, useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export interface RegisterFormProps<
+export interface RequestRegisterFormConnector<
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
@@ -47,7 +47,31 @@ export interface RegisterFormProps<
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const RequestRegistrationForm = <
+export interface RequestRegisterFormProps<
+  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
+  TSubmitMeta,
+> {
+  connector: RequestRegisterFormConnector<
+    TOnMount,
+    TOnChange,
+    TOnChangeAsync,
+    TOnBlur,
+    TOnBlurAsync,
+    TOnSubmit,
+    TOnSubmitAsync,
+    TOnServer,
+    TSubmitMeta
+  >;
+}
+
+export const RequestRegisterForm = <
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
@@ -58,9 +82,8 @@ export const RequestRegistrationForm = <
   TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TSubmitMeta,
 >({
-  form,
-  loginAction,
-}: RegisterFormProps<
+  connector,
+}: RequestRegisterFormProps<
   TOnMount,
   TOnChange,
   TOnChangeAsync,
@@ -73,28 +96,28 @@ export const RequestRegistrationForm = <
 >) => {
   const { t } = useTranslation("register", { i18n: i18nPKG });
 
-  const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
-  const isSubmitSuccessful = useStore(form.store, (state) => state.isSubmitSuccessful);
-  const userEmail = useStore(form.store, (state) => state.values.email);
+  const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
+  const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);
+  const userEmail = useStore(connector.form.store, (state) => state.values.email);
 
   return (
     <>
       <PopupForm
         title={t("register:title")}
-        form={form}
+        form={connector.form}
         submitButton={isSubmitting ? t("register:form.submitting") : t("register:form.submit")}
         footer={
           <PopupFormFooter>
             <Typography textAlign="center">
               <span>{t("register:form.login.label")} </span>
-              <Button variant="text" type="button" color="primary" onClick={loginAction}>
+              <Button variant="text" type="button" color="primary" onClick={connector.loginAction}>
                 {t("register:form.login.action")}
               </Button>
             </Typography>
           </PopupFormFooter>
         }
       >
-        <form.Field name="email">
+        <connector.form.Field name="email">
           {(field) => (
             <EmailInput
               field={field}
@@ -103,7 +126,7 @@ export const RequestRegistrationForm = <
               maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
-        </form.Field>
+        </connector.form.Field>
       </PopupForm>
 
       <Modal
@@ -118,7 +141,7 @@ export const RequestRegistrationForm = <
         <Typography color="textSecondary">{t("register:success.sub")}</Typography>
         <br />
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
-          <Button type="button" color="primary" onClick={loginAction}>
+          <Button type="button" color="primary" onClick={connector.loginAction}>
             {t("register:form.toLogin.action")}
           </Button>
         </Stack>

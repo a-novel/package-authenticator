@@ -1,4 +1,4 @@
-import { RequestRegistrationForm, type RegisterFormProps } from "../../src/components/ui/forms";
+import { RequestRegisterForm, type RequestRegisterFormProps } from "../../src/components/ui/forms";
 import { FormPage } from "../../src/components/ui/pages";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
@@ -8,22 +8,22 @@ import { type FC } from "react";
 
 import { type Meta, type StoryObj } from "@storybook/react-vite";
 
-const RenderComponents: FC<RegisterFormProps<any, any, any, any, any, any, any, any, any>> = (props) => (
+const RenderComponents: FC<RequestRegisterFormProps<any, any, any, any, any, any, any, any, any>> = (props) => (
   <FormPage minHeight="100vh">
-    <RequestRegistrationForm form={props.form} loginAction={() => null} />
+    <RequestRegisterForm connector={props.connector} />
   </FormPage>
 );
 
-const meta: Meta<typeof RequestRegistrationForm> = {
-  component: RequestRegistrationForm,
+const meta: Meta<typeof RequestRegisterForm> = {
+  component: RequestRegisterForm,
   parameters: {
     layout: "centered",
   },
   argTypes: {
-    form: { control: { disable: true } },
+    connector: { control: { disable: true } },
   },
   tags: ["autodocs"],
-  render: (args) => <FormRenderer component={RenderComponents} {...args} />,
+  render: (args) => <FormRenderer component={RenderComponents} form={args.connector.form} {...args} />,
 };
 
 export default meta;
@@ -32,91 +32,115 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: "",
-      },
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: "",
+        },
+      }),
+    },
   },
 };
 
 export const WithValues: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: "user@provider.com",
-      },
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: "user@provider.com",
+        },
+      }),
+    },
   },
 };
 
 export const ValuesTooLong: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: String("a").repeat(BINDINGS_VALIDATION.EMAIL.MAX),
-      },
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: String("a").repeat(BINDINGS_VALIDATION.EMAIL.MAX),
+        },
+      }),
+    },
   },
 };
 
 export const FieldErrors: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: "user@provider.com",
-      },
-      fieldErrors: {
-        email: ["The email does not comply with our requirements."],
-      },
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: "user@provider.com",
+        },
+        fieldErrors: {
+          email: ["The email does not comply with our requirements."],
+        },
+      }),
+    },
   },
 };
 
 export const Submitting: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: "user@provider.com",
-      },
-      isSubmitting: true,
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: "user@provider.com",
+        },
+        isSubmitting: true,
+      }),
+    },
   },
 };
 
 export const FieldsValidating: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: "user@provider.com",
-      },
-      fieldsValidation: {
-        email: true,
-      },
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: "user@provider.com",
+        },
+        fieldsValidation: {
+          email: true,
+        },
+      }),
+    },
   },
 };
 
 export const RegisterError: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: "user@provider.com",
-      },
-      formErrors: {
-        onSubmit: ["An unexpected error occurred, please retry later."],
-      },
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: "user@provider.com",
+        },
+        formErrors: {
+          onSubmit: ["An unexpected error occurred, please retry later."],
+        },
+      }),
+    },
   },
 };
 
 export const Success: Story = {
   args: {
-    form: NewMockForm({
-      values: {
-        email: "user@provider.com",
-      },
-      isSuccess: true,
-    }),
+    connector: {
+      loginAction: () => {},
+      form: NewMockForm({
+        values: {
+          email: "user@provider.com",
+        },
+        isSuccess: true,
+      }),
+    },
   },
 };

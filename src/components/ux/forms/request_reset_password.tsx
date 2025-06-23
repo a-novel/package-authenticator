@@ -1,18 +1,18 @@
 import { useAccessToken } from "../../../contexts";
 import { getLang, i18nPKG } from "../../../shared/i18n";
-import { RequestResetPasswordForm as RequestResetPasswordFormComponent } from "../../ui/forms";
+import { type RequestResetPasswordFormConnector } from "../../ui/forms";
 
 import { BINDINGS_VALIDATION, isUserNotFoundError, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestPasswordReset } from "@a-novel/connector-authentication/hooks";
 
-import { type FC, type MouseEventHandler } from "react";
+import { type MouseEventHandler } from "react";
 
 import { useForm } from "@tanstack/react-form";
 import { type TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export interface RequestResetPasswordFormProps {
+export interface RequestResetPasswordFormConnectorParams {
   /**
    * The action used to switch to the login form.
    */
@@ -59,7 +59,19 @@ const handleSubmitError = (t: FormTFunction) => (error: any) => {
   return t("register:form.errors.generic");
 };
 
-export const RequestResetPasswordForm: FC<RequestResetPasswordFormProps> = ({ loginAction }) => {
+export const useRequestResetPasswordFormConnector = ({
+  loginAction,
+}: RequestResetPasswordFormConnectorParams): RequestResetPasswordFormConnector<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+> => {
   const { t } = useTranslation(["resetPassword", "input"], { i18n: i18nPKG });
 
   const accessToken = useAccessToken();
@@ -91,5 +103,8 @@ export const RequestResetPasswordForm: FC<RequestResetPasswordFormProps> = ({ lo
     },
   });
 
-  return <RequestResetPasswordFormComponent form={form} loginAction={loginAction} />;
+  return {
+    form,
+    loginAction,
+  };
 };

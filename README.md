@@ -55,7 +55,7 @@ In your entry file.
 import i18n from "./locale_i18n_instance";
 
 import { theme } from "@a-novel/neon-ui";
-import { init, WithSession } from "@a-novel/package-authenticator";
+import { init, WithSession, useAuthNavConnector, AuthNav } from "@a-novel/package-authenticator";
 
 import { FC, ReactNode } from "react";
 
@@ -66,10 +66,21 @@ init({
   i18n,
 });
 
+const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
+  const authConnector = useAuthNavConnector();
+
+  return (
+    <>
+      <AuthNav connector={authConnector} manageAccount={{ onClick: () => goTo("/manage/account/page") }} />
+      {children}
+    </>
+  );
+};
+
 export const App: FC<{ children: ReactNode }> = ({ children }) => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <WithSession>{children}</WithSession>
+    <WithSession layout={AppLayout}>{children}</WithSession>
   </ThemeProvider>
 );
 ```
