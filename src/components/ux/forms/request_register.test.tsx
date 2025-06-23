@@ -1,20 +1,21 @@
 import { MockQueryClient } from "../../../../__test__/mocks/query_client";
 import "../../../../__test__/mocks/react_it18next";
 import { genericSetup } from "../../../../__test__/utils/setup";
-import { QueryWrapper } from "../../../../__test__/utils/wrapper";
+import { QueryWrapperLight, StandardWrapper } from "../../../../__test__/utils/wrapper";
 import { SESSION_STORAGE_KEY } from "../../../contexts";
-import { RequestRegisterForm } from "./request_register";
+import { RequestRegisterForm } from "../../ui/forms";
+import { useRequestRegisterFormConnector } from "./request_register";
 
 import { BINDINGS_VALIDATION, LangEnum } from "@a-novel/connector-authentication/api";
 
 import { QueryClient } from "@tanstack/react-query";
-import { act, fireEvent, render, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, renderHook, waitFor } from "@testing-library/react";
 import nock from "nock";
 import { describe, expect, it, vi } from "vitest";
 
 let nockAPI: nock.Scope;
 
-describe("RequestRegistrationForm", () => {
+describe("RequestRegisterForm", () => {
   genericSetup({
     setNockAPI: (newScope) => {
       nockAPI = newScope;
@@ -26,7 +27,14 @@ describe("RequestRegistrationForm", () => {
 
     const queryClient = new QueryClient(MockQueryClient);
 
-    const screen = render(<RequestRegisterForm loginAction={loginAction} />, { wrapper: QueryWrapper(queryClient) });
+    const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
+      initialProps: { loginAction },
+      wrapper: QueryWrapperLight(queryClient),
+    });
+
+    const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
+      wrapper: StandardWrapper,
+    });
 
     expect(screen.getByLabelText(/register:fields\.email\.label/)).toBeDefined();
 
@@ -50,8 +58,13 @@ describe("RequestRegistrationForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const screen = render(<RequestRegisterForm loginAction={loginAction} />, {
-          wrapper: QueryWrapper(queryClient),
+        const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
+          initialProps: { loginAction },
+          wrapper: QueryWrapperLight(queryClient),
+        });
+
+        const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
+          wrapper: StandardWrapper,
         });
 
         const fieldInput = screen.getByLabelText(
@@ -98,7 +111,14 @@ describe("RequestRegistrationForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const screen = render(<RequestRegisterForm loginAction={loginAction} />, { wrapper: QueryWrapper(queryClient) });
+      const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
+        initialProps: { loginAction },
+        wrapper: QueryWrapperLight(queryClient),
+      });
+
+      const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
+        wrapper: StandardWrapper,
+      });
 
       const emailInput = screen.getByLabelText(/register:fields\.email\.label/) as HTMLInputElement;
 
@@ -128,7 +148,14 @@ describe("RequestRegistrationForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const screen = render(<RequestRegisterForm loginAction={loginAction} />, { wrapper: QueryWrapper(queryClient) });
+      const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
+        initialProps: { loginAction },
+        wrapper: QueryWrapperLight(queryClient),
+      });
+
+      const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
+        wrapper: StandardWrapper,
+      });
 
       const emailInput = screen.getByLabelText(/register:fields\.email\.label/) as HTMLInputElement;
 
@@ -171,8 +198,13 @@ describe("RequestRegistrationForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const screen = render(<RequestRegisterForm loginAction={loginAction} />, {
-          wrapper: QueryWrapper(queryClient),
+        const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
+          initialProps: { loginAction },
+          wrapper: QueryWrapperLight(queryClient),
+        });
+
+        const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
+          wrapper: StandardWrapper,
         });
 
         const nockRegister = nockAPI

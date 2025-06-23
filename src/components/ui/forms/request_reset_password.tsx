@@ -21,7 +21,7 @@ import {
 import { Trans, useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export interface ResetPasswordFormProps<
+export interface RequestResetPasswordFormConnector<
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
   TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
@@ -47,6 +47,30 @@ export interface ResetPasswordFormProps<
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
+export interface RequestResetPasswordFormProps<
+  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
+  TSubmitMeta,
+> {
+  connector: RequestResetPasswordFormConnector<
+    TOnMount,
+    TOnChange,
+    TOnChangeAsync,
+    TOnBlur,
+    TOnBlurAsync,
+    TOnSubmit,
+    TOnSubmitAsync,
+    TOnServer,
+    TSubmitMeta
+  >;
+}
+
 export const RequestResetPasswordForm = <
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
@@ -58,9 +82,8 @@ export const RequestResetPasswordForm = <
   TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
   TSubmitMeta,
 >({
-  form,
-  loginAction,
-}: ResetPasswordFormProps<
+  connector,
+}: RequestResetPasswordFormProps<
   TOnMount,
   TOnChange,
   TOnChangeAsync,
@@ -73,27 +96,27 @@ export const RequestResetPasswordForm = <
 >) => {
   const { t } = useTranslation("resetPassword", { i18n: i18nPKG });
 
-  const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
-  const isSubmitSuccessful = useStore(form.store, (state) => state.isSubmitSuccessful);
-  const userEmail = useStore(form.store, (state) => state.values.email);
+  const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
+  const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);
+  const userEmail = useStore(connector.form.store, (state) => state.values.email);
 
   return (
     <>
       <PopupForm
         title={t("resetPassword:title")}
-        form={form}
+        form={connector.form}
         submitButton={isSubmitting ? t("resetPassword:form.submitting") : t("resetPassword:form.submit")}
         footer={
           <PopupFormFooter>
             <Typography textAlign="center">
-              <Button variant="text" type="button" color="primary" onClick={loginAction}>
+              <Button variant="text" type="button" color="primary" onClick={connector.loginAction}>
                 {t("resetPassword:form.backToLogin.action")}
               </Button>
             </Typography>
           </PopupFormFooter>
         }
       >
-        <form.Field name="email">
+        <connector.form.Field name="email">
           {(field) => (
             <EmailInput
               field={field}
@@ -102,7 +125,7 @@ export const RequestResetPasswordForm = <
               maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
-        </form.Field>
+        </connector.form.Field>
       </PopupForm>
 
       <Modal
@@ -117,7 +140,7 @@ export const RequestResetPasswordForm = <
         <Typography color="textSecondary">{t("resetPassword:success.sub")}</Typography>
         <br />
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
-          <Button type="button" color="primary" onClick={loginAction}>
+          <Button type="button" color="primary" onClick={connector.loginAction}>
             {t("resetPassword:form.backToLogin.action")}
           </Button>
         </Stack>

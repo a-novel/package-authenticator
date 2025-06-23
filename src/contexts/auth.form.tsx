@@ -1,5 +1,10 @@
+import { LoginForm, RequestRegisterForm, RequestResetPasswordForm } from "../components/ui/forms";
 import { FormPage, type FormPageProps } from "../components/ui/pages";
-import { LoginForm, RequestRegisterForm, RequestResetPasswordForm } from "../components/ux/forms";
+import {
+  useLoginFormConnector,
+  useRequestRegisterFormConnector,
+  useRequestResetPasswordFormConnector,
+} from "../components/ux/forms";
 import { i18nPKG } from "../shared/i18n";
 
 import {
@@ -47,26 +52,40 @@ export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: 
     setTitle?.(showForm ? t(`form:title.${showForm}`) : undefined);
   }, [t, showForm, setTitle]);
 
+  const loginFormConnector = useLoginFormConnector({
+    resetPasswordAction: toResetPasswordForm,
+    registerAction: toRegisterForm,
+    onLogin: closeForm,
+  });
+
+  const requestRegisterFormConnector = useRequestRegisterFormConnector({
+    loginAction: toLoginForm,
+  });
+
+  const requestResetPasswordFormConnector = useRequestResetPasswordFormConnector({
+    loginAction: toLoginForm,
+  });
+
   let actualChildren = children;
   switch (showForm) {
     case "login":
       actualChildren = (
         <FormPage {...props}>
-          <LoginForm resetPasswordAction={toResetPasswordForm} registerAction={toRegisterForm} onLogin={closeForm} />
+          <LoginForm connector={loginFormConnector} />
         </FormPage>
       );
       break;
     case "register":
       actualChildren = (
         <FormPage {...props}>
-          <RequestRegisterForm loginAction={toLoginForm} />
+          <RequestRegisterForm connector={requestRegisterFormConnector} />
         </FormPage>
       );
       break;
     case "resetPassword":
       actualChildren = (
         <FormPage {...props}>
-          <RequestResetPasswordForm loginAction={toLoginForm} />
+          <RequestResetPasswordForm connector={requestResetPasswordFormConnector} />
         </FormPage>
       );
       break;

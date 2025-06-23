@@ -1,18 +1,18 @@
 import { useAccessToken } from "../../../contexts";
 import { getLang, i18nPKG } from "../../../shared/i18n";
-import { RequestRegistrationForm as RequestRegisterFormComponent } from "../../ui/forms";
+import { type RequestRegisterFormConnector } from "../../ui/forms";
 
 import { BINDINGS_VALIDATION, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestRegister } from "@a-novel/connector-authentication/hooks";
 
-import { type FC, type MouseEventHandler } from "react";
+import { type MouseEventHandler } from "react";
 
 import { useForm } from "@tanstack/react-form";
 import { type TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export interface RequestRegisterFormProps {
+export interface RequestRegisterFormConnectorParams {
   /**
    * The action used to switch to the login form.
    */
@@ -51,7 +51,9 @@ const formValidator = (t: FormTFunction) =>
  */
 const handleSubmitError = (t: FormTFunction) => () => t("register:form.errors.generic");
 
-export const RequestRegisterForm: FC<RequestRegisterFormProps> = ({ loginAction }) => {
+export const useRequestRegisterFormConnector = ({
+  loginAction,
+}: RequestRegisterFormConnectorParams): RequestRegisterFormConnector<any, any, any, any, any, any, any, any, any> => {
   const { t } = useTranslation(["register", "input"], { i18n: i18nPKG });
 
   const accessToken = useAccessToken();
@@ -83,5 +85,8 @@ export const RequestRegisterForm: FC<RequestRegisterFormProps> = ({ loginAction 
     },
   });
 
-  return <RequestRegisterFormComponent form={form} loginAction={loginAction} />;
+  return {
+    form,
+    loginAction,
+  };
 };

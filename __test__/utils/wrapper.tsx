@@ -25,3 +25,8 @@ export const QueryWrapper = (queryClient: QueryClient) =>
       </StandardWrapper>
     );
   };
+
+export const QueryWrapperLight = (queryClient: QueryClient) =>
+  function InnerQueryWrapper({ children }: { children: ReactNode }) {
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  };

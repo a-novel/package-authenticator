@@ -1,6 +1,9 @@
 import { genericSetup } from "../../__test__/utils/setup";
-import * as forms from "../components/ux/forms";
+import * as forms from "../components/ui/forms";
+import * as formsConnectors from "../components/ux/forms";
 import { AuthFormProvider, type AuthFormSelect, useAuthForm } from "./auth.form";
+
+import { NewMockForm } from "@a-novel/neon-ui/storybook";
 
 import { type FC, type ReactNode, useEffect } from "react";
 
@@ -25,6 +28,26 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => (
 
 describe("auth form provider", () => {
   genericSetup({});
+
+  vi.spyOn(formsConnectors, "useLoginFormConnector").mockImplementation(() => ({
+    form: NewMockForm({
+      values: { email: "", password: "" },
+    }),
+    resetPasswordAction: vi.fn(),
+    registerAction: vi.fn(),
+  }));
+  vi.spyOn(formsConnectors, "useRequestRegisterFormConnector").mockImplementation(() => ({
+    form: NewMockForm({
+      values: { email: "", password: "" },
+    }),
+    loginAction: vi.fn(),
+  }));
+  vi.spyOn(formsConnectors, "useRequestResetPasswordFormConnector").mockImplementation(() => ({
+    form: NewMockForm({
+      values: { email: "" },
+    }),
+    loginAction: vi.fn(),
+  }));
 
   vi.spyOn(forms, "LoginForm").mockImplementation(() => <div>Login Form</div>);
   vi.spyOn(forms, "RequestRegisterForm").mockImplementation(() => <div>Register Form</div>);

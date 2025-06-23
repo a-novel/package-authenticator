@@ -1,15 +1,18 @@
 import { MockQueryClient } from "../../../../__test__/mocks/query_client";
 import "../../../../__test__/mocks/react_it18next";
 import { genericSetup } from "../../../../__test__/utils/setup";
-import { QueryWrapper } from "../../../../__test__/utils/wrapper";
+import { QueryWrapperLight, StandardWrapper } from "../../../../__test__/utils/wrapper";
 import { SessionProvider } from "../../../contexts";
 import { TestSessionRenderer } from "../../../contexts/session.test";
-import { LoginForm } from "./login";
+import { LoginForm } from "../../ui/forms";
+import { useLoginFormConnector } from "./login";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
 
-import { QueryClient } from "@tanstack/react-query";
-import { act, fireEvent, render, waitFor } from "@testing-library/react";
+import type { ReactNode } from "react";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, fireEvent, render, renderHook, waitFor } from "@testing-library/react";
 import nock from "nock";
 import { describe, it, expect, vi } from "vitest";
 
@@ -29,10 +32,14 @@ describe("LoginForm", () => {
 
     const queryClient = new QueryClient(MockQueryClient);
 
-    const screen = render(
-      <LoginForm resetPasswordAction={resetPasswordAction} registerAction={registerAction} onLogin={loginAction} />,
-      { wrapper: QueryWrapper(queryClient) }
-    );
+    const loginFormConnector = renderHook((props) => useLoginFormConnector(props), {
+      initialProps: { resetPasswordAction, registerAction, onLogin: loginAction },
+      wrapper: QueryWrapperLight(queryClient),
+    });
+
+    const screen = render(<LoginForm connector={loginFormConnector.result.current} />, {
+      wrapper: StandardWrapper,
+    });
 
     expect(screen.getByLabelText(/login:fields\.email\.label/)).toBeDefined();
     expect(screen.getByLabelText(/login:fields\.password\.label/)).toBeDefined();
@@ -74,10 +81,14 @@ describe("LoginForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const screen = render(
-          <LoginForm resetPasswordAction={resetPasswordAction} registerAction={registerAction} onLogin={loginAction} />,
-          { wrapper: QueryWrapper(queryClient) }
-        );
+        const loginFormConnector = renderHook((props) => useLoginFormConnector(props), {
+          initialProps: { resetPasswordAction, registerAction, onLogin: loginAction },
+          wrapper: QueryWrapperLight(queryClient),
+        });
+
+        const screen = render(<LoginForm connector={loginFormConnector.result.current} />, {
+          wrapper: StandardWrapper,
+        });
 
         const fieldInput = screen.getByLabelText(
           new RegExp(`login:fields\\.${field.name}\\.label`)
@@ -125,13 +136,19 @@ describe("LoginForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const screen = render(
-        <SessionProvider>
-          <TestSessionRenderer />
-          <LoginForm resetPasswordAction={resetPasswordAction} registerAction={registerAction} onLogin={loginAction} />
-        </SessionProvider>,
-        { wrapper: QueryWrapper(queryClient) }
-      );
+      const loginFormConnector = renderHook((props) => useLoginFormConnector(props), {
+        initialProps: { resetPasswordAction, registerAction, onLogin: loginAction },
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <QueryClientProvider client={queryClient}>
+            <SessionProvider>
+              <TestSessionRenderer />
+              {children}
+            </SessionProvider>
+          </QueryClientProvider>
+        ),
+      });
+
+      const screen = render(<LoginForm connector={loginFormConnector.result.current} />, { wrapper: StandardWrapper });
 
       const emailInput = screen.getByLabelText(/login:fields\.email\.label/) as HTMLInputElement;
       const passwordInput = screen.getByLabelText(/login:fields\.password\.label/) as HTMLInputElement;
@@ -170,13 +187,19 @@ describe("LoginForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const screen = render(
-        <SessionProvider>
-          <TestSessionRenderer />
-          <LoginForm resetPasswordAction={resetPasswordAction} registerAction={registerAction} onLogin={loginAction} />
-        </SessionProvider>,
-        { wrapper: QueryWrapper(queryClient) }
-      );
+      const loginFormConnector = renderHook((props) => useLoginFormConnector(props), {
+        initialProps: { resetPasswordAction, registerAction, onLogin: loginAction },
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <QueryClientProvider client={queryClient}>
+            <SessionProvider>
+              <TestSessionRenderer />
+              {children}
+            </SessionProvider>
+          </QueryClientProvider>
+        ),
+      });
+
+      const screen = render(<LoginForm connector={loginFormConnector.result.current} />, { wrapper: StandardWrapper });
 
       const emailInput = screen.getByLabelText(/login:fields\.email\.label/) as HTMLInputElement;
 
@@ -232,17 +255,21 @@ describe("LoginForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const screen = render(
-          <SessionProvider>
-            <TestSessionRenderer />
-            <LoginForm
-              resetPasswordAction={resetPasswordAction}
-              registerAction={registerAction}
-              onLogin={loginAction}
-            />
-          </SessionProvider>,
-          { wrapper: QueryWrapper(queryClient) }
-        );
+        const loginFormConnector = renderHook((props) => useLoginFormConnector(props), {
+          initialProps: { resetPasswordAction, registerAction, onLogin: loginAction },
+          wrapper: ({ children }: { children: ReactNode }) => (
+            <QueryClientProvider client={queryClient}>
+              <SessionProvider>
+                <TestSessionRenderer />
+                {children}
+              </SessionProvider>
+            </QueryClientProvider>
+          ),
+        });
+
+        const screen = render(<LoginForm connector={loginFormConnector.result.current} />, {
+          wrapper: StandardWrapper,
+        });
 
         const nockLogin = nockAPI.put("/session", form).reply(responseStatus, { accessToken: "access-token" });
 
