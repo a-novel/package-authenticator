@@ -5,7 +5,7 @@ import { Suspense, useEffect } from "react";
 import type { Decorator } from "@storybook/react-vite";
 import { I18nextProvider } from "react-i18next";
 
-export const WithI18next: Decorator = (Story, context) => {
+export const I18NextDecorator: Decorator = (Story, context) => {
   const { locale } = context.globals;
 
   // When the locale global changes

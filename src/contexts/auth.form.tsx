@@ -38,8 +38,17 @@ export interface AuthFormProviderProps extends Omit<FormPageProps, "children"> {
   setTitle?: (title: string | undefined) => void;
 }
 
+const FORM_TITLES = {
+  login: "authenticator.login:metadata.title",
+  register: "authenticator.register:metadata.title",
+  resetPassword: "authenticator.resetPassword:metadata.title",
+};
+
 export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: Layout, setTitle, ...props }) => {
-  const { t } = useTranslation("form", { i18n: i18nPKG });
+  const { t } = useTranslation(
+    ["form", "authenticator.login", "authenticator.register", "authenticator.resetPassword"],
+    { i18n: i18nPKG }
+  );
 
   const [showForm, setShowForm] = useState<AuthFormSelect>();
 
@@ -49,7 +58,7 @@ export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: 
   const closeForm = useCallback(() => setShowForm(undefined), []);
 
   useEffect(() => {
-    setTitle?.(showForm ? t(`form:title.${showForm}`) : undefined);
+    setTitle?.(showForm ? t(FORM_TITLES[showForm]) : undefined);
   }, [t, showForm, setTitle]);
 
   const loginFormConnector = useLoginFormConnector({

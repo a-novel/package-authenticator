@@ -19,7 +19,7 @@ export interface RequestRegisterFormConnectorParams {
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
-type FormTFunction = TFunction<readonly ["register", "input"]>;
+type FormTFunction = TFunction<readonly ["form", "generic", "authenticator.register"]>;
 
 /**
  * Extends the original form with translated error messages.
@@ -28,33 +28,33 @@ const formValidator = (t: FormTFunction) =>
   z.object({
     email: z
       .string()
+      .nonempty(t("form:text.errors.required"))
       .min(
         BINDINGS_VALIDATION.EMAIL.MIN,
-        t("input:text.errors.tooShort", {
+        t("form:text.errors.tooShort", {
           count: BINDINGS_VALIDATION.EMAIL.MIN,
-          field: t("register:fields.email.errors.field"),
         })
       )
       .max(
         BINDINGS_VALIDATION.EMAIL.MAX,
-        t("input:text.errors.tooLong", {
+        t("form:text.errors.tooLong", {
           count: BINDINGS_VALIDATION.EMAIL.MAX,
-          field: t("register:fields.email.errors.field"),
         })
       )
-      .email(t("register:fields.email.errors.invalid")),
+      .email(t("form:fields.email.errors.invalid")),
     lang: Lang,
   });
 
 /**
  * Handle error from login form submit. Properly sets field errors for tanstack depending on the returned value.
  */
-const handleSubmitError = (t: FormTFunction) => () => t("register:form.errors.generic");
+const handleSubmitError = (t: FormTFunction) => () =>
+  `${t("authenticator.register:form.errors.generic")} ${t("generic:error")}`;
 
 export const useRequestRegisterFormConnector = ({
   loginAction,
 }: RequestRegisterFormConnectorParams): RequestRegisterFormConnector<any, any, any, any, any, any, any, any, any> => {
-  const { t } = useTranslation(["register", "input"], { i18n: i18nPKG });
+  const { t } = useTranslation(["form", "generic", "authenticator.register"], { i18n: i18nPKG });
 
   const accessToken = useAccessToken();
   const requestRegistrationLink = RequestRegister.useAPI(accessToken);

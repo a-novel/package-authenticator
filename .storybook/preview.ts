@@ -1,5 +1,5 @@
-import { WithI18next } from "./i18n";
-import { WithMui } from "./mui";
+import { I18NextDecorator } from "./i18n";
+import { MuiDecorator } from "./mui";
 
 import type { Preview } from "@storybook/react-vite";
 import { themes } from "storybook/theming";
@@ -43,6 +43,6 @@ export const globalTypes = {
   },
 };
 
-export const decorators = [WithI18next, WithMui];
+export const decorators = [I18NextDecorator, MuiDecorator];
 
 export default preview;

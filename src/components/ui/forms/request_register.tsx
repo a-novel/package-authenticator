@@ -94,7 +94,7 @@ export const RequestRegisterForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { t } = useTranslation("register", { i18n: i18nPKG });
+  const { t } = useTranslation(["authenticator.register", "form"], { i18n: i18nPKG });
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
   const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);
@@ -103,15 +103,17 @@ export const RequestRegisterForm = <
   return (
     <>
       <PopupForm
-        title={t("register:title")}
+        title={t("authenticator.register:title")}
         form={connector.form}
-        submitButton={isSubmitting ? t("register:form.submitting") : t("register:form.submit")}
+        submitButton={
+          isSubmitting ? t("authenticator.register:form.submitting") : t("authenticator.register:form.submit")
+        }
         footer={
           <PopupFormFooter>
             <Typography textAlign="center">
-              <span>{t("register:form.login.label")} </span>
+              <span>{t("authenticator.register:form.login.label")} </span>
               <Button variant="text" type="button" color="primary" onClick={connector.loginAction}>
-                {t("register:form.login.action")}
+                {t("authenticator.register:form.login.action")}
               </Button>
             </Typography>
           </PopupFormFooter>
@@ -121,8 +123,9 @@ export const RequestRegisterForm = <
           {(field) => (
             <EmailInput
               field={field}
-              label={t("register:fields.email.label")}
-              placeholder={t("register:fields.email.placeholder")}
+              label={t("form:fields.email.label")}
+              placeholder={t("form:fields.email.placeholder")}
+              helperText={t("authenticator.register:fields.email.helper")}
               maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
@@ -130,19 +133,19 @@ export const RequestRegisterForm = <
       </PopupForm>
 
       <Modal
-        title={t("register:success.title")}
+        title={t("authenticator.register:form.success.title")}
         icon={<MaterialSymbol icon="mark_email_read" />}
         open={isSubmitSuccessful}
       >
         <Typography sx={{ "> strong": { color: (theme) => theme.palette.primary.main } }}>
-          <Trans i18nKey="register:success.main" values={{ mail: userEmail }} />
+          <Trans i18nKey="authenticator.register:form.success.main" values={{ mail: userEmail }} />
         </Typography>
         <br />
-        <Typography color="textSecondary">{t("register:success.sub")}</Typography>
+        <Typography color="textSecondary">{t("authenticator.register:form.success.sub")}</Typography>
         <br />
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
           <Button type="button" color="primary" onClick={connector.loginAction}>
-            {t("register:form.toLogin.action")}
+            {t("authenticator.register:form.success.action")}
           </Button>
         </Stack>
       </Modal>

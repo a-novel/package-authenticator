@@ -31,7 +31,7 @@ const LOGIN_BUFFERING_INTERVAL = 100;
  * error (401). In such case, the session is refreshed and the children are re-rendered.
  */
 export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
-  const { t } = useTranslation("session", { i18n: i18nPKG });
+  const { t } = useTranslation("authenticator.session", { i18n: i18nPKG });
 
   const queryClient = useQueryClient();
 
@@ -144,11 +144,11 @@ export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
         color="error"
         footer={
           <Button color="error" onClick={() => updateSession()}>
-            {t("session:actions.retry")}
+            {t("authenticator.session:actions.retry")}
           </Button>
         }
       >
-        <Typography>{t("session:status.error")}</Typography>
+        <Typography>{t("authenticator.session:status.error")}</Typography>
       </StatusPage>
     );
   }
@@ -156,7 +156,7 @@ export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
   if (!accessToken) {
     return (
       <StatusPage color="primary" icon={<MaterialSymbol icon="rss_feed" />}>
-        <Typography>{t("session:status.loading")}</Typography>
+        <Typography>{t("authenticator.session:status.loading")}</Typography>
       </StatusPage>
     );
   }

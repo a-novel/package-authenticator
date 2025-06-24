@@ -41,10 +41,12 @@ describe("LoginForm", () => {
       wrapper: StandardWrapper,
     });
 
-    expect(screen.getByLabelText(/login:fields\.email\.label/)).toBeDefined();
-    expect(screen.getByLabelText(/login:fields\.password\.label/)).toBeDefined();
+    expect(screen.getByLabelText(/form:fields\.email\.label/)).toBeDefined();
+    expect(screen.getByLabelText(/form:fields\.password\.label/)).toBeDefined();
 
-    const resetPasswordButton = screen.getByText(/login:fields\.password\.helper\.action/, { selector: "button" });
+    const resetPasswordButton = screen.getByText(/authenticator\.login:fields\.password\.helper\.action/, {
+      selector: "button",
+    });
     expect(resetPasswordButton).toBeDefined();
 
     // Click on button to trigger the action.
@@ -54,7 +56,7 @@ describe("LoginForm", () => {
     });
     expect(resetPasswordAction).toHaveBeenCalled();
 
-    const registerButton = screen.getByText(/login:form\.register\.action/, { selector: "button" });
+    const registerButton = screen.getByText(/authenticator\.login:form\.register\.action/, { selector: "button" });
     expect(registerButton).toBeDefined();
 
     // Click on button to trigger the action.
@@ -69,8 +71,8 @@ describe("LoginForm", () => {
 
   describe("form state", () => {
     const fields = [
-      { name: "email", max: BINDINGS_VALIDATION.EMAIL.MAX },
-      { name: "password", max: BINDINGS_VALIDATION.PASSWORD.MAX },
+      { name: "email", tKey: /form:fields\.email\.label/, max: BINDINGS_VALIDATION.EMAIL.MAX },
+      { name: "password", tKey: /form:fields\.password\.label/, max: BINDINGS_VALIDATION.PASSWORD.MAX },
     ];
 
     for (const field of fields) {
@@ -90,39 +92,43 @@ describe("LoginForm", () => {
           wrapper: StandardWrapper,
         });
 
-        const fieldInput = screen.getByLabelText(
-          new RegExp(`login:fields\\.${field.name}\\.label`)
-        ) as HTMLInputElement;
+        const fieldInput = screen.getByLabelText(field.tKey) as HTMLInputElement;
         expect(fieldInput).toBeDefined();
 
         // Update the fields with a normal value.
         act(() => {
+          fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
+          fireEvent.blur(document);
         });
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
+          expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
         });
 
         // Update the fields with a too long value.
         act(() => {
+          fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "a".repeat(field.max * 2) } });
+          fireEvent.blur(document);
         });
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("a".repeat(field.max));
-          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(1);
+          expect(screen.queryAllByText(/text.errors.tooLong/)).length(1);
         });
 
         // Reverse the fields to a normal value.
         act(() => {
+          fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
+          fireEvent.blur(document);
         });
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
+          expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
         });
       });
     }
@@ -150,31 +156,31 @@ describe("LoginForm", () => {
 
       const screen = render(<LoginForm connector={loginFormConnector.result.current} />, { wrapper: StandardWrapper });
 
-      const emailInput = screen.getByLabelText(/login:fields\.email\.label/) as HTMLInputElement;
-      const passwordInput = screen.getByLabelText(/login:fields\.password\.label/) as HTMLInputElement;
+      const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
+      const passwordInput = screen.getByLabelText(/form:fields\.password\.label/) as HTMLInputElement;
 
       act(() => {
+        fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "" } });
+        fireEvent.blur(passwordInput);
         fireEvent.change(passwordInput, { target: { value: "" } });
+        fireEvent.blur(document);
       });
 
       await waitFor(() => {
-        expect(screen.queryByText(/input:text\.errors\.tooShort.+login:fields\.email\.errors\.invalid/)).toBeDefined();
-        expect(
-          screen.queryByText(/input:text\.errors\.tooShort.+login:fields\.password\.errors\.invalid/)
-        ).toBeDefined();
+        expect(screen.queryAllByText(/form:text\.errors\.required/)).toHaveLength(2);
       });
 
       act(() => {
+        fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "a" } });
+        fireEvent.blur(passwordInput);
         fireEvent.change(passwordInput, { target: { value: "a" } });
+        fireEvent.blur(document);
       });
 
       await waitFor(() => {
-        expect(screen.queryByText(/input:text\.errors\.tooShort.+login:fields\.email\.errors\.invalid/)).toBeDefined();
-        expect(
-          screen.queryByText(/input:text\.errors\.tooShort.+login:fields\.password\.errors\.invalid/)
-        ).toBeDefined();
+        expect(screen.queryAllByText(/form:text\.errors\.tooShort/)).toHaveLength(2);
       });
 
       expect(loginAction).not.toHaveBeenCalled();
@@ -201,14 +207,16 @@ describe("LoginForm", () => {
 
       const screen = render(<LoginForm connector={loginFormConnector.result.current} />, { wrapper: StandardWrapper });
 
-      const emailInput = screen.getByLabelText(/login:fields\.email\.label/) as HTMLInputElement;
+      const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
 
       act(() => {
+        fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "123456789" } });
+        fireEvent.blur(document);
       });
 
       await waitFor(() => {
-        expect(screen.queryByText(/login:fields\.email\.errors\.invalid/)).toBeDefined();
+        expect(screen.queryByText(/form:fields\.email\.errors\.invalid/)).toBeDefined();
       });
 
       expect(loginAction).not.toHaveBeenCalled();
@@ -233,17 +241,17 @@ describe("LoginForm", () => {
       "sets password incorrect on forbidden error": {
         form: { email: "user@provider.com", password: "123456" },
         responseStatus: 403,
-        expectErrors: [/login:fields\.password\.errors\.invalid/],
+        expectErrors: [/form:fields\.password\.errors\.invalid/],
       },
       "sets email incorrect on not found error": {
         form: { email: "user@provider.com", password: "123456" },
         responseStatus: 404,
-        expectErrors: [/login:fields\.email\.errors\.notFound/],
+        expectErrors: [/form:fields\.email\.errors\.notFound/],
       },
       "sets global error on unknown error": {
         form: { email: "user@provider.com", password: "123456" },
         responseStatus: 500,
-        expectErrors: [/login:form\.errors\.generic/],
+        expectErrors: [/authenticator\.login:form\.errors\.generic generic:error/],
       },
     };
 
@@ -273,9 +281,9 @@ describe("LoginForm", () => {
 
         const nockLogin = nockAPI.put("/session", form).reply(responseStatus, { accessToken: "access-token" });
 
-        const emailInput = screen.getByLabelText(/login:fields\.email\.label/) as HTMLInputElement;
-        const passwordInput = screen.getByLabelText(/login:fields\.password\.label/) as HTMLInputElement;
-        const submitButton = screen.getByText(/login:form\.submit/, { selector: "button" });
+        const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
+        const passwordInput = screen.getByLabelText(/form:fields\.password\.label/) as HTMLInputElement;
+        const submitButton = screen.getByText(/authenticator\.login:form\.submit/, { selector: "button" });
 
         // Update the fields with a normal value.
         act(() => {
