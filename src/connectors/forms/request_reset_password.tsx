@@ -1,9 +1,9 @@
-import { useAccessToken } from "../../../contexts";
-import { getLang, i18nPKG } from "../../../shared/i18n";
-import { type RequestRegisterFormConnector } from "../../ui/forms";
+import { type RequestResetPasswordFormConnector } from "../../components/forms";
+import { useAccessToken } from "../../contexts";
+import { getLang, i18nPKG } from "../../shared/i18n";
 
-import { BINDINGS_VALIDATION, Lang, LangEnum } from "@a-novel/connector-authentication/api";
-import { RequestRegister } from "@a-novel/connector-authentication/hooks";
+import { BINDINGS_VALIDATION, isUserNotFoundError, Lang, LangEnum } from "@a-novel/connector-authentication/api";
+import { RequestPasswordReset } from "@a-novel/connector-authentication/hooks";
 
 import { type MouseEventHandler } from "react";
 
@@ -12,14 +12,14 @@ import { type TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export interface RequestRegisterFormConnectorParams {
+export interface RequestResetPasswordFormConnectorParams {
   /**
    * The action used to switch to the login form.
    */
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
-type FormTFunction = TFunction<readonly ["form", "generic", "authenticator.register"]>;
+type FormTFunction = TFunction<readonly ["form", "generic", "authenticator.resetPassword"]>;
 
 /**
  * Extends the original form with translated error messages.
@@ -48,16 +48,33 @@ const formValidator = (t: FormTFunction) =>
 /**
  * Handle error from login form submit. Properly sets field errors for tanstack depending on the returned value.
  */
-const handleSubmitError = (t: FormTFunction) => () =>
-  `${t("authenticator.register:form.errors.generic")} ${t("generic:error")}`;
+const handleSubmitError = (t: FormTFunction) => (error: any) => {
+  if (isUserNotFoundError(error)) {
+    return {
+      fields: { email: t("form:fields.email.errors.notFound") },
+    };
+  }
 
-export const useRequestRegisterFormConnector = ({
+  return `${t("authenticator.resetPassword:form.errors.generic")} ${t("generic:error")}`;
+};
+
+export const useRequestResetPasswordFormConnector = ({
   loginAction,
-}: RequestRegisterFormConnectorParams): RequestRegisterFormConnector<any, any, any, any, any, any, any, any, any> => {
-  const { t } = useTranslation(["form", "generic", "authenticator.register"], { i18n: i18nPKG });
+}: RequestResetPasswordFormConnectorParams): RequestResetPasswordFormConnector<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+> => {
+  const { t } = useTranslation(["form", "generic", "authenticator.resetPassword"], { i18n: i18nPKG });
 
   const accessToken = useAccessToken();
-  const requestRegistrationLink = RequestRegister.useAPI(accessToken);
+  const requestResetPasswordLink = RequestPasswordReset.useAPI(accessToken);
 
   const form = useForm({
     defaultValues: {
@@ -73,7 +90,7 @@ export const useRequestRegisterFormConnector = ({
       // More information on this topic.
       // https://github.com/TanStack/form/discussions/623
       onSubmitAsync: ({ value }) =>
-        requestRegistrationLink
+        requestResetPasswordLink
           .mutateAsync({
             ...value,
             // Override the lang with the one inferred from the i18n instance. This language will be used for

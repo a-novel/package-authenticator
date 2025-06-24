@@ -1,10 +1,10 @@
-import { MockQueryClient } from "../../../../__test__/mocks/query_client";
-import "../../../../__test__/mocks/react_it18next";
-import { genericSetup } from "../../../../__test__/utils/setup";
-import { QueryWrapperLight, StandardWrapper } from "../../../../__test__/utils/wrapper";
-import { SessionProvider } from "../../../contexts";
-import { TestSessionRenderer } from "../../../contexts/session.test";
-import { LoginForm } from "../../ui/forms";
+import { MockQueryClient } from "../../../__test__/mocks/query_client";
+import "../../../__test__/mocks/react_it18next";
+import { genericSetup } from "../../../__test__/utils/setup";
+import { QueryWrapperLight, StandardWrapper } from "../../../__test__/utils/wrapper";
+import { LoginForm } from "../../components/forms";
+import { SessionProvider } from "../../contexts";
+import { TestSessionRenderer } from "../../contexts/session.test";
 import { useLoginFormConnector } from "./login";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";

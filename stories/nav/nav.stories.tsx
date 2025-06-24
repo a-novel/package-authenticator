@@ -1,6 +1,6 @@
 import logo from "../../src/assets/images/banner.png";
 
-import { AuthNavDesktopAction, AuthNavMobileAction } from "../../src/components/ui/nav";
+import { AuthNavDesktopAction, AuthNavMobileAction } from "../../src/components/nav";
 
 import { SPACINGS } from "@a-novel/neon-ui";
 import { NavBar } from "@a-novel/neon-ui/ui";

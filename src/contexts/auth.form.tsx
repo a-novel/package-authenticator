@@ -1,10 +1,10 @@
-import { LoginForm, RequestRegisterForm, RequestResetPasswordForm } from "../components/ui/forms";
-import { FormPage, type FormPageProps } from "../components/ui/pages";
+import { LoginForm, RequestRegisterForm, RequestResetPasswordForm } from "../components/forms";
+import { FormPage, type FormPageProps } from "../components/pages";
 import {
   useLoginFormConnector,
   useRequestRegisterFormConnector,
   useRequestResetPasswordFormConnector,
-} from "../components/ux/forms";
+} from "../connectors/forms";
 import { i18nPKG } from "../shared/i18n";
 
 import {

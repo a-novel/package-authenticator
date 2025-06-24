@@ -1,6 +1,6 @@
 import { genericSetup } from "../../__test__/utils/setup";
-import * as forms from "../components/ui/forms";
-import * as formsConnectors from "../components/ux/forms";
+import * as forms from "../components/forms";
+import * as formsConnectors from "../connectors/forms";
 import { AuthFormProvider, type AuthFormSelect, useAuthForm } from "./auth.form";
 
 import { NewMockForm } from "@a-novel/neon-ui/storybook";
