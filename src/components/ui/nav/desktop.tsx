@@ -61,16 +61,16 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
 };
 
 export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, manageAccount }) => {
-  const { t } = useTranslation("nav", { i18n: i18nPKG });
+  const { t } = useTranslation("authenticator.nav", { i18n: i18nPKG });
 
   if (!user) {
     return (
       <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
         <Button variant="contained" color="primary" {...login}>
-          <Typography>{t("nav:action.login")}</Typography>
+          <Typography>{t("authenticator.nav:action.login")}</Typography>
         </Button>
         <Button variant="contained" color="success" {...register}>
-          <Typography>{t("nav:action.register")}</Typography>
+          <Typography>{t("authenticator.nav:action.register")}</Typography>
         </Button>
       </Stack>
     );

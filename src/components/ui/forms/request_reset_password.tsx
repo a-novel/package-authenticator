@@ -94,7 +94,7 @@ export const RequestResetPasswordForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { t } = useTranslation("resetPassword", { i18n: i18nPKG });
+  const { t } = useTranslation(["authenticator.resetPassword", "form"], { i18n: i18nPKG });
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
   const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);
@@ -103,14 +103,16 @@ export const RequestResetPasswordForm = <
   return (
     <>
       <PopupForm
-        title={t("resetPassword:title")}
+        title={t("authenticator.resetPassword:title")}
         form={connector.form}
-        submitButton={isSubmitting ? t("resetPassword:form.submitting") : t("resetPassword:form.submit")}
+        submitButton={
+          isSubmitting ? t("authenticator.resetPassword:form.submitting") : t("authenticator.resetPassword:form.submit")
+        }
         footer={
           <PopupFormFooter>
             <Typography textAlign="center">
               <Button variant="text" type="button" color="primary" onClick={connector.loginAction}>
-                {t("resetPassword:form.backToLogin.action")}
+                {t("authenticator.resetPassword:form.backToLogin.action")}
               </Button>
             </Typography>
           </PopupFormFooter>
@@ -120,8 +122,9 @@ export const RequestResetPasswordForm = <
           {(field) => (
             <EmailInput
               field={field}
-              label={t("resetPassword:fields.email.label")}
-              placeholder={t("resetPassword:fields.email.placeholder")}
+              label={t("form:fields.email.label")}
+              placeholder={t("form:fields.email.placeholder")}
+              helperText={t("authenticator.resetPassword:fields.email.helper")}
               maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
@@ -129,19 +132,19 @@ export const RequestResetPasswordForm = <
       </PopupForm>
 
       <Modal
-        title={t("resetPassword:success.title")}
+        title={t("authenticator.resetPassword:form.success.title")}
         icon={<MaterialSymbol icon="mark_email_read" />}
         open={isSubmitSuccessful}
       >
         <Typography sx={{ "> strong": { color: (theme) => theme.palette.primary.main } }}>
-          <Trans i18nKey="resetPassword:success.main" values={{ mail: userEmail }} />
+          <Trans i18nKey="authenticator.resetPassword:form.success.main" values={{ mail: userEmail }} />
         </Typography>
         <br />
-        <Typography color="textSecondary">{t("resetPassword:success.sub")}</Typography>
+        <Typography color="textSecondary">{t("authenticator.resetPassword:form.success.sub")}</Typography>
         <br />
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
           <Button type="button" color="primary" onClick={connector.loginAction}>
-            {t("resetPassword:form.backToLogin.action")}
+            {t("authenticator.resetPassword:form.backToLogin.action")}
           </Button>
         </Stack>
       </Modal>

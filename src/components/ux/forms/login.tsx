@@ -4,7 +4,6 @@ import { type LoginFormConnector } from "../../ui/forms";
 
 import { BINDINGS_VALIDATION, isForbiddenError, isUserNotFoundError } from "@a-novel/connector-authentication/api";
 import { CreateSession } from "@a-novel/connector-authentication/hooks";
-import { i18nUI } from "@a-novel/neon-ui/ux";
 
 import { type MouseEventHandler } from "react";
 
@@ -28,7 +27,7 @@ export interface LoginFormConnectorParams {
   onLogin: () => void;
 }
 
-type FormTFunction = TFunction<readonly ["login", "input"]>;
+type FormTFunction = TFunction<readonly ["form", "generic", "authenticator.login"]>;
 
 /**
  * Extends the original form with translated error messages.
@@ -37,28 +36,33 @@ const formValidator = (t: FormTFunction) =>
   z.object({
     email: z
       .string()
+      .nonempty(t("form:text.errors.required"))
       .min(
         BINDINGS_VALIDATION.EMAIL.MIN,
-        i18nUI.t("input:text.errors.tooShort", {
+        t("form:text.errors.tooShort", {
           count: BINDINGS_VALIDATION.EMAIL.MIN,
-          field: t("login:fields.email.errors.field"),
         })
       )
-      .email(t("login:fields.email.errors.invalid")),
+      .max(
+        BINDINGS_VALIDATION.EMAIL.MAX,
+        t("form:text.errors.tooLong", {
+          count: BINDINGS_VALIDATION.EMAIL.MAX,
+        })
+      )
+      .email(t("form:fields.email.errors.invalid")),
     password: z
       .string()
+      .nonempty(t("form:text.errors.required"))
       .min(
         BINDINGS_VALIDATION.PASSWORD.MIN,
-        i18nUI.t("input:text.errors.tooShort", {
+        t("form:text.errors.tooShort", {
           count: BINDINGS_VALIDATION.EMAIL.MIN,
-          field: t("login:fields.password.errors.field"),
         })
       )
       .max(
         BINDINGS_VALIDATION.PASSWORD.MAX,
-        i18nUI.t("input:text.errors.tooLong", {
+        t("form:text.errors.tooLong", {
           count: BINDINGS_VALIDATION.EMAIL.MAX,
-          field: t("login:fields.password.errors.field"),
         })
       ),
   });
@@ -69,17 +73,17 @@ const formValidator = (t: FormTFunction) =>
 const handleSubmitError = (t: FormTFunction) => (error: any) => {
   if (isForbiddenError(error)) {
     return {
-      fields: { password: t("login:fields.password.errors.invalid") },
+      fields: { password: t("form:fields.password.errors.invalid") },
     };
   }
 
   if (isUserNotFoundError(error)) {
     return {
-      fields: { email: t("login:fields.email.errors.notFound") },
+      fields: { email: t("form:fields.email.errors.notFound") },
     };
   }
 
-  return t("login:form.errors.generic");
+  return `${t("authenticator.login:form.errors.generic")} ${t("generic:error")}`;
 };
 
 export const useLoginFormConnector = ({
@@ -87,7 +91,7 @@ export const useLoginFormConnector = ({
   registerAction,
   onLogin,
 }: LoginFormConnectorParams): LoginFormConnector<any, any, any, any, any, any, any, any, any> => {
-  const { t } = useTranslation(["login", "input"], { i18n: i18nPKG });
+  const { t } = useTranslation(["form", "generic", "authenticator.login"], { i18n: i18nPKG });
 
   const createSession = CreateSession.useAPI();
   const { setSession } = useSession();

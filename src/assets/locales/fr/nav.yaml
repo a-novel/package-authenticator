@@ -1,8 +1,0 @@
-action:
-  login: Connexion
-  logout: Déconnexion
-  register: Inscription
-  manageAccount: Gérer le compte
-userInfo:
-  connectedAs: Connecté en tant que <strong>{{user}}</strong>.
-  error: Le chargement des données utilisateur a échoué.

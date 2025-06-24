@@ -36,9 +36,11 @@ describe("RequestResetPasswordForm", () => {
       wrapper: StandardWrapper,
     });
 
-    expect(screen.getByLabelText(/resetPassword:fields\.email\.label/)).toBeDefined();
+    expect(screen.getByLabelText(/form:fields\.email\.label/)).toBeDefined();
 
-    const loginButton = screen.getByText(/resetPassword:form\.backToLogin\.action/, { selector: "button" });
+    const loginButton = screen.getByText(/authenticator\.resetPassword:form\.backToLogin\.action/, {
+      selector: "button",
+    });
     expect(loginButton).toBeDefined();
 
     // Click on button to trigger the action.
@@ -50,7 +52,7 @@ describe("RequestResetPasswordForm", () => {
   });
 
   describe("form state", () => {
-    const fields = [{ name: "email", max: BINDINGS_VALIDATION.EMAIL.MAX }];
+    const fields = [{ name: "email", tKey: /form:fields\.email\.label/, max: BINDINGS_VALIDATION.EMAIL.MAX }];
 
     for (const field of fields) {
       it(`prevents too large ${field.name} values`, async () => {
@@ -70,39 +72,43 @@ describe("RequestResetPasswordForm", () => {
           }
         );
 
-        const fieldInput = screen.getByLabelText(
-          new RegExp(`resetPassword:fields\\.${field.name}\\.label`)
-        ) as HTMLInputElement;
+        const fieldInput = screen.getByLabelText(field.tKey) as HTMLInputElement;
         expect(fieldInput).toBeDefined();
 
         // Update the fields with a normal value.
         act(() => {
+          fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
+          fireEvent.blur(document);
         });
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
+          expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
         });
 
         // Update the fields with a too long value.
         act(() => {
+          fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "a".repeat(field.max * 2) } });
+          fireEvent.blur(document);
         });
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("a".repeat(field.max));
-          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(1);
+          expect(screen.queryAllByText(/text.errors.tooLong/)).length(1);
         });
 
         // Reverse the fields to a normal value.
         act(() => {
+          fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
+          fireEvent.blur(document);
         });
 
         await waitFor(() => {
           expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/this field has reached its limit of/i)).length(0);
+          expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
         });
       });
     }
@@ -123,26 +129,26 @@ describe("RequestResetPasswordForm", () => {
         wrapper: StandardWrapper,
       });
 
-      const emailInput = screen.getByLabelText(/resetPassword:fields\.email\.label/) as HTMLInputElement;
+      const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
 
       act(() => {
+        fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "" } });
+        fireEvent.blur(document);
       });
 
       await waitFor(() => {
-        expect(
-          screen.queryByText(/input:text\.errors\.tooShort.+resetPassword:fields\.email\.errors\.invalid/)
-        ).toBeDefined();
+        expect(screen.queryAllByText(/form:text\.errors\.required/)).toHaveLength(1);
       });
 
       act(() => {
+        fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "a" } });
+        fireEvent.blur(document);
       });
 
       await waitFor(() => {
-        expect(
-          screen.queryByText(/input:text\.errors\.tooShort.+resetPassword:fields\.email\.errors\.invalid/)
-        ).toBeDefined();
+        expect(screen.queryAllByText(/form:text\.errors\.tooShort/)).toHaveLength(1);
       });
     });
 
@@ -160,14 +166,16 @@ describe("RequestResetPasswordForm", () => {
         wrapper: StandardWrapper,
       });
 
-      const emailInput = screen.getByLabelText(/resetPassword:fields\.email\.label/) as HTMLInputElement;
+      const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
 
       act(() => {
+        fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "123456789" } });
+        fireEvent.blur(document);
       });
 
       await waitFor(() => {
-        expect(screen.queryByText(/resetPassword:fields\.email\.errors\.invalid/)).toBeDefined();
+        expect(screen.queryByText(/form:fields\.email\.errors\.invalid/)).toBeDefined();
       });
     });
   });
@@ -189,12 +197,12 @@ describe("RequestResetPasswordForm", () => {
       "sets email incorrect on not found error": {
         form: { email: "user@provider.com" },
         responseStatus: 404,
-        expectErrors: [/resetPassword:fields\.email\.errors\.notFound/],
+        expectErrors: [/form:fields\.email\.errors\.notFound/],
       },
       "sets global error on unknown error": {
         form: { email: "user@provider.com" },
         responseStatus: 500,
-        expectErrors: [/resetPassword:form\.errors\.generic/],
+        expectErrors: [/authenticator\.resetPassword:form\.errors\.generic/],
       },
     };
 
@@ -226,8 +234,8 @@ describe("RequestResetPasswordForm", () => {
           )
           .reply(responseStatus);
 
-        const emailInput = screen.getByLabelText(/resetPassword:fields\.email\.label/) as HTMLInputElement;
-        const submitButton = screen.getByText(/resetPassword:form\.submit/, { selector: "button" });
+        const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
+        const submitButton = screen.getByText(/authenticator\.resetPassword:form\.submit/, { selector: "button" });
 
         // Update the fields with a normal value.
         act(() => {
@@ -252,15 +260,15 @@ describe("RequestResetPasswordForm", () => {
         if (expectErrors.length === 0) {
           // Check the session context.
           await waitFor(() => {
-            expect(screen.queryByText(/resetPassword:success\.title/)).toBeDefined();
-            expect(screen.queryByText(/resetPassword:success\.main/)).toBeDefined();
-            expect(screen.queryByText(/resetPassword:success\.sub/)).toBeDefined();
+            expect(screen.getByText(/authenticator\.resetPassword:form\.success\.title/)).toBeDefined();
+            expect(screen.getByText(/authenticator\.resetPassword:form\.success\.main/)).toBeDefined();
+            expect(screen.getByText(/authenticator\.resetPassword:form\.success\.sub/)).toBeDefined();
           });
         } else {
           // Check the form errors.
           await waitFor(() => {
             for (const error of expectErrors) {
-              expect(screen.queryByText(error)).toBeDefined();
+              expect(screen.getByText(error)).toBeDefined();
             }
           });
         }

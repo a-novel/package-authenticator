@@ -19,7 +19,7 @@ export interface RequestResetPasswordFormConnectorParams {
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
-type FormTFunction = TFunction<readonly ["resetPassword", "input"]>;
+type FormTFunction = TFunction<readonly ["form", "generic", "authenticator.resetPassword"]>;
 
 /**
  * Extends the original form with translated error messages.
@@ -28,21 +28,20 @@ const formValidator = (t: FormTFunction) =>
   z.object({
     email: z
       .string()
+      .nonempty(t("form:text.errors.required"))
       .min(
         BINDINGS_VALIDATION.EMAIL.MIN,
-        t("input:text.errors.tooShort", {
+        t("form:text.errors.tooShort", {
           count: BINDINGS_VALIDATION.EMAIL.MIN,
-          field: t("resetPassword:fields.email.errors.field"),
         })
       )
       .max(
         BINDINGS_VALIDATION.EMAIL.MAX,
-        t("input:text.errors.tooLong", {
+        t("form:text.errors.tooLong", {
           count: BINDINGS_VALIDATION.EMAIL.MAX,
-          field: t("resetPassword:fields.email.errors.field"),
         })
       )
-      .email(t("resetPassword:fields.email.errors.invalid")),
+      .email(t("form:fields.email.errors.invalid")),
     lang: Lang,
   });
 
@@ -52,11 +51,11 @@ const formValidator = (t: FormTFunction) =>
 const handleSubmitError = (t: FormTFunction) => (error: any) => {
   if (isUserNotFoundError(error)) {
     return {
-      fields: { email: t("register:fields.email.errors.notFound") },
+      fields: { email: t("form:fields.email.errors.notFound") },
     };
   }
 
-  return t("register:form.errors.generic");
+  return `${t("authenticator.resetPassword:form.errors.generic")} ${t("generic:error")}`;
 };
 
 export const useRequestResetPasswordFormConnector = ({
@@ -72,7 +71,7 @@ export const useRequestResetPasswordFormConnector = ({
   any,
   any
 > => {
-  const { t } = useTranslation(["resetPassword", "input"], { i18n: i18nPKG });
+  const { t } = useTranslation(["form", "generic", "authenticator.resetPassword"], { i18n: i18nPKG });
 
   const accessToken = useAccessToken();
   const requestResetPasswordLink = RequestPasswordReset.useAPI(accessToken);

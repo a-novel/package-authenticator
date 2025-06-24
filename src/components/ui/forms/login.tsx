@@ -90,21 +90,21 @@ export const LoginForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { t } = useTranslation("login", { i18n: i18nPKG });
+  const { t } = useTranslation(["authenticator.login", "form"], { i18n: i18nPKG });
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
 
   return (
     <PopupForm
-      title={t("login:title")}
+      title={t("authenticator.login:title")}
       form={connector.form}
-      submitButton={isSubmitting ? t("login:form.submitting") : t("login:form.submit")}
+      submitButton={isSubmitting ? t("authenticator.login:form.submitting") : t("authenticator.login:form.submit")}
       footer={
         <PopupFormFooter>
           <Typography textAlign="center">
-            <span>{t("login:form.register.label")} </span>
+            <span>{t("authenticator.login:form.register.label")} </span>
             <Button variant="text" type="button" color="primary" onClick={connector.registerAction}>
-              {t("login:form.register.action")}
+              {t("authenticator.login:form.register.action")}
             </Button>
           </Typography>
         </PopupFormFooter>
@@ -114,8 +114,8 @@ export const LoginForm = <
         {(field) => (
           <EmailInput
             field={field}
-            label={t("login:fields.email.label")}
-            placeholder={t("login:fields.email.placeholder")}
+            label={t("form:fields.email.label")}
+            placeholder={t("form:fields.email.placeholder")}
             maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
           />
         )}
@@ -124,12 +124,12 @@ export const LoginForm = <
         {(field) => (
           <PasswordInput
             field={field}
-            label={t("login:fields.password.label")}
+            label={t("form:fields.password.label")}
             helperText={
               <>
-                {t("login:fields.password.helper.text")}
+                {t("authenticator.login:fields.password.helper.text")}
                 <Button variant="text" type="button" color="primary" onClick={connector.resetPasswordAction}>
-                  {t("login:fields.password.helper.action")}
+                  {t("authenticator.login:fields.password.helper.action")}
                 </Button>
               </>
             }
