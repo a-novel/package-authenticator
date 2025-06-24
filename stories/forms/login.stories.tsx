@@ -1,5 +1,5 @@
-import { LoginForm, type LoginFormProps } from "../../src/components/ui/forms";
-import { FormPage } from "../../src/components/ui/pages";
+import { LoginForm, type LoginFormProps } from "../../src/components/forms";
+import { FormPage } from "../../src/components/pages";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
 import { FormRenderer, NewMockForm } from "@a-novel/neon-ui/storybook";

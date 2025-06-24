@@ -1,10 +1,10 @@
-import { MockQueryClient } from "../../../../__test__/mocks/query_client";
-import "../../../../__test__/mocks/react_it18next";
-import { genericSetup } from "../../../../__test__/utils/setup";
-import { QueryWrapperLight, StandardWrapper } from "../../../../__test__/utils/wrapper";
-import { SESSION_STORAGE_KEY } from "../../../contexts";
-import { RequestResetPasswordForm } from "../../ui/forms";
-import { useRequestResetPasswordFormConnector } from "./request_reset_password";
+import { MockQueryClient } from "../../../__test__/mocks/query_client";
+import "../../../__test__/mocks/react_it18next";
+import { genericSetup } from "../../../__test__/utils/setup";
+import { QueryWrapperLight, StandardWrapper } from "../../../__test__/utils/wrapper";
+import { RequestRegisterForm } from "../../components/forms";
+import { SESSION_STORAGE_KEY } from "../../contexts";
+import { useRequestRegisterFormConnector } from "./request_register";
 
 import { BINDINGS_VALIDATION, LangEnum } from "@a-novel/connector-authentication/api";
 
@@ -15,7 +15,7 @@ import { describe, expect, it, vi } from "vitest";
 
 let nockAPI: nock.Scope;
 
-describe("RequestResetPasswordForm", () => {
+describe("RequestRegisterForm", () => {
   genericSetup({
     setNockAPI: (newScope) => {
       nockAPI = newScope;
@@ -27,20 +27,18 @@ describe("RequestResetPasswordForm", () => {
 
     const queryClient = new QueryClient(MockQueryClient);
 
-    const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
+    const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
       initialProps: { loginAction },
       wrapper: QueryWrapperLight(queryClient),
     });
 
-    const screen = render(<RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />, {
+    const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
       wrapper: StandardWrapper,
     });
 
     expect(screen.getByLabelText(/form:fields\.email\.label/)).toBeDefined();
 
-    const loginButton = screen.getByText(/authenticator\.resetPassword:form\.backToLogin\.action/, {
-      selector: "button",
-    });
+    const loginButton = screen.getByText(/authenticator\.register:form\.login\.action/, { selector: "button" });
     expect(loginButton).toBeDefined();
 
     // Click on button to trigger the action.
@@ -60,17 +58,14 @@ describe("RequestResetPasswordForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
+        const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
           initialProps: { loginAction },
           wrapper: QueryWrapperLight(queryClient),
         });
 
-        const screen = render(
-          <RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />,
-          {
-            wrapper: StandardWrapper,
-          }
-        );
+        const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
+          wrapper: StandardWrapper,
+        });
 
         const fieldInput = screen.getByLabelText(field.tKey) as HTMLInputElement;
         expect(fieldInput).toBeDefined();
@@ -120,12 +115,12 @@ describe("RequestResetPasswordForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
+      const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
         initialProps: { loginAction },
         wrapper: QueryWrapperLight(queryClient),
       });
 
-      const screen = render(<RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />, {
+      const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
         wrapper: StandardWrapper,
       });
 
@@ -157,12 +152,12 @@ describe("RequestResetPasswordForm", () => {
 
       const queryClient = new QueryClient(MockQueryClient);
 
-      const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
+      const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
         initialProps: { loginAction },
         wrapper: QueryWrapperLight(queryClient),
       });
 
-      const screen = render(<RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />, {
+      const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
         wrapper: StandardWrapper,
       });
 
@@ -194,15 +189,10 @@ describe("RequestResetPasswordForm", () => {
         responseStatus: 204,
         expectErrors: [],
       },
-      "sets email incorrect on not found error": {
-        form: { email: "user@provider.com" },
-        responseStatus: 404,
-        expectErrors: [/form:fields\.email\.errors\.notFound/],
-      },
       "sets global error on unknown error": {
         form: { email: "user@provider.com" },
         responseStatus: 500,
-        expectErrors: [/authenticator\.resetPassword:form\.errors\.generic/],
+        expectErrors: [/authenticator\.register:form\.errors\.generic/],
       },
     };
 
@@ -214,28 +204,25 @@ describe("RequestResetPasswordForm", () => {
 
         const queryClient = new QueryClient(MockQueryClient);
 
-        const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
+        const requestRegisterFormConnector = renderHook((props) => useRequestRegisterFormConnector(props), {
           initialProps: { loginAction },
           wrapper: QueryWrapperLight(queryClient),
         });
 
-        const screen = render(
-          <RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />,
-          {
-            wrapper: StandardWrapper,
-          }
-        );
+        const screen = render(<RequestRegisterForm connector={requestRegisterFormConnector.result.current} />, {
+          wrapper: StandardWrapper,
+        });
 
-        const nockResetPassword = nockAPI
+        const nockRegister = nockAPI
           .put(
-            "/short-code/update-password",
+            "/short-code/register",
             { ...form, lang: LangEnum.En },
             { reqheaders: { Authorization: "Bearer anon-access-token" } }
           )
           .reply(responseStatus);
 
         const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
-        const submitButton = screen.getByText(/authenticator\.resetPassword:form\.submit/, { selector: "button" });
+        const submitButton = screen.getByText(/authenticator\.register:form\.submit/, { selector: "button" });
 
         // Update the fields with a normal value.
         act(() => {
@@ -254,15 +241,15 @@ describe("RequestResetPasswordForm", () => {
 
         // Wait for the form to submit.
         await waitFor(() => {
-          nockResetPassword.done();
+          nockRegister.done();
         });
 
         if (expectErrors.length === 0) {
           // Check the session context.
           await waitFor(() => {
-            expect(screen.getByText(/authenticator\.resetPassword:form\.success\.title/)).toBeDefined();
-            expect(screen.getByText(/authenticator\.resetPassword:form\.success\.main/)).toBeDefined();
-            expect(screen.getByText(/authenticator\.resetPassword:form\.success\.sub/)).toBeDefined();
+            expect(screen.getByText(/authenticator\.register:form\.success\.title/)).toBeDefined();
+            expect(screen.getByText(/authenticator\.register:form\.success\.main/)).toBeDefined();
+            expect(screen.getByText(/authenticator\.register:form\.success\.sub/)).toBeDefined();
           });
         } else {
           // Check the form errors.

@@ -1,4 +1,4 @@
-import logo from "../../../assets/images/banner.png?inline";
+import logo from "../../assets/images/banner.png?inline";
 
 import { SPACINGS } from "@a-novel/neon-ui";
 

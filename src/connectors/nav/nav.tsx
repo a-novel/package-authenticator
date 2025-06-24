@@ -1,6 +1,6 @@
-import { useAccessToken, useAuthForm, useSession } from "../../../contexts";
-import { type AuthNavConnector } from "../../ui/nav";
-import type { AuthNavDisplayProps } from "../../ui/nav/common";
+import { type AuthNavConnector } from "../../components/nav";
+import type { AuthNavDisplayProps } from "../../components/nav/common";
+import { useAccessToken, useAuthForm, useSession } from "../../contexts";
 
 import { GetUser } from "@a-novel/connector-authentication/hooks";
 
