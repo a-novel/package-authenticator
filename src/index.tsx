@@ -40,4 +40,4 @@ export const WithSession = ({ children, layout, setTitle }: WithSessionProps) =>
 export { useAuthNavConnector } from "./connectors/nav";
 export { AuthNav } from "./components/nav";
 
-export { SessionPrivateSuspense } from "./contexts";
+export { SessionPrivateSuspense, useSession, useAccessToken } from "./contexts";
