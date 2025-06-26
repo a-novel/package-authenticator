@@ -1,10 +1,12 @@
 import svgr from "@svgr/rollup";
+import tsConfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [
     // SVGO is disabled because it messes up with some icons by removing intermediate tags.
     svgr({ icon: true, svgo: false }),
+    tsConfigPaths(),
   ],
 
   build: {
@@ -13,6 +15,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+    alias: {
+      "#": "/__test__",
+    },
     coverage: {
       enabled: true,
       clean: true,

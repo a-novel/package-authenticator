@@ -1,4 +1,5 @@
-import { genericSetup } from "../../__test__/utils/setup";
+import { genericSetup } from "#/utils/setup";
+
 import * as forms from "../components/forms";
 import * as formsConnectors from "../connectors/forms";
 import { AuthFormProvider, type AuthFormSelect, useAuthForm } from "./auth.form";

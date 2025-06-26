@@ -1,7 +1,8 @@
-import { MockQueryClient } from "../../../__test__/mocks/query_client";
-import "../../../__test__/mocks/react_it18next";
-import { genericSetup } from "../../../__test__/utils/setup";
-import { QueryWrapperLight, StandardWrapper } from "../../../__test__/utils/wrapper";
+import { MockQueryClient } from "#/mocks/query_client";
+import "#/mocks/react_i18next";
+import { genericSetup } from "#/utils/setup";
+import { QueryWrapperLight, StandardWrapper } from "#/utils/wrapper";
+
 import { LoginForm } from "../../components/forms";
 import { SessionProvider } from "../../contexts";
 import { TestSessionRenderer } from "../../contexts/session.test";
@@ -35,6 +36,11 @@ describe("LoginForm", () => {
     const loginFormConnector = renderHook((props) => useLoginFormConnector(props), {
       initialProps: { resetPasswordAction, registerAction, onLogin: loginAction },
       wrapper: QueryWrapperLight(queryClient),
+    });
+
+    await waitFor(() => {
+      expect(loginFormConnector.result.current).toBeDefined();
+      expect(loginFormConnector.result.current).not.toBeNull();
     });
 
     const screen = render(<LoginForm connector={loginFormConnector.result.current} />, {

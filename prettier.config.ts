@@ -11,6 +11,7 @@ const config: Config = {
     "^(.*).(css|yaml|json)$",
     "^(.*).(svg|png|jpg|jpeg)$",
     // App imports.
+    "^#/(.*)?$",
     "^[./]",
     // A-novel imports.
     "^@a-novel(/(.*))?$",

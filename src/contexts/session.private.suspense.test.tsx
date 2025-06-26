@@ -1,4 +1,5 @@
-import { genericSetup } from "../../__test__/utils/setup";
+import { genericSetup } from "#/utils/setup";
+
 import * as authForm from "./auth.form";
 import * as session from "./session";
 import { SessionPrivateSuspense } from "./session.private.suspense";

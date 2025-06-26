@@ -1,5 +1,6 @@
-import { genericSetup } from "../../__test__/utils/setup";
-import { StandardWrapper } from "../../__test__/utils/wrapper";
+import { genericSetup } from "#/utils/setup";
+import { StandardWrapper } from "#/utils/wrapper";
+
 import { SESSION_STORAGE_KEY, type SessionContextType, SessionProvider, useAccessToken, useSession } from "./session";
 
 import { ClaimsRoleEnum } from "@a-novel/connector-authentication/api";

@@ -2,6 +2,7 @@ import logo from "../../src/assets/images/banner.png";
 
 import { AuthNavDesktopAction, AuthNavMobileAction } from "../../src/components/nav";
 
+import { CredentialsRoleEnum } from "@a-novel/connector-authentication/api";
 import { SPACINGS } from "@a-novel/neon-ui";
 import { NavBar } from "@a-novel/neon-ui/ui";
 
@@ -82,8 +83,14 @@ export const Primary: Story = {
 export const Authenticated: Story = {
   args: {
     user: {
+      loading: false,
+      error: false,
       data: {
+        id: "1234567890",
         email: "user@provider.com",
+        role: CredentialsRoleEnum.User,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     },
   },
@@ -92,9 +99,15 @@ export const Authenticated: Story = {
 export const VeryLongName: Story = {
   args: {
     user: {
+      loading: false,
+      error: false,
       data: {
+        id: "1234567890",
         email:
           "superLongUserNameWithSoManyWordsItWillBlowYourMindBecauseHonestlyThisIsSoAmazingLol@qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm.com",
+        role: CredentialsRoleEnum.User,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     },
   },
@@ -103,6 +116,7 @@ export const VeryLongName: Story = {
 export const UserLoading: Story = {
   args: {
     user: {
+      error: false,
       loading: true,
     },
   },
@@ -111,6 +125,7 @@ export const UserLoading: Story = {
 export const UserError: Story = {
   args: {
     user: {
+      loading: false,
       error: true,
     },
   },

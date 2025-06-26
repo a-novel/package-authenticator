@@ -1,6 +1,7 @@
-import { MockQueryClient } from "../../__test__/mocks/query_client";
-import { genericSetup } from "../../__test__/utils/setup";
-import { QueryWrapper } from "../../__test__/utils/wrapper";
+import { MockQueryClient } from "#/mocks/query_client";
+import { genericSetup } from "#/utils/setup";
+import { QueryWrapper } from "#/utils/wrapper";
+
 import { SESSION_STORAGE_KEY, SessionProvider } from "./session";
 import { SyncSessionClaims } from "./session.claims.sync.api";
 import { TestSessionRenderer } from "./session.test";
