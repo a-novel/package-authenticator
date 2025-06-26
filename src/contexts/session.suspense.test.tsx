@@ -1,7 +1,8 @@
-import { MockQueryClient } from "../../__test__/mocks/query_client";
-import "../../__test__/mocks/react_it18next";
-import { genericSetup } from "../../__test__/utils/setup";
-import { QueryWrapper, StandardWrapper } from "../../__test__/utils/wrapper";
+import { MockQueryClient } from "#/mocks/query_client";
+import "#/mocks/react_i18next";
+import { genericSetup } from "#/utils/setup";
+import { QueryWrapper, StandardWrapper } from "#/utils/wrapper";
+
 import { SESSION_STORAGE_KEY, SessionProvider, useSession } from "./session";
 import { SessionSuspense } from "./session.suspense";
 import { MockFreshSession, MockSession } from "./session.test";
