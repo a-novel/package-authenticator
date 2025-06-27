@@ -3,9 +3,10 @@ import "#/mocks/react_i18next";
 import { genericSetup } from "#/utils/setup";
 import { QueryWrapperLight, StandardWrapper } from "#/utils/wrapper";
 
-import { LoginForm } from "../../components/forms";
-import { SessionProvider } from "../../contexts";
-import { TestSessionRenderer } from "../../contexts/session.test";
+import { LoginForm } from "~/components/forms";
+import { SessionProvider } from "~/contexts";
+import { TestSessionRenderer } from "~/contexts/session.test";
+
 import { useLoginFormConnector } from "./login";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
@@ -36,11 +37,6 @@ describe("LoginForm", () => {
     const loginFormConnector = renderHook((props) => useLoginFormConnector(props), {
       initialProps: { resetPasswordAction, registerAction, onLogin: loginAction },
       wrapper: QueryWrapperLight(queryClient),
-    });
-
-    await waitFor(() => {
-      expect(loginFormConnector.result.current).toBeDefined();
-      expect(loginFormConnector.result.current).not.toBeNull();
     });
 
     const screen = render(<LoginForm connector={loginFormConnector.result.current} />, {
@@ -105,7 +101,7 @@ describe("LoginForm", () => {
         act(() => {
           fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
-          fireEvent.blur(document);
+          fireEvent.blur(fieldInput);
         });
 
         await waitFor(() => {
@@ -117,7 +113,7 @@ describe("LoginForm", () => {
         act(() => {
           fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "a".repeat(field.max * 2) } });
-          fireEvent.blur(document);
+          fireEvent.blur(fieldInput);
         });
 
         await waitFor(() => {
@@ -129,7 +125,7 @@ describe("LoginForm", () => {
         act(() => {
           fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
-          fireEvent.blur(document);
+          fireEvent.blur(fieldInput);
         });
 
         await waitFor(() => {
@@ -170,7 +166,7 @@ describe("LoginForm", () => {
         fireEvent.change(emailInput, { target: { value: "" } });
         fireEvent.blur(passwordInput);
         fireEvent.change(passwordInput, { target: { value: "" } });
-        fireEvent.blur(document);
+        fireEvent.blur(emailInput);
       });
 
       await waitFor(() => {
@@ -182,7 +178,7 @@ describe("LoginForm", () => {
         fireEvent.change(emailInput, { target: { value: "a" } });
         fireEvent.blur(passwordInput);
         fireEvent.change(passwordInput, { target: { value: "a" } });
-        fireEvent.blur(document);
+        fireEvent.blur(emailInput);
       });
 
       await waitFor(() => {
@@ -218,7 +214,7 @@ describe("LoginForm", () => {
       act(() => {
         fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "123456789" } });
-        fireEvent.blur(document);
+        fireEvent.blur(emailInput);
       });
 
       await waitFor(() => {
@@ -293,8 +289,11 @@ describe("LoginForm", () => {
 
         // Update the fields with a normal value.
         act(() => {
+          fireEvent.blur(emailInput);
           fireEvent.change(emailInput, { target: { value: form.email } });
+          fireEvent.blur(passwordInput);
           fireEvent.change(passwordInput, { target: { value: form.password } });
+          fireEvent.blur(emailInput);
         });
 
         // Wait for the fields to update.

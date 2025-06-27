@@ -1,6 +1,6 @@
-import logo from "../../src/assets/images/banner.png";
+import logo from "~/assets/images/banner.png";
 
-import { AuthNavDesktopAction, AuthNavMobileAction } from "../../src/components/nav";
+import { AuthNavDesktopAction, AuthNavMobileAction } from "~/components/nav";
 
 import { CredentialsRoleEnum } from "@a-novel/connector-authentication/api";
 import { SPACINGS } from "@a-novel/neon-ui";

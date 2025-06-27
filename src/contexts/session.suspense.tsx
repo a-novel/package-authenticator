@@ -1,4 +1,5 @@
-import { i18nPKG } from "../shared/i18n";
+import { i18nPKG } from "~/shared/i18n";
+
 import { useAccessToken, useSession } from "./session";
 
 import { isUnauthorizedError } from "@a-novel/connector-authentication/api";

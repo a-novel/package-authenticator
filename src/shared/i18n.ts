@@ -33,7 +33,7 @@ export { i18nPKG };
  * Extract a form-supported language from the i18n instance.
  */
 export const getLang = (): LangEnum => {
-  switch (i18n.language) {
+  switch (i18nPKG.language) {
     case "en":
       return LangEnum.En;
     case "fr":

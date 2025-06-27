@@ -1,4 +1,5 @@
-import { i18nPKG } from "../../shared/i18n";
+import { i18nPKG } from "~/shared/i18n";
+
 import { PopupForm, PopupFormFooter } from "./common";
 
 import {

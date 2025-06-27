@@ -3,8 +3,9 @@ import "#/mocks/react_i18next";
 import { genericSetup } from "#/utils/setup";
 import { QueryWrapperLight, StandardWrapper } from "#/utils/wrapper";
 
-import { RequestResetPasswordForm } from "../../components/forms";
-import { SESSION_STORAGE_KEY } from "../../contexts";
+import { RequestResetPasswordForm } from "~/components/forms";
+import { SESSION_STORAGE_KEY } from "~/contexts";
+
 import { useRequestResetPasswordFormConnector } from "./request_reset_password";
 
 import { BINDINGS_VALIDATION, LangEnum } from "@a-novel/connector-authentication/api";
@@ -80,7 +81,7 @@ describe("RequestResetPasswordForm", () => {
         act(() => {
           fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
-          fireEvent.blur(document);
+          fireEvent.blur(fieldInput);
         });
 
         await waitFor(() => {
@@ -92,7 +93,7 @@ describe("RequestResetPasswordForm", () => {
         act(() => {
           fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "a".repeat(field.max * 2) } });
-          fireEvent.blur(document);
+          fireEvent.blur(fieldInput);
         });
 
         await waitFor(() => {
@@ -104,7 +105,7 @@ describe("RequestResetPasswordForm", () => {
         act(() => {
           fireEvent.blur(fieldInput);
           fireEvent.change(fieldInput, { target: { value: "abc" } });
-          fireEvent.blur(document);
+          fireEvent.blur(fieldInput);
         });
 
         await waitFor(() => {
@@ -135,7 +136,7 @@ describe("RequestResetPasswordForm", () => {
       act(() => {
         fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "" } });
-        fireEvent.blur(document);
+        fireEvent.blur(emailInput);
       });
 
       await waitFor(() => {
@@ -145,7 +146,7 @@ describe("RequestResetPasswordForm", () => {
       act(() => {
         fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "a" } });
-        fireEvent.blur(document);
+        fireEvent.blur(emailInput);
       });
 
       await waitFor(() => {
@@ -172,7 +173,7 @@ describe("RequestResetPasswordForm", () => {
       act(() => {
         fireEvent.blur(emailInput);
         fireEvent.change(emailInput, { target: { value: "123456789" } });
-        fireEvent.blur(document);
+        fireEvent.blur(emailInput);
       });
 
       await waitFor(() => {
@@ -240,7 +241,9 @@ describe("RequestResetPasswordForm", () => {
 
         // Update the fields with a normal value.
         act(() => {
+          fireEvent.blur(emailInput);
           fireEvent.change(emailInput, { target: { value: form.email } });
+          fireEvent.blur(emailInput);
         });
 
         // Wait for the fields to update.
