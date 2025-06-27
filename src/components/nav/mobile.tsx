@@ -1,4 +1,5 @@
-import { i18nPKG } from "../../shared/i18n";
+import { i18nPKG } from "~/shared/i18n";
+
 import type { AuthNavDisplayProps } from "./common";
 
 import { SPACINGS } from "@a-novel/neon-ui";

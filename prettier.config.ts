@@ -12,6 +12,7 @@ const config: Config = {
     "^(.*).(svg|png|jpg|jpeg)$",
     // App imports.
     "^#/(.*)?$",
+    "^~/(.*)?$",
     "^[./]",
     // A-novel imports.
     "^@a-novel(/(.*))?$",

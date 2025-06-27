@@ -16,6 +16,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     alias: {
+      "~": "/src",
       "#": "/__test__",
     },
     coverage: {

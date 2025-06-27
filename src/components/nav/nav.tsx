@@ -1,4 +1,5 @@
-import type { AuthFormContextType, SessionContextType } from "../../contexts";
+import type { AuthFormContextType, SessionContextType } from "~/contexts";
+
 import type { AuthNavDisplayProps } from "./common";
 import { AuthNavDesktopAction } from "./desktop";
 import { AuthNavMobileAction } from "./mobile";

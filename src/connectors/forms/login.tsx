@@ -1,6 +1,6 @@
-import { type LoginFormConnector } from "../../components/forms";
-import { useSession } from "../../contexts";
-import { i18nPKG } from "../../shared/i18n";
+import { type LoginFormConnector } from "~/components/forms";
+import { useSession } from "~/contexts";
+import { i18nPKG } from "~/shared/i18n";
 
 import { BINDINGS_VALIDATION, isForbiddenError, isUserNotFoundError } from "@a-novel/connector-authentication/api";
 import { CreateSession } from "@a-novel/connector-authentication/hooks";
