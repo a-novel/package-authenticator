@@ -1,9 +1,10 @@
 import { MockQueryClient } from "#/mocks/query_client";
 import "#/mocks/react_i18next";
+import { writeField } from "#/utils/field";
 import { genericSetup } from "#/utils/setup";
 import { QueryWrapperLight, StandardWrapper } from "#/utils/wrapper";
 
-import { RequestResetPasswordForm } from "~/components/forms";
+import { RequestResetPasswordForm, type RequestResetPasswordFormConnector } from "~/components/forms";
 import { SESSION_STORAGE_KEY } from "~/contexts";
 
 import { useRequestResetPasswordFormConnector } from "./request_reset_password";
@@ -11,11 +12,31 @@ import { useRequestResetPasswordFormConnector } from "./request_reset_password";
 import { BINDINGS_VALIDATION, LangEnum } from "@a-novel/connector-authentication/api";
 
 import { QueryClient } from "@tanstack/react-query";
-import { act, fireEvent, render, renderHook, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  type RenderHookResult,
+  type RenderResult,
+  waitFor,
+} from "@testing-library/react";
 import nock from "nock";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 
 let nockAPI: nock.Scope;
+
+let requestRegisterFormConnector: RenderHookResult<
+  RequestResetPasswordFormConnector<any, any, any, any, any, any, any, any, any>,
+  {
+    loginAction: Mock<any>;
+  }
+>;
+let screen: RenderResult;
+
+let queryClient: QueryClient;
+
+const loginAction = vi.fn();
 
 describe("RequestResetPasswordForm", () => {
   genericSetup({
@@ -24,160 +45,145 @@ describe("RequestResetPasswordForm", () => {
     },
   });
 
-  it("renders", async () => {
-    const loginAction = vi.fn();
+  beforeEach(() => {
+    queryClient = new QueryClient(MockQueryClient);
 
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
+    // Render the hook, then inject the connector into the form.
+    requestRegisterFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
       initialProps: { loginAction },
       wrapper: QueryWrapperLight(queryClient),
     });
 
-    const screen = render(<RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />, {
+    screen = render(<RequestResetPasswordForm connector={requestRegisterFormConnector.result.current} />, {
       wrapper: StandardWrapper,
     });
-
-    expect(screen.getByLabelText(/form:fields\.email\.label/)).toBeDefined();
-
-    const loginButton = screen.getByText(/authenticator\.resetPassword:form\.backToLogin\.action/, {
-      selector: "button",
-    });
-    expect(loginButton).toBeDefined();
-
-    // Click on button to trigger the action.
-    expect(loginAction).not.toHaveBeenCalled();
-    act(() => {
-      loginButton.click();
-    });
-    expect(loginAction).toHaveBeenCalled();
   });
 
-  describe("form state", () => {
-    const fields = [{ name: "email", tKey: /form:fields\.email\.label/, max: BINDINGS_VALIDATION.EMAIL.MAX }];
+  // Ensure the login form renders every field, and all of them are enabled.
+  describe("renders", async () => {
+    // Verify inputs are rendered.
+    const inputs = [/form:fields\.email\.label/];
 
-    for (const field of fields) {
-      it(`prevents too large ${field.name} values`, async () => {
-        const loginAction = vi.fn();
-
-        const queryClient = new QueryClient(MockQueryClient);
-
-        const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
-          initialProps: { loginAction },
-          wrapper: QueryWrapperLight(queryClient),
-        });
-
-        const screen = render(
-          <RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />,
-          {
-            wrapper: StandardWrapper,
-          }
-        );
-
-        const fieldInput = screen.getByLabelText(field.tKey) as HTMLInputElement;
-        expect(fieldInput).toBeDefined();
-
-        // Update the fields with a normal value.
-        act(() => {
-          fireEvent.blur(fieldInput);
-          fireEvent.change(fieldInput, { target: { value: "abc" } });
-          fireEvent.blur(fieldInput);
-        });
-
-        await waitFor(() => {
-          expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
-        });
-
-        // Update the fields with a too long value.
-        act(() => {
-          fireEvent.blur(fieldInput);
-          fireEvent.change(fieldInput, { target: { value: "a".repeat(field.max * 2) } });
-          fireEvent.blur(fieldInput);
-        });
-
-        await waitFor(() => {
-          expect(fieldInput.value).toBe("a".repeat(field.max));
-          expect(screen.queryAllByText(/text.errors.tooLong/)).length(1);
-        });
-
-        // Reverse the fields to a normal value.
-        act(() => {
-          fireEvent.blur(fieldInput);
-          fireEvent.change(fieldInput, { target: { value: "abc" } });
-          fireEvent.blur(fieldInput);
-        });
-
-        await waitFor(() => {
-          expect(fieldInput.value).toBe("abc");
-          expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
-        });
+    for (const label of inputs) {
+      it(`renders input with label ${label}`, () => {
+        const input = screen.getByLabelText(label) as HTMLInputElement;
+        expect(input).toBeDefined();
+        expect((input as HTMLInputElement).disabled).toBe(false);
       });
     }
   });
 
-  describe("validating form", () => {
-    it("shows fields too short error", async () => {
-      const loginAction = vi.fn();
+  describe("form state", () => {
+    const fields = [
+      {
+        name: "email",
+        tKey: /form:fields\.email\.label/,
+        max: BINDINGS_VALIDATION.EMAIL.MAX,
+        min: BINDINGS_VALIDATION.EMAIL.MIN,
+        required: true,
+      },
+    ];
 
-      const queryClient = new QueryClient(MockQueryClient);
+    for (const field of fields) {
+      describe(`field: ${field.name}`, () => {
+        it("renders no error initially", () => {
+          expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
+          expect(screen.queryAllByText(/text.errors.tooShort/)).length(0);
+          expect(screen.queryAllByText(/text.errors.required/)).length(0);
+        });
 
-      const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
-        initialProps: { loginAction },
-        wrapper: QueryWrapperLight(queryClient),
+        const initialForm = {
+          email: { tKey: /form:fields\.email\.label/, value: "user@provider.com" },
+        };
+
+        const cases = {
+          standard: {
+            value: "a".repeat(field.max - 1),
+            expectValue: undefined,
+            errors: {
+              tooLong: 0,
+              tooShort: 0,
+              required: 0,
+            },
+          },
+          tooLong: {
+            value: "a".repeat(field.max * 2),
+            expectValue: "a".repeat(field.max),
+            errors: {
+              tooLong: 1,
+              tooShort: 0,
+              required: 0,
+            },
+          },
+          empty: {
+            value: "",
+            expectValue: undefined,
+            errors: {
+              tooLong: 0,
+              tooShort: field.min > 0 ? 1 : 0,
+              required: field.required ? 1 : 0,
+            },
+          },
+          tooShort: {
+            value: "a".repeat(field.min - 1),
+            expectValue: undefined,
+            errors: {
+              tooLong: 0,
+              tooShort: field.min > 1 ? 1 : 0,
+              required: 0,
+            },
+          },
+        };
+
+        for (const [caseName, testCase] of Object.entries(cases)) {
+          it(`handles ${caseName} case`, async () => {
+            // Because writing a field will trigger validation for all of them, we MUST make sure they are
+            // all filled before writing our target field.
+            for (const [_, fieldData] of Object.entries(initialForm)) {
+              const fieldInput = screen.getByLabelText(fieldData.tKey) as HTMLInputElement;
+              expect(fieldInput).toBeDefined();
+              await writeField(fieldInput, fieldData.value);
+            }
+
+            await waitFor(() => {
+              expect(screen.queryAllByText(/text.errors.tooLong/)).length(0);
+              expect(screen.queryAllByText(/text.errors.tooShort/)).length(0);
+              expect(screen.queryAllByText(/text.errors.required/)).length(0);
+            });
+
+            const fieldInput = screen.getByLabelText(field.tKey) as HTMLInputElement;
+            expect(fieldInput).toBeDefined();
+
+            // Write the field with the test case value.
+            await writeField(fieldInput, testCase.value, testCase.expectValue as string | undefined);
+
+            // Check the errors.
+            await waitFor(() => {
+              expect(screen.queryAllByText(/text.errors.tooLong/)).length(testCase.errors.tooLong);
+              expect(screen.queryAllByText(/text.errors.tooShort/)).length(testCase.errors.tooShort);
+              expect(screen.queryAllByText(/text.errors.required/)).length(testCase.errors.required);
+            });
+          });
+        }
       });
+    }
 
-      const screen = render(<RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />, {
-        wrapper: StandardWrapper,
-      });
-
+    it("handles email validation", async () => {
       const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
+      expect(emailInput).toBeDefined();
 
-      act(() => {
-        fireEvent.blur(emailInput);
-        fireEvent.change(emailInput, { target: { value: "" } });
-        fireEvent.blur(emailInput);
-      });
-
-      await waitFor(() => {
-        expect(screen.queryAllByText(/form:text\.errors\.required/)).toHaveLength(1);
-      });
-
-      act(() => {
-        fireEvent.blur(emailInput);
-        fireEvent.change(emailInput, { target: { value: "a" } });
-        fireEvent.blur(emailInput);
-      });
-
-      await waitFor(() => {
-        expect(screen.queryAllByText(/form:text\.errors\.tooShort/)).toHaveLength(1);
-      });
-    });
-
-    it("shows email invalid error", async () => {
-      const loginAction = vi.fn();
-
-      const queryClient = new QueryClient(MockQueryClient);
-
-      const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
-        initialProps: { loginAction },
-        wrapper: QueryWrapperLight(queryClient),
-      });
-
-      const screen = render(<RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />, {
-        wrapper: StandardWrapper,
-      });
-
-      const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
-
-      act(() => {
-        fireEvent.blur(emailInput);
-        fireEvent.change(emailInput, { target: { value: "123456789" } });
-        fireEvent.blur(emailInput);
-      });
-
+      // Write an invalid email.
+      await writeField(emailInput, "invalid-email");
+      // Check for the invalid email error.
       await waitFor(() => {
         expect(screen.queryByText(/form:fields\.email\.errors\.invalid/)).toBeDefined();
+      });
+
+      // Write a valid email.
+      await writeField(emailInput, "user@provider.com");
+      // Check that the invalid email error is gone.
+      await waitFor(() => {
+        expect(screen.queryByText(/form:fields\.email\.errors\.invalid/)).toBeNull();
       });
     });
   });
@@ -212,22 +218,6 @@ describe("RequestResetPasswordForm", () => {
       it(name, async () => {
         localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ accessToken: "anon-access-token" }));
 
-        const loginAction = vi.fn();
-
-        const queryClient = new QueryClient(MockQueryClient);
-
-        const requestResetPasswordFormConnector = renderHook((props) => useRequestResetPasswordFormConnector(props), {
-          initialProps: { loginAction },
-          wrapper: QueryWrapperLight(queryClient),
-        });
-
-        const screen = render(
-          <RequestResetPasswordForm connector={requestResetPasswordFormConnector.result.current} />,
-          {
-            wrapper: StandardWrapper,
-          }
-        );
-
         const nockResetPassword = nockAPI
           .put(
             "/short-code/update-password",
@@ -240,16 +230,7 @@ describe("RequestResetPasswordForm", () => {
         const submitButton = screen.getByText(/authenticator\.resetPassword:form\.submit/, { selector: "button" });
 
         // Update the fields with a normal value.
-        act(() => {
-          fireEvent.blur(emailInput);
-          fireEvent.change(emailInput, { target: { value: form.email } });
-          fireEvent.blur(emailInput);
-        });
-
-        // Wait for the fields to update.
-        await waitFor(() => {
-          expect(emailInput.value).toBe(form.email);
-        });
+        await writeField(emailInput, form.email);
 
         // Submit the form.
         act(() => {
@@ -261,6 +242,13 @@ describe("RequestResetPasswordForm", () => {
           nockResetPassword.done();
         });
 
+        // Check the form errors.
+        await waitFor(() => {
+          for (const error of expectErrors) {
+            expect(screen.getByText(error)).toBeDefined();
+          }
+        });
+
         if (expectErrors.length === 0) {
           // Check the session context.
           await waitFor(() => {
@@ -269,12 +257,10 @@ describe("RequestResetPasswordForm", () => {
             expect(screen.getByText(/authenticator\.resetPassword:form\.success\.sub/)).toBeDefined();
           });
         } else {
-          // Check the form errors.
-          await waitFor(() => {
-            for (const error of expectErrors) {
-              expect(screen.getByText(error)).toBeDefined();
-            }
-          });
+          // If there are errors, the success modal should not be displayed.
+          expect(screen.queryByText(/authenticator\.resetPassword:form\.success\.title/)).toBeNull();
+          expect(screen.queryByText(/authenticator\.resetPassword:form\.success\.main/)).toBeNull();
+          expect(screen.queryByText(/authenticator\.resetPassword:form\.success\.sub/)).toBeNull();
         }
       });
     }
