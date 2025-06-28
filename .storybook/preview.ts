@@ -1,5 +1,4 @@
-import { I18NextDecorator } from "./i18n";
-import { MuiDecorator } from "./mui";
+import { MuiDecorator, TolgeeDecorator } from "./decorators";
 
 import type { Preview } from "@storybook/react-vite";
 import { themes } from "storybook/theming";
@@ -43,6 +42,6 @@ export const globalTypes = {
   },
 };
 
-export const decorators = [I18NextDecorator, MuiDecorator];
+export const decorators = [MuiDecorator, TolgeeDecorator];
 
 export default preview;

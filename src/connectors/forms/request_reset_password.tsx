@@ -1,15 +1,14 @@
 import { type RequestResetPasswordFormConnector } from "~/components/forms";
 import { useAccessToken } from "~/contexts";
-import { getLang, i18nPKG } from "~/shared/i18n";
+import { getLang } from "~/shared";
 
 import { BINDINGS_VALIDATION, isUserNotFoundError, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestPasswordReset } from "@a-novel/connector-authentication/hooks";
 
-import { type MouseEventHandler } from "react";
+import { type MouseEventHandler, useEffect } from "react";
 
 import { useForm } from "@tanstack/react-form";
-import { type TFunction } from "i18next";
-import { useTranslation } from "react-i18next";
+import { useTolgee, useTranslate, type UseTranslateResult } from "@tolgee/react";
 import { z } from "zod";
 
 export interface RequestResetPasswordFormConnectorParams {
@@ -19,7 +18,7 @@ export interface RequestResetPasswordFormConnectorParams {
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
-type FormTFunction = TFunction<readonly ["form", "generic", "authenticator.resetPassword"]>;
+type FormTFunction = UseTranslateResult["t"];
 
 /**
  * Extends the original form with translated error messages.
@@ -28,20 +27,22 @@ const formValidator = (t: FormTFunction) =>
   z.object({
     email: z
       .string()
-      .nonempty(t("form:text.errors.required"))
+      .nonempty(t("text.errors.required", { ns: "form" }))
       .min(
         BINDINGS_VALIDATION.EMAIL.MIN,
-        t("form:text.errors.tooShort", {
+        t("text.errors.tooShort", {
+          ns: "form",
           count: BINDINGS_VALIDATION.EMAIL.MIN,
         })
       )
       .max(
         BINDINGS_VALIDATION.EMAIL.MAX,
-        t("form:text.errors.tooLong", {
+        t("text.errors.tooLong", {
+          ns: "form",
           count: BINDINGS_VALIDATION.EMAIL.MAX,
         })
       )
-      .email(t("form:fields.email.errors.invalid")),
+      .email(t("fields.email.errors.invalid", { ns: "form" })),
     lang: Lang,
   });
 
@@ -51,11 +52,11 @@ const formValidator = (t: FormTFunction) =>
 const handleSubmitError = (t: FormTFunction) => (error: any) => {
   if (isUserNotFoundError(error)) {
     return {
-      fields: { email: t("form:fields.email.errors.notFound") },
+      fields: { email: t("fields.email.errors.notFound", { ns: "form" }) },
     };
   }
 
-  return `${t("authenticator.resetPassword:form.errors.generic")} ${t("generic:error")}`;
+  return `${t("form.errors.generic", { ns: "authenticator.resetPassword" })} ${t("error", { ns: "generic" })}`;
 };
 
 export const useRequestResetPasswordFormConnector = ({
@@ -71,7 +72,14 @@ export const useRequestResetPasswordFormConnector = ({
   any,
   any
 > => {
-  const { t } = useTranslation(["form", "generic", "authenticator.resetPassword"], { i18n: i18nPKG });
+  const { addActiveNs, removeActiveNs, getLanguage, getPendingLanguage } = useTolgee();
+  const { t } = useTranslate(["form", "generic", "authenticator.resetPassword"]);
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["form", "generic", "authenticator.resetPassword"]).catch(console.error);
+    return () => removeActiveNs(["form", "generic", "authenticator.resetPassword"]);
+  }, [addActiveNs, removeActiveNs]);
 
   const accessToken = useAccessToken();
   const requestResetPasswordLink = RequestPasswordReset.useAPI(accessToken);
@@ -95,7 +103,7 @@ export const useRequestResetPasswordFormConnector = ({
             ...value,
             // Override the lang with the one inferred from the i18n instance. This language will be used for
             // the email sent to the user.
-            lang: getLang(),
+            lang: getLang(getLanguage() ?? getPendingLanguage() ?? LangEnum.En),
           })
           .then(() => null)
           .catch(handleSubmitError(t)),

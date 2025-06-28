@@ -1,11 +1,9 @@
-import { i18nPKG } from "~/shared/i18n";
-
 import { PopupForm, PopupFormFooter } from "./common";
 
 import { BINDINGS_VALIDATION, LoginForm as LoginRequest } from "@a-novel/connector-authentication/api";
 import { EmailInput, PasswordInput } from "@a-novel/neon-ui/ux";
 
-import { type MouseEventHandler } from "react";
+import { type MouseEventHandler, useEffect } from "react";
 
 import { Button, Typography } from "@mui/material";
 import {
@@ -14,7 +12,7 @@ import {
   type ReactFormExtendedApi,
   useStore,
 } from "@tanstack/react-form";
-import { useTranslation } from "react-i18next";
+import { T, useTolgee, useTranslate } from "@tolgee/react";
 import { z } from "zod";
 
 export interface LoginFormConnector<
@@ -91,21 +89,30 @@ export const LoginForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { t } = useTranslation(["authenticator.login", "form"], { i18n: i18nPKG });
+  const { addActiveNs, removeActiveNs } = useTolgee();
+  const { t } = useTranslate("form");
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["authenticator.login", "form"]).catch(console.error);
+    return () => removeActiveNs(["authenticator.login", "form"]);
+  }, [addActiveNs, removeActiveNs]);
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
 
   return (
     <PopupForm
-      title={t("authenticator.login:title")}
+      title={<T keyName="title" ns="authenticator.login" />}
       form={connector.form}
-      submitButton={isSubmitting ? t("authenticator.login:form.submitting") : t("authenticator.login:form.submit")}
+      submitButton={<T keyName={isSubmitting ? "form.submitting" : "form.submit"} ns="authenticator.login" />}
       footer={
         <PopupFormFooter>
           <Typography textAlign="center">
-            <span>{t("authenticator.login:form.register.label")} </span>
+            <span>
+              <T keyName="form.register.label" ns="authenticator.login" />{" "}
+            </span>
             <Button variant="text" type="button" color="primary" onClick={connector.registerAction}>
-              {t("authenticator.login:form.register.action")}
+              <T keyName="form.register.action" ns="authenticator.login" />
             </Button>
           </Typography>
         </PopupFormFooter>
@@ -115,8 +122,8 @@ export const LoginForm = <
         {(field) => (
           <EmailInput
             field={field}
-            label={t("form:fields.email.label")}
-            placeholder={t("form:fields.email.placeholder")}
+            label={<T keyName="fields.email.label" ns="form" />}
+            placeholder={t("fields.email.placeholder", { ns: "form" })}
             maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
           />
         )}
@@ -125,12 +132,12 @@ export const LoginForm = <
         {(field) => (
           <PasswordInput
             field={field}
-            label={t("form:fields.password.label")}
+            label={<T keyName="fields.password.label" ns="form" />}
             helperText={
               <>
-                {t("authenticator.login:fields.password.helper.text")}
+                <T keyName="fields.password.helper.text" ns="authenticator.login" />
                 <Button variant="text" type="button" color="primary" onClick={connector.resetPasswordAction}>
-                  {t("authenticator.login:fields.password.helper.action")}
+                  <T keyName="fields.password.helper.action" ns="authenticator.login" />
                 </Button>
               </>
             }

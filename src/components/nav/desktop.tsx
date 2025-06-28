@@ -1,14 +1,12 @@
-import { i18nPKG } from "~/shared/i18n";
-
 import type { AuthNavDisplayProps } from "./common";
 
 import { SPACINGS } from "@a-novel/neon-ui";
 import { MaterialSymbol } from "@a-novel/neon-ui/ui";
 
-import type { FC } from "react";
+import { type FC, useEffect } from "react";
 
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { T, useTolgee } from "@tolgee/react";
 
 const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ user, manageAccount }) => {
   if (!user?.data) {
@@ -62,16 +60,26 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
 };
 
 export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, manageAccount }) => {
-  const { t } = useTranslation("authenticator.nav", { i18n: i18nPKG });
+  const { addActiveNs, removeActiveNs } = useTolgee();
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["authenticator.nav"]).catch(console.error);
+    return () => removeActiveNs(["authenticator.nav"]);
+  }, [addActiveNs, removeActiveNs]);
 
   if (!user) {
     return (
       <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
         <Button variant="contained" color="primary" {...login}>
-          <Typography>{t("authenticator.nav:action.login")}</Typography>
+          <Typography>
+            <T keyName="action.login" ns="authenticator.nav" />
+          </Typography>
         </Button>
         <Button variant="contained" color="success" {...register}>
-          <Typography>{t("authenticator.nav:action.register")}</Typography>
+          <Typography>
+            <T keyName="action.register" ns="authenticator.nav" />
+          </Typography>
         </Button>
       </Stack>
     );

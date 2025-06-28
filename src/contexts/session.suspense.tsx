@@ -1,5 +1,3 @@
-import { i18nPKG } from "~/shared/i18n";
-
 import { useAccessToken, useSession } from "./session";
 
 import { isUnauthorizedError } from "@a-novel/connector-authentication/api";
@@ -15,7 +13,7 @@ import { type FC, type ReactNode, useCallback, useEffect, useRef } from "react";
 
 import { Button, Typography } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
+import { T, useTolgee } from "@tolgee/react";
 
 export interface SessionSuspenseProps {
   children?: ReactNode;
@@ -32,7 +30,13 @@ const LOGIN_BUFFERING_INTERVAL = 100;
  * error (401). In such case, the session is refreshed and the children are re-rendered.
  */
 export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
-  const { t } = useTranslation("authenticator.session", { i18n: i18nPKG });
+  const { addActiveNs, removeActiveNs } = useTolgee();
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["authenticator.session"]).catch(console.error);
+    return () => removeActiveNs(["authenticator.session"]);
+  }, [addActiveNs, removeActiveNs]);
 
   const queryClient = useQueryClient();
 
@@ -145,11 +149,13 @@ export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
         color="error"
         footer={
           <Button color="error" onClick={() => updateSession()}>
-            {t("authenticator.session:actions.retry")}
+            <T keyName="actions.retry" ns="authenticator.session" />
           </Button>
         }
       >
-        <Typography>{t("authenticator.session:status.error")}</Typography>
+        <Typography>
+          <T keyName="status.error" ns="authenticator.session" />
+        </Typography>
       </StatusPage>
     );
   }
@@ -157,7 +163,9 @@ export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
   if (!accessToken) {
     return (
       <StatusPage color="primary" icon={<MaterialSymbol icon="rss_feed" />}>
-        <Typography>{t("authenticator.session:status.loading")}</Typography>
+        <Typography>
+          <T keyName="status.loading" ns="authenticator.session" />
+        </Typography>
       </StatusPage>
     );
   }

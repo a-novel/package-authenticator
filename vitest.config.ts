@@ -19,6 +19,12 @@ export default defineConfig({
       "~": "/src",
       "#": "/__test__",
     },
+    server: {
+      deps: {
+        // Mock the tolgee instance used by the UI components.
+        inline: ["@a-novel/neon-ui"],
+      },
+    },
     coverage: {
       enabled: true,
       clean: true,

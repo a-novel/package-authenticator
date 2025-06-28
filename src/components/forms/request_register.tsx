@@ -1,5 +1,3 @@
-import { i18nPKG } from "~/shared/i18n";
-
 import { PopupForm, PopupFormFooter } from "./common";
 
 import {
@@ -10,7 +8,7 @@ import { SPACINGS } from "@a-novel/neon-ui";
 import { MaterialSymbol, Modal } from "@a-novel/neon-ui/ui";
 import { EmailInput } from "@a-novel/neon-ui/ux";
 
-import { type MouseEventHandler } from "react";
+import { type MouseEventHandler, useEffect } from "react";
 
 import { Button, Stack, Typography } from "@mui/material";
 import {
@@ -19,7 +17,7 @@ import {
   type ReactFormExtendedApi,
   useStore,
 } from "@tanstack/react-form";
-import { Trans, useTranslation } from "react-i18next";
+import { T, useTolgee, useTranslate } from "@tolgee/react";
 import { z } from "zod";
 
 export interface RequestRegisterFormConnector<
@@ -95,7 +93,14 @@ export const RequestRegisterForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { t } = useTranslation(["authenticator.register", "form"], { i18n: i18nPKG });
+  const { addActiveNs, removeActiveNs } = useTolgee();
+  const { t } = useTranslate("form");
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["authenticator.register", "form"]).catch(console.error);
+    return () => removeActiveNs(["authenticator.register", "form"]);
+  }, [addActiveNs, removeActiveNs]);
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
   const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);
@@ -104,17 +109,17 @@ export const RequestRegisterForm = <
   return (
     <>
       <PopupForm
-        title={t("authenticator.register:title")}
+        title={<T keyName="title" ns="authenticator.register" />}
         form={connector.form}
-        submitButton={
-          isSubmitting ? t("authenticator.register:form.submitting") : t("authenticator.register:form.submit")
-        }
+        submitButton={<T keyName={isSubmitting ? "form.submitting" : "form.submit"} ns="authenticator.register" />}
         footer={
           <PopupFormFooter>
             <Typography textAlign="center">
-              <span>{t("authenticator.register:form.login.label")} </span>
+              <span>
+                <T keyName="form.login.label" ns="authenticator.register" />{" "}
+              </span>
               <Button variant="text" type="button" color="primary" onClick={connector.loginAction}>
-                {t("authenticator.register:form.login.action")}
+                <T keyName="form.login.action" ns="authenticator.register" />
               </Button>
             </Typography>
           </PopupFormFooter>
@@ -124,9 +129,9 @@ export const RequestRegisterForm = <
           {(field) => (
             <EmailInput
               field={field}
-              label={t("form:fields.email.label")}
-              placeholder={t("form:fields.email.placeholder")}
-              helperText={t("authenticator.register:fields.email.helper")}
+              label={<T keyName="fields.email.label" ns="form" />}
+              placeholder={t("fields.email.placeholder", { ns: "form" })}
+              helperText={<T keyName="fields.email.helper" ns="authenticator.register" />}
               maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
@@ -134,19 +139,21 @@ export const RequestRegisterForm = <
       </PopupForm>
 
       <Modal
-        title={t("authenticator.register:form.success.title")}
+        title={<T keyName="form.success.title" ns="authenticator.register" />}
         icon={<MaterialSymbol icon="mark_email_read" />}
         open={isSubmitSuccessful}
       >
         <Typography sx={{ "> strong": { color: (theme) => theme.palette.primary.main } }}>
-          <Trans i18nKey="authenticator.register:form.success.main" values={{ mail: userEmail }} />
+          <T keyName="form.success.main" ns="authenticator.register" params={{ mail: userEmail, strong: <strong /> }} />
         </Typography>
         <br />
-        <Typography color="textSecondary">{t("authenticator.register:form.success.sub")}</Typography>
+        <Typography color="textSecondary">
+          <T keyName="form.success.sub" ns="authenticator.register" />
+        </Typography>
         <br />
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
           <Button type="button" color="primary" onClick={connector.loginAction}>
-            {t("authenticator.register:form.success.action")}
+            <T keyName="form.success.action.login" ns="authenticator.register" />
           </Button>
         </Stack>
       </Modal>

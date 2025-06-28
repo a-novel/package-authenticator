@@ -1,15 +1,13 @@
 import { type LoginFormConnector } from "~/components/forms";
 import { useSession } from "~/contexts";
-import { i18nPKG } from "~/shared/i18n";
 
 import { BINDINGS_VALIDATION, isForbiddenError, isUserNotFoundError } from "@a-novel/connector-authentication/api";
 import { CreateSession } from "@a-novel/connector-authentication/hooks";
 
-import { type MouseEventHandler } from "react";
+import { type MouseEventHandler, useEffect } from "react";
 
 import { useForm } from "@tanstack/react-form";
-import { type TFunction } from "i18next";
-import { useTranslation } from "react-i18next";
+import { useTolgee, useTranslate, type UseTranslateResult } from "@tolgee/react";
 import { z } from "zod";
 
 export interface LoginFormConnectorParams {
@@ -27,7 +25,7 @@ export interface LoginFormConnectorParams {
   onLogin: () => void;
 }
 
-type FormTFunction = TFunction<readonly ["form", "generic", "authenticator.login"]>;
+type FormTFunction = UseTranslateResult["t"];
 
 /**
  * Extends the original form with translated error messages.
@@ -36,32 +34,36 @@ const formValidator = (t: FormTFunction) =>
   z.object({
     email: z
       .string()
-      .nonempty(t("form:text.errors.required"))
+      .nonempty(t("text.errors.required", { ns: "form" }))
       .min(
         BINDINGS_VALIDATION.EMAIL.MIN,
-        t("form:text.errors.tooShort", {
+        t("text.errors.tooShort", {
+          ns: "form",
           count: BINDINGS_VALIDATION.EMAIL.MIN,
         })
       )
       .max(
         BINDINGS_VALIDATION.EMAIL.MAX,
-        t("form:text.errors.tooLong", {
+        t("text.errors.tooLong", {
+          ns: "form",
           count: BINDINGS_VALIDATION.EMAIL.MAX,
         })
       )
-      .email(t("form:fields.email.errors.invalid")),
+      .email(t("fields.email.errors.invalid", { ns: "form" })),
     password: z
       .string()
-      .nonempty(t("form:text.errors.required"))
+      .nonempty(t("text.errors.required", { ns: "form" }))
       .min(
         BINDINGS_VALIDATION.PASSWORD.MIN,
-        t("form:text.errors.tooShort", {
+        t("text.errors.tooShort", {
+          ns: "form",
           count: BINDINGS_VALIDATION.EMAIL.MIN,
         })
       )
       .max(
         BINDINGS_VALIDATION.PASSWORD.MAX,
-        t("form:text.errors.tooLong", {
+        t("text.errors.tooLong", {
+          ns: "form",
           count: BINDINGS_VALIDATION.EMAIL.MAX,
         })
       ),
@@ -73,17 +75,17 @@ const formValidator = (t: FormTFunction) =>
 const handleSubmitError = (t: FormTFunction) => (error: any) => {
   if (isForbiddenError(error)) {
     return {
-      fields: { password: t("form:fields.password.errors.invalid") },
+      fields: { password: t("fields.password.errors.invalid", { ns: "form" }) },
     };
   }
 
   if (isUserNotFoundError(error)) {
     return {
-      fields: { email: t("form:fields.email.errors.notFound") },
+      fields: { email: t("fields.email.errors.notFound", { ns: "form" }) },
     };
   }
 
-  return `${t("authenticator.login:form.errors.generic")} ${t("generic:error")}`;
+  return `${t("form.errors.generic", { ns: "authenticator.login" })} ${t("error", { ns: "generic" })}`;
 };
 
 export const useLoginFormConnector = ({
@@ -91,7 +93,14 @@ export const useLoginFormConnector = ({
   registerAction,
   onLogin,
 }: LoginFormConnectorParams): LoginFormConnector<any, any, any, any, any, any, any, any, any> => {
-  const { t } = useTranslation(["form", "generic", "authenticator.login"], { i18n: i18nPKG });
+  const { addActiveNs, removeActiveNs } = useTolgee();
+  const { t } = useTranslate(["form", "generic", "authenticator.login"]);
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["form", "generic", "authenticator.login"]).catch(console.error);
+    return () => removeActiveNs(["form", "generic", "authenticator.login"]);
+  }, [addActiveNs, removeActiveNs]);
 
   const createSession = CreateSession.useAPI();
   const { setSession } = useSession();

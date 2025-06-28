@@ -5,7 +5,6 @@ import {
   useRequestRegisterFormConnector,
   useRequestResetPasswordFormConnector,
 } from "~/connectors/forms";
-import { i18nPKG } from "~/shared/i18n";
 
 import {
   type ComponentType,
@@ -18,7 +17,7 @@ import {
   useState,
 } from "react";
 
-import { useTranslation } from "react-i18next";
+import { useTolgee, useTranslate } from "@tolgee/react";
 
 export type AuthFormSelect = "login" | "register" | "resetPassword";
 
@@ -39,16 +38,29 @@ export interface AuthFormProviderProps extends Omit<FormPageProps, "children"> {
 }
 
 const FORM_TITLES = {
-  login: "authenticator.login:metadata.title",
-  register: "authenticator.register:metadata.title",
-  resetPassword: "authenticator.resetPassword:metadata.title",
+  login: {
+    key: "metadata.title",
+    ns: "authenticator.login",
+  },
+  register: {
+    key: "metadata.title",
+    ns: "authenticator.register",
+  },
+  resetPassword: {
+    key: "metadata.title",
+    ns: "authenticator.resetPassword",
+  },
 };
 
 export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: Layout, setTitle, ...props }) => {
-  const { t } = useTranslation(
-    ["form", "authenticator.login", "authenticator.register", "authenticator.resetPassword"],
-    { i18n: i18nPKG }
-  );
+  const { addActiveNs, removeActiveNs } = useTolgee();
+  const { t } = useTranslate(["authenticator.login", "authenticator.register", "authenticator.resetPassword"]);
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["authenticator.login", "authenticator.register", "authenticator.resetPassword"]).catch(console.error);
+    return () => removeActiveNs(["authenticator.login", "authenticator.register", "authenticator.resetPassword"]);
+  }, [addActiveNs, removeActiveNs]);
 
   const [showForm, setShowForm] = useState<AuthFormSelect>();
 
@@ -58,7 +70,7 @@ export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: 
   const closeForm = useCallback(() => setShowForm(undefined), []);
 
   useEffect(() => {
-    setTitle?.(showForm ? t(FORM_TITLES[showForm]) : undefined);
+    setTitle?.(showForm ? t(FORM_TITLES[showForm].key, { ns: FORM_TITLES[showForm].ns }) : undefined);
   }, [t, showForm, setTitle]);
 
   const loginFormConnector = useLoginFormConnector({

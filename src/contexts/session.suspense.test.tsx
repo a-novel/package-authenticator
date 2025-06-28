@@ -1,5 +1,5 @@
 import { MockQueryClient } from "#/mocks/query_client";
-import "#/mocks/react_i18next";
+import "#/mocks/tolgee";
 import { genericSetup } from "#/utils/setup";
 import { QueryWrapper, StandardWrapper } from "#/utils/wrapper";
 
