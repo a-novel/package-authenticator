@@ -1,3 +1,4 @@
+import "#/mocks/tolgee";
 import { genericSetup } from "#/utils/setup";
 
 import * as forms from "~/components/forms";

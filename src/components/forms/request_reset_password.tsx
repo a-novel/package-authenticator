@@ -1,5 +1,3 @@
-import { i18nPKG } from "~/shared/i18n";
-
 import { PopupForm, PopupFormFooter } from "./common";
 
 import {
@@ -10,7 +8,7 @@ import { SPACINGS } from "@a-novel/neon-ui";
 import { MaterialSymbol, Modal } from "@a-novel/neon-ui/ui";
 import { EmailInput } from "@a-novel/neon-ui/ux";
 
-import { type MouseEventHandler } from "react";
+import { type MouseEventHandler, useEffect } from "react";
 
 import { Button, Stack, Typography } from "@mui/material";
 import {
@@ -19,7 +17,7 @@ import {
   type ReactFormExtendedApi,
   useStore,
 } from "@tanstack/react-form";
-import { Trans, useTranslation } from "react-i18next";
+import { T, useTolgee, useTranslate } from "@tolgee/react";
 import { z } from "zod";
 
 export interface RequestResetPasswordFormConnector<
@@ -95,7 +93,14 @@ export const RequestResetPasswordForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { t } = useTranslation(["authenticator.resetPassword", "form"], { i18n: i18nPKG });
+  const { addActiveNs, removeActiveNs } = useTolgee();
+  const { t } = useTranslate("form");
+
+  // Load / unload translations.
+  useEffect(() => {
+    addActiveNs(["authenticator.resetPassword", "form"]).catch(console.error);
+    return () => removeActiveNs(["authenticator.resetPassword", "form"]);
+  }, [addActiveNs, removeActiveNs]);
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
   const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);
@@ -104,16 +109,14 @@ export const RequestResetPasswordForm = <
   return (
     <>
       <PopupForm
-        title={t("authenticator.resetPassword:title")}
+        title={<T keyName="title" ns="authenticator.resetPassword" />}
         form={connector.form}
-        submitButton={
-          isSubmitting ? t("authenticator.resetPassword:form.submitting") : t("authenticator.resetPassword:form.submit")
-        }
+        submitButton={<T keyName={isSubmitting ? "form.submitting" : "form.submit"} ns="authenticator.resetPassword" />}
         footer={
           <PopupFormFooter>
             <Typography textAlign="center">
               <Button variant="text" type="button" color="primary" onClick={connector.loginAction}>
-                {t("authenticator.resetPassword:form.backToLogin.action")}
+                <T keyName="form.backToLogin.action" ns="authenticator.resetPassword" />
               </Button>
             </Typography>
           </PopupFormFooter>
@@ -123,9 +126,9 @@ export const RequestResetPasswordForm = <
           {(field) => (
             <EmailInput
               field={field}
-              label={t("form:fields.email.label")}
-              placeholder={t("form:fields.email.placeholder")}
-              helperText={t("authenticator.resetPassword:fields.email.helper")}
+              label={<T keyName="fields.email.label" ns="form" />}
+              placeholder={t("fields.email.placeholder", { ns: "form" })}
+              helperText={<T keyName="fields.email.helper" ns="authenticator.resetPassword" />}
               maxLength={BINDINGS_VALIDATION.EMAIL.MAX}
             />
           )}
@@ -133,19 +136,25 @@ export const RequestResetPasswordForm = <
       </PopupForm>
 
       <Modal
-        title={t("authenticator.resetPassword:form.success.title")}
+        title={<T keyName="form.success.title" ns="authenticator.resetPassword" />}
         icon={<MaterialSymbol icon="mark_email_read" />}
         open={isSubmitSuccessful}
       >
         <Typography sx={{ "> strong": { color: (theme) => theme.palette.primary.main } }}>
-          <Trans i18nKey="authenticator.resetPassword:form.success.main" values={{ mail: userEmail }} />
+          <T
+            keyName="form.success.main"
+            ns="authenticator.resetPassword"
+            params={{ mail: userEmail, strong: <strong /> }}
+          />
         </Typography>
         <br />
-        <Typography color="textSecondary">{t("authenticator.resetPassword:form.success.sub")}</Typography>
+        <Typography color="textSecondary">
+          <T keyName="form.success.sub" ns="authenticator.resetPassword" />
+        </Typography>
         <br />
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
           <Button type="button" color="primary" onClick={connector.loginAction}>
-            {t("authenticator.resetPassword:form.backToLogin.action")}
+            <T keyName="form.backToLogin.action" ns="authenticator.resetPassword" />
           </Button>
         </Stack>
       </Modal>
