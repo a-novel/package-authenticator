@@ -57,14 +57,14 @@ const formValidator = (t: FormTFunction) =>
         BINDINGS_VALIDATION.PASSWORD.MIN,
         t("text.errors.tooShort", {
           ns: "form",
-          count: BINDINGS_VALIDATION.EMAIL.MIN,
+          count: BINDINGS_VALIDATION.PASSWORD.MIN,
         })
       )
       .max(
         BINDINGS_VALIDATION.PASSWORD.MAX,
         t("text.errors.tooLong", {
           ns: "form",
-          count: BINDINGS_VALIDATION.EMAIL.MAX,
+          count: BINDINGS_VALIDATION.PASSWORD.MAX,
         })
       ),
   });
