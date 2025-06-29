@@ -19,5 +19,5 @@ export interface AuthNavDisplayProps<
   login: Omit<ButtonProps<LoginButtonProps>, "children" | "variant" | "color" | "sx">;
   register: Omit<ButtonProps<RegisterButtonProps>, "children" | "variant" | "color" | "sx">;
   logout: Omit<ButtonProps<LogoutButtonProps>, "children" | "variant" | "color" | "sx">;
-  manageAccount: Omit<ButtonProps<ManageAccountButtonProps>, "children" | "variant" | "color" | "sx">;
+  account: Omit<ButtonProps<ManageAccountButtonProps>, "children" | "variant" | "color" | "sx">;
 }

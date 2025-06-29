@@ -71,7 +71,7 @@ const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <>
-      <AuthNav connector={authConnector} manageAccount={{ onClick: () => goTo("/manage/account/page") }} />
+      <AuthNav connector={authConnector} account={{ onClick: () => goTo("/manage/account/page") }} />
       {children}
     </>
   );

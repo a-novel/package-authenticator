@@ -50,7 +50,7 @@ const UserInfo: FC<Pick<AuthNavDisplayProps, "user">> = ({ user }) => {
   );
 };
 
-export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, manageAccount }) => {
+export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, account }) => {
   const { addActiveNs, removeActiveNs } = useTolgee();
 
   // Load / unload translations.
@@ -80,9 +80,9 @@ export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, regi
     <Stack flexDirection="column" alignItems="stretch" padding={0} gap={SPACINGS.MEDIUM}>
       <UserInfo user={user} />
       <span />
-      <Button variant="outlined" color="primary" {...manageAccount}>
+      <Button variant="outlined" color="primary" {...account}>
         <Typography>
-          <T keyName="action.manageAccount" ns="authenticator.nav" />
+          <T keyName="action.account" ns="authenticator.nav" />
         </Typography>
       </Button>
       <Button variant="contained" color="error" {...logout}>
