@@ -27,7 +27,7 @@ export interface AuthNavProps<
   login?: Omit<ButtonProps<LoginButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
   register?: Omit<ButtonProps<RegisterButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
   logout?: Omit<ButtonProps<LogoutButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
-  manageAccount: Omit<ButtonProps<ManageAccountButtonProps>, "children" | "variant" | "color" | "sx">;
+  account: Omit<ButtonProps<ManageAccountButtonProps>, "children" | "variant" | "color" | "sx">;
   connector: AuthNavConnector;
 }
 
@@ -42,7 +42,7 @@ export const AuthNav = <
   login,
   register,
   logout,
-  manageAccount,
+  account,
   connector,
   desktopActions,
   mobileActions,
@@ -64,7 +64,7 @@ export const AuthNav = <
           login={{ onClick: () => connector.context.selectForm("login"), ...login }}
           register={{ onClick: () => connector.context.selectForm("register"), ...register }}
           logout={{ onClick: () => connector.sessionContext.setSession(undefined), ...logout }}
-          manageAccount={manageAccount}
+          account={account}
         />
       </>
     }
@@ -76,7 +76,7 @@ export const AuthNav = <
           login={{ onClick: () => connector.context.selectForm("login"), ...login }}
           register={{ onClick: () => connector.context.selectForm("register"), ...register }}
           logout={{ onClick: () => connector.sessionContext.setSession(undefined), ...logout }}
-          manageAccount={manageAccount}
+          account={account}
         />
       </>
     }

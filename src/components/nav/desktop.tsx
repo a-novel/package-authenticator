@@ -8,14 +8,14 @@ import { type FC, useEffect } from "react";
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { T, useTolgee } from "@tolgee/react";
 
-const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ user, manageAccount }) => {
+const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "account">> = ({ user, account }) => {
   if (!user?.data) {
     return (
       <Button
         variant="outlined"
         color="info"
         sx={{ display: "flex", flexDirection: "column", gap: 0, padding: 0 }}
-        {...manageAccount}
+        {...account}
       >
         <Skeleton variant="rectangular" width="15rem" height="3.6rem" />
       </Button>
@@ -29,7 +29,7 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
       variant="outlined"
       color="primary"
       sx={{ display: "flex", flexDirection: "column", gap: 0, padding: "0.4rem 0.8rem" }}
-      {...manageAccount}
+      {...account}
     >
       <Typography
         lineHeight="1.4em"
@@ -59,7 +59,7 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "manageAccount">> = ({ u
   );
 };
 
-export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, manageAccount }) => {
+export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, account }) => {
   const { addActiveNs, removeActiveNs } = useTolgee();
 
   // Load / unload translations.
@@ -87,7 +87,7 @@ export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, reg
 
   return (
     <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
-      <UserButton user={user} manageAccount={manageAccount} />
+      <UserButton user={user} account={account} />
       <Button variant="contained" color="error" {...logout}>
         <MaterialSymbol icon="logout" style={{ fontSize: "1.2rem", width: "1rem" }} />
       </Button>
