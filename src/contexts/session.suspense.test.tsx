@@ -1,521 +1,337 @@
 import { MockQueryClient } from "#/mocks/query_client";
 import "#/mocks/tolgee";
 import { genericSetup } from "#/utils/setup";
-import { QueryWrapper, StandardWrapper } from "#/utils/wrapper";
+import { QueryWrapper } from "#/utils/wrapper";
 
-import { SESSION_STORAGE_KEY, SessionProvider, useSession } from "./session";
+import { SESSION_STORAGE_KEY, type SessionContextType, SessionProvider } from "./session";
 import { SessionSuspense } from "./session.suspense";
 import { MockFreshSession, MockSession } from "./session.test";
 
 import { UnauthorizedError } from "@a-novel/connector-authentication/api";
 
-import type { ReactNode } from "react";
-
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { act, render, renderHook, waitFor } from "@testing-library/react";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import { act, render, renderHook, type RenderResult, waitFor } from "@testing-library/react";
 import nock from "nock";
 import { describe, expect, it } from "vitest";
 
 let nockAPI: nock.Scope;
 
-describe("session suspense", () => {
+interface TestCase {
+  initialStorageSession?: SessionContextType["session"];
+  preAction?: (queryClient: QueryClient) => void | Promise<void>;
+  expectAPICalls: Array<{
+    name: string;
+    nock: () => nock.Scope;
+  }>;
+  expectRender: string | RegExp;
+  then?: (screen: RenderResult) => TestCase;
+  skip?: boolean;
+}
+
+const executeTestCase = async (testCase: TestCase, screen?: RenderResult, queryClient?: QueryClient) => {
+  if (testCase.initialStorageSession) {
+    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(testCase.initialStorageSession));
+  }
+
+  const apiCalls = testCase.expectAPICalls.map((call) => ({
+    name: call.name,
+    nock: call.nock(),
+  }));
+
+  if (!queryClient) {
+    queryClient = new QueryClient(MockQueryClient);
+  }
+
+  if (testCase.preAction) {
+    await testCase.preAction(queryClient);
+  }
+
+  if (!screen) {
+    screen = render(
+      <SessionProvider>
+        <SessionSuspense>
+          <div>Hello world!</div>
+        </SessionSuspense>
+      </SessionProvider>,
+      { wrapper: QueryWrapper(queryClient) }
+    ) as RenderResult;
+  }
+
+  await waitFor(() => {
+    apiCalls.forEach((call) => call.nock.done());
+  });
+
+  await waitFor(() => {
+    expect((screen as RenderResult).queryByText(testCase.expectRender)).not.toBeNull();
+  });
+
+  if (testCase.then) {
+    return executeTestCase(testCase.then(screen as RenderResult), screen, queryClient);
+  }
+};
+
+describe("session suspense", async () => {
   genericSetup({
     setNockAPI: (newScope) => {
       nockAPI = newScope;
     },
   });
 
-  it("loads a session initially, if none is present", async () => {
-    const nockLogin = nockAPI.put("/session/anon").reply(200, {
-      accessToken: "access-token",
-    });
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: QueryWrapper(queryClient) }
-    );
-
-    await waitFor(
-      () => {
-        nockSession.done();
-        nockLogin.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(() => {
-      expect(screen.queryByText("Hello world!")).not.toBeNull();
-    });
-  });
-
-  it("does nothing, if an initial session is present", async () => {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(MockSession));
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: QueryWrapper(queryClient) }
-    );
-
-    await waitFor(
-      () => {
-        nockSession.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-  });
-
-  it("does nothing, if an initial anonymous session is present", async () => {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ accessToken: "access-token" }));
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        roles: ["auth:anon"],
-      });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: QueryWrapper(queryClient) }
-    );
-
-    await waitFor(
-      () => {
-        nockSession.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-  });
-
-  it("does not render until session is available", async () => {
-    const nockLogin = nockAPI.put("/session/anon").reply(200, {
-      accessToken: "access-token",
-    });
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: QueryWrapper(queryClient) }
-    );
-
-    await waitFor(() => {
-      expect(screen.queryByText(/session:status\.loading/)).not.toBeNull();
-      expect(screen.queryByText("Hello world!")).toBeNull();
-    });
-
-    await waitFor(
-      () => {
-        nockLogin.done();
-        nockSession.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(() => {
-      expect(screen.queryByText("Hello world!")).not.toBeNull();
-    });
-  });
-
-  it("renders an error on login error", async () => {
-    const nockLogin = nockAPI.put("/session/anon").reply(500);
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: QueryWrapper(queryClient) }
-    );
-
-    await waitFor(
-      () => {
-        nockLogin.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(() => {
-      expect(screen.queryByText(/session:status\.error/)).not.toBeNull();
-      expect(screen.queryByText("Hello world!")).toBeNull();
-    });
-
-    const retryButton = screen.getByRole("button", { name: /session:actions\.retry/ });
-
-    const nockLoginRetry = nockAPI.put("/session/anon").reply(200, {
-      accessToken: "access-token",
-    });
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    act(() => {
-      retryButton.click();
-    });
-
-    await waitFor(() => {
-      nockLoginRetry.done();
-      nockSession.done();
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText("Hello world!")).not.toBeNull();
-    });
-  });
-
-  it("fetches a refresh token on a new authenticated session", async () => {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(MockFreshSession));
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    const nockRefreshToken = nockAPI
-      .put("/session/refresh", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, { refreshToken: "refresh-token" });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: QueryWrapper(queryClient) }
-    );
-
-    await waitFor(
-      () => {
-        nockSession.done();
-        nockRefreshToken.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-
-    const sessionHook = renderHook(() => useSession(), {
-      wrapper: ({ children }: { children: ReactNode }) => (
-        <StandardWrapper>
-          <QueryClientProvider client={queryClient}>
-            <SessionProvider>{children}</SessionProvider>
-          </QueryClientProvider>
-        </StandardWrapper>
-      ),
-    });
-
-    await waitFor(() => {
-      expect(sessionHook.result.current.session?.refreshToken).toEqual("refresh-token");
-    });
-  });
-
-  it("while unauthenticated, creates a new anonymous session on unauthorized error", async () => {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ accessToken: "access-token" }));
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        roles: ["auth:anon"],
-      });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const queryWrapper = QueryWrapper(queryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: queryWrapper }
-    );
-
-    await waitFor(
-      () => {
-        nockSession.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-
-    const nockSession2 = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        roles: ["auth:anon"],
-      });
-
-    const nockLogin = nockAPI.put("/session/anon").reply(200, {
-      accessToken: "access-token",
-    });
-
-    // Trigger a 401 / unauthorized call.
-    renderHook(
-      () => {
-        return useQuery({
-          queryKey: ["test"],
-          queryFn: async () => {
-            // Bypass the retry delay.
-            await new Promise((resolve) => setTimeout(resolve, 500));
-            throw new UnauthorizedError("foo");
+  const testCases: Record<string, TestCase> = {
+    "loads a session initially, if none is present": {
+      expectAPICalls: [
+        {
+          name: "login",
+          nock: () =>
+            nockAPI.put("/session/anon").reply(200, {
+              accessToken: "access-token",
+            }),
+        },
+        {
+          name: "session",
+          nock: () =>
+            nockAPI
+              .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
+              .reply(200, { roles: ["auth:anon"] }),
+        },
+      ],
+      expectRender: "Hello world!",
+    },
+    "does nothing, if an initial session is present": {
+      initialStorageSession: MockSession,
+      expectAPICalls: [
+        {
+          name: "session",
+          nock: () =>
+            nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
+              userID: "00000000-0000-0000-0000-000000000001",
+              roles: ["auth:anon"],
+            }),
+        },
+      ],
+      expectRender: "Hello world!",
+    },
+    "does nothing, if an initial anonymous session is present": {
+      initialStorageSession: { accessToken: "access-token" },
+      expectAPICalls: [
+        {
+          name: "session",
+          nock: () =>
+            nockAPI
+              .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
+              .reply(200, { roles: ["auth:anon"] }),
+        },
+      ],
+      expectRender: "Hello world!",
+    },
+    "renders an error on login error": {
+      expectAPICalls: [
+        {
+          name: "login",
+          nock: () => nockAPI.put("/session/anon").reply(500, {}),
+        },
+      ],
+      expectRender: /authenticator\.session:status\.error/,
+      then: (screen) => ({
+        preAction: async () => {
+          const retryButton = screen.getByRole("button", { name: /session:actions\.retry/ });
+          act(() => {
+            retryButton.click();
+          });
+        },
+        expectAPICalls: [
+          {
+            name: "login retry",
+            nock: () => nockAPI.put("/session/anon").reply(200, { accessToken: "access-token" }),
           },
-        });
-      },
-      { wrapper: queryWrapper }
-    );
+          {
+            name: "session retry",
+            nock: () =>
+              nockAPI
+                .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
+                .reply(200, { roles: ["auth:anon"] }),
+          },
+        ],
+        expectRender: "Hello world!",
+      }),
+    },
+    "fetches a refresh token on a new authenticated session": {
+      initialStorageSession: MockFreshSession,
+      expectAPICalls: [
+        {
+          name: "session",
+          nock: () =>
+            nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
+              userID: "00000000-0000-0000-0000-000000000001",
+              roles: ["auth:anon"],
+            }),
+        },
+        {
+          name: "refresh token",
+          nock: () =>
+            nockAPI
+              .put("/session/refresh", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
+              .reply(200, { refreshToken: "refresh-token" }),
+        },
+      ],
+      expectRender: "Hello world!",
+    },
+    "while unauthenticated, creates a new anonymous session on unauthorized error": {
+      initialStorageSession: { accessToken: "access-token" },
+      expectAPICalls: [
+        {
+          name: "session",
+          nock: () =>
+            nockAPI
+              .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
+              .reply(200, { roles: ["auth:anon"] }),
+        },
+      ],
+      expectRender: "Hello world!",
+      then: () => ({
+        preAction: async (queryClient) => {
+          // Trigger a 401 / unauthorized call.
+          renderHook(
+            () => {
+              return useQuery({
+                queryKey: ["test"],
+                queryFn: async () => {
+                  // Bypass the authentication delay.
+                  await new Promise((resolve) => setTimeout(resolve, 500));
+                  throw new UnauthorizedError("foo");
+                },
+              });
+            },
+            { wrapper: QueryWrapper(queryClient) }
+          );
+        },
+        expectAPICalls: [
+          {
+            name: "login",
+            nock: () => nockAPI.put("/session/anon").reply(200, { accessToken: "access-token" }),
+          },
+          {
+            name: "new session",
+            nock: () =>
+              nockAPI
+                .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
+                .reply(200, { roles: ["auth:anon"] }),
+          },
+        ],
+        expectRender: "Hello world!",
+      }),
+    },
+    "while authenticated, refresh the token on unauthorized error": {
+      initialStorageSession: MockSession,
+      expectAPICalls: [
+        {
+          name: "session",
+          nock: () =>
+            nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
+              userID: "00000000-0000-0000-0000-000000000001",
+              roles: ["auth:anon"],
+            }),
+        },
+      ],
+      expectRender: "Hello world!",
+      then: () => ({
+        preAction: async (queryClient) => {
+          // Trigger a 401 / unauthorized call.
+          renderHook(
+            () => {
+              return useQuery({
+                queryKey: ["test"],
+                queryFn: async () => {
+                  // Bypass the authentication delay.
+                  await new Promise((resolve) => setTimeout(resolve, 500));
+                  throw new UnauthorizedError("foo");
+                },
+              });
+            },
+            { wrapper: QueryWrapper(queryClient) }
+          );
+        },
+        expectAPICalls: [
+          {
+            name: "login",
+            nock: () =>
+              nockAPI.patch("/session/refresh?accessToken=access-token&refreshToken=refresh-token").reply(200, {
+                accessToken: "access-token",
+              }),
+          },
+          {
+            name: "new session",
+            nock: () =>
+              nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
+                userID: "00000000-0000-0000-0000-000000000001",
+                roles: ["auth:anon"],
+              }),
+          },
+        ],
+        expectRender: "Hello world!",
+      }),
+    },
+    "while authenticated, if refresh token fails, fallback to anonymous session": {
+      initialStorageSession: MockSession,
+      expectAPICalls: [
+        {
+          name: "session",
+          nock: () =>
+            nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
+              userID: "00000000-0000-0000-0000-000000000001",
+              roles: ["auth:anon"],
+            }),
+        },
+      ],
+      expectRender: "Hello world!",
+      then: () => ({
+        preAction: (queryClient) => {
+          // Trigger a 401 / unauthorized call.
+          renderHook(
+            () => {
+              return useQuery({
+                queryKey: ["test"],
+                queryFn: async () => {
+                  // Bypass the retry delay.
+                  await new Promise((resolve) => setTimeout(resolve, 500));
+                  throw new UnauthorizedError("foo");
+                },
+              });
+            },
+            { wrapper: QueryWrapper(queryClient) }
+          );
+        },
+        expectAPICalls: [
+          {
+            name: "retry session",
+            nock: () =>
+              nockAPI
+                .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
+                .reply(200, { roles: ["auth:anon"] }),
+          },
+          {
+            name: "login",
+            nock: () =>
+              nockAPI
+                .patch("/session/refresh?accessToken=access-token&refreshToken=refresh-token")
+                .reply(403, {})
+                .put("/session/anon")
+                .reply(200, { accessToken: "access-token" }),
+          },
+        ],
+        expectRender: "Hello world!",
+      }),
+    },
+  };
 
-    await waitFor(
-      () => {
-        nockLogin.done();
-        nockSession2.done();
-      },
-      { timeout: 2000 }
-    );
+  for (const [testCaseName, testCase] of Object.entries(testCases)) {
+    if (testCase.skip) {
+      it.skip(testCaseName, () => {});
+      continue;
+    }
 
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-  });
-
-  it("while authenticated, refresh the token on unauthorized error", async () => {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(MockSession));
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const queryWrapper = QueryWrapper(queryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: queryWrapper }
-    );
-
-    await waitFor(
-      () => {
-        nockSession.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-
-    const nockSession2 = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    const nockLogin = nockAPI.patch("/session/refresh?accessToken=access-token&refreshToken=refresh-token").reply(200, {
-      accessToken: "access-token",
+    it(testCaseName, async () => {
+      await executeTestCase(testCase);
     });
-
-    // Trigger a 401 / unauthorized call.
-    renderHook(
-      () => {
-        return useQuery({
-          queryKey: ["test"],
-          queryFn: async () => {
-            // Bypass the retry delay.
-            await new Promise((resolve) => setTimeout(resolve, 500));
-            throw new UnauthorizedError("foo");
-          },
-        });
-      },
-      { wrapper: queryWrapper }
-    );
-
-    await waitFor(
-      () => {
-        nockLogin.done();
-        nockSession2.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-  });
-
-  it("while authenticated, if refresh token fails, fallback to anonymous session", async () => {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(MockSession));
-
-    const nockSession = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        userID: "00000000-0000-0000-0000-000000000001",
-        roles: ["auth:anon"],
-      });
-
-    const queryClient = new QueryClient(MockQueryClient);
-
-    const queryWrapper = QueryWrapper(queryClient);
-
-    const screen = render(
-      <SessionProvider>
-        <SessionSuspense>
-          <div>Hello world!</div>
-        </SessionSuspense>
-      </SessionProvider>,
-      { wrapper: queryWrapper }
-    );
-
-    await waitFor(
-      () => {
-        nockSession.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-
-    const nockSession2 = nockAPI
-      .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-      .reply(200, {
-        roles: ["auth:anon"],
-      });
-
-    const nockLogin = nockAPI
-      .patch("/session/refresh?accessToken=access-token&refreshToken=refresh-token")
-      .reply(403, {})
-      .put("/session/anon")
-      .reply(200, {
-        accessToken: "access-token",
-      });
-
-    // Trigger a 401 / unauthorized call.
-    renderHook(
-      () => {
-        return useQuery({
-          queryKey: ["test"],
-          queryFn: async () => {
-            // Bypass the retry delay.
-            await new Promise((resolve) => setTimeout(resolve, 500));
-            throw new UnauthorizedError("foo");
-          },
-        });
-      },
-      { wrapper: queryWrapper }
-    );
-
-    await waitFor(
-      () => {
-        nockLogin.done();
-        nockSession2.done();
-      },
-      { timeout: 2000 }
-    );
-
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Hello world!")).not.toBeNull();
-      },
-      { timeout: 2000 }
-    );
-  });
+  }
 });

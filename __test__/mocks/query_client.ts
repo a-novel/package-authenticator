@@ -7,6 +7,10 @@ export const MockQueryClient: QueryClientConfig = {
       // Setting the stale time avoid refreshes, and allow use to have more control
       // over which query we expect to be made.
       staleTime: Infinity,
+      refetchOnMount: false,
+    },
+    mutations: {
+      retry: false,
     },
   },
 };
