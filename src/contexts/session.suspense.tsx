@@ -23,6 +23,180 @@ export interface SessionSuspenseProps {
 const LOGIN_BUFFERING_INTERVAL = 100;
 
 /**
+ * Fetch a new anonymous session, and sync the new session with the context.
+ */
+const useRefreshAnonymousSession = () => {
+  const { setSession, setError } = useSession();
+  const { mutateAsync: doCreateAnonymousSession } = CreateAnonymousSession.useAPI();
+
+  const refresh = useCallback(
+    () =>
+      doCreateAnonymousSession()
+        .then((result) => {
+          setError(false);
+          setSession({ accessToken: result.accessToken });
+        })
+        .catch(() => {
+          setError(true);
+        }),
+    [doCreateAnonymousSession, setSession, setError]
+  );
+
+  return {
+    mutate: refresh,
+  };
+};
+
+/**
+ * Refresh the authenticated session of the user, and sync the new session with the context.
+ * If the refresh fails, it will fall back to creating a new anonymous session.
+ */
+const useRefreshAuthenticatedSession = () => {
+  const { session, setSession } = useSession();
+  const { mutate: refreshAnonymousSession } = useRefreshAnonymousSession();
+  const { mutateAsync: doRefreshSession } = RefreshSession.useAPI();
+
+  const refresh = useCallback(async () => {
+    await doRefreshSession({ accessToken: session?.accessToken ?? "", refreshToken: session?.refreshToken ?? "" })
+      .then((result) => setSession({ accessToken: result.accessToken, refreshToken: session?.refreshToken ?? "" }))
+      .catch(refreshAnonymousSession);
+  }, [doRefreshSession, setSession, session?.accessToken, session?.refreshToken, refreshAnonymousSession]);
+
+  return {
+    mutate: refresh,
+  };
+};
+
+/**
+ * Returns a function to refresh the session of the user, depending on its state (anonymous or authenticated).
+ * The refresh reference is stable and should not change between renders.
+ */
+const useRefreshSession = () => {
+  const { session } = useSession();
+  const refreshAnonymousSession = useRefreshAnonymousSession();
+  const refreshSession = useRefreshAuthenticatedSession();
+
+  const { mutate: doRefreshAnon } = refreshAnonymousSession;
+  const { mutate: doRefresh } = refreshSession;
+
+  const isAnonymousSession = !session?.claims?.userID;
+  const lastSessionRefresh = useRef(0);
+
+  // Trigger a session refresh, using a secure buffer to prevent concurrent updates.
+  const updateSession = useCallback(async () => {
+    const isLastUpdateOldEnough = Date.now() - lastSessionRefresh.current > LOGIN_BUFFERING_INTERVAL;
+    if (!isLastUpdateOldEnough) return;
+
+    // Save the timestamp for a new session refresh attempt.
+    lastSessionRefresh.current = Date.now();
+
+    // If the user is anonymous, just create a new session.
+    if (isAnonymousSession) {
+      await doRefreshAnon();
+      return;
+    }
+
+    await doRefresh();
+  }, [doRefreshAnon, doRefresh, isAnonymousSession]);
+
+  return {
+    refreshSession: updateSession,
+  };
+};
+
+/**
+ * Automatically trigger session refreshes when forbidden errors are encountered across the application.
+ */
+const useSyncReactQuery = () => {
+  const queryClient = useQueryClient();
+
+  const queryCache = useRef(queryClient.getQueryCache());
+  const mutationCache = useRef(queryClient.getMutationCache());
+
+  const refreshSessionHook = useRefreshSession();
+
+  const refreshSession = useRef(refreshSessionHook.refreshSession);
+  refreshSession.current = refreshSessionHook.refreshSession;
+
+  const subscribeQueryCache = queryCache.current.subscribe;
+  const subscribeMutationCache = mutationCache.current.subscribe;
+
+  // Services should return a 401 status code to indicate missing / invalid checkSession. When this happens, we
+  // trigger a new checkSession update.
+  useEffect(() => {
+    subscribeQueryCache((event) => {
+      if (isUnauthorizedError(event.query.state.error)) refreshSession.current();
+    });
+  }, [subscribeQueryCache]);
+
+  // Same logic as above but for mutations (react query has a separate cache for both).
+  useEffect(() => {
+    subscribeMutationCache((event) => {
+      if (isUnauthorizedError(event.mutation?.state.error)) refreshSession.current();
+    });
+  }, [subscribeMutationCache]);
+};
+
+/**
+ * Retrieve an anonymous session if no session is available.
+ */
+const useAutoSession = () => {
+  const { synced, session, error } = useSession();
+  const { mutate } = useRefreshAnonymousSession();
+
+  // Don't try to fetch a new session if the last attempt failed.
+  useEffect(() => {
+    if (synced && !session?.accessToken && !error) {
+      mutate().catch(console.error);
+    }
+  }, [synced, session?.accessToken, error, mutate]);
+};
+
+/**
+ * Sync claims when a new session is created, or when the session is refreshed.
+ */
+const useSyncSessionClaims = () => {
+  const { synced, session, setSession } = useSession();
+  const { data: claims, isFetched } = CheckSession.useAPI(session?.accessToken ?? "");
+
+  // Sync session claims.
+  useEffect(() => {
+    if (synced && isFetched) {
+      setSession((prevSession) => ({ ...prevSession, claims }));
+    }
+  }, [claims, isFetched, setSession, synced]);
+};
+
+/**
+ * Retrieve a refresh token if none, for every authenticated session.
+ */
+const useAutoRefreshToken = () => {
+  const { synced, session, setSession } = useSession();
+
+  const needsRefreshToken =
+    // Session is synced.
+    synced &&
+    // Session is authenticated (not anonymous).
+    session?.claims?.userID &&
+    // Session has an access token.
+    session?.accessToken &&
+    // Session does not have a refresh token.
+    !session?.refreshToken;
+
+  const { mutateAsync: doGetRefreshToken } = NewRefreshToken.useAPI(session?.accessToken ?? "");
+
+  useEffect(() => {
+    if (needsRefreshToken) {
+      doGetRefreshToken()
+        .then((res) => {
+          setSession((prevSession) => ({ ...prevSession, refreshToken: res }));
+        })
+        .catch(console.error);
+    }
+  }, [needsRefreshToken, doGetRefreshToken, setSession, session?.accessToken, synced]);
+};
+
+/**
  * Hold the rendering of the children until a proper session is available. If no session is available locally,
  * a new anonymous session is created.
  *
@@ -30,6 +204,8 @@ const LOGIN_BUFFERING_INTERVAL = 100;
  * error (401). In such case, the session is refreshed and the children are re-rendered.
  */
 export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
+  const accessToken = useAccessToken();
+  const { error } = useSession();
   const { addActiveNs, removeActiveNs } = useTolgee();
 
   // Load / unload translations.
@@ -38,117 +214,21 @@ export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
     return () => removeActiveNs(["authenticator.session"]);
   }, [addActiveNs, removeActiveNs]);
 
-  const queryClient = useQueryClient();
+  useSyncReactQuery();
+  useAutoSession();
+  useSyncSessionClaims();
+  useAutoRefreshToken();
 
-  const { synced, setSession, session } = useSession();
-  const accessToken = useAccessToken();
-  const checkSession = CheckSession.useAPI(accessToken);
-  const { mutate: doCreateAnonymousSession, ...createAnonymousSession } = CreateAnonymousSession.useAPI();
-  const { mutateAsync: doGetRefreshToken } = NewRefreshToken.useAPI(accessToken);
-  const { mutateAsync: doRefresh, ...refreshSession } = RefreshSession.useAPI();
-
-  const isAnonymousSession = !session?.claims?.userID;
-  const canRetry = !createAnonymousSession.isPending && !refreshSession.isPending;
-  const lastSessionRefresh = useRef(0);
-
-  // Perform login, unless a successful login happened during the buffering interval.
-  const updateSession = useCallback(() => {
-    // Retry is allowed if last attempt is old enough, or on error.
-    const hasError = isAnonymousSession ? createAnonymousSession.isError : refreshSession.isError;
-    if (!canRetry || (Date.now() - lastSessionRefresh.current < LOGIN_BUFFERING_INTERVAL && !hasError)) return;
-    lastSessionRefresh.current = Date.now();
-
-    // If user is anonymous, just create a new checkSession.
-    if (isAnonymousSession) {
-      doCreateAnonymousSession();
-      return;
-    }
-
-    // If the user is authenticated, try getting a new token from the API. If this attempt fails, delete the current
-    // checkSession and create a new one.
-    doRefresh({ accessToken: session?.accessToken ?? "", refreshToken: session?.refreshToken ?? "" }).catch((err) => {
-      console.error("Error while refreshing session", err);
-      doCreateAnonymousSession();
-    });
-  }, [
-    doCreateAnonymousSession,
-    createAnonymousSession.isError,
-    refreshSession.isError,
-    doRefresh,
-    canRetry,
-    isAnonymousSession,
-    session?.accessToken,
-    session?.refreshToken,
-  ]);
-
-  // Use a ref because changes to this function must not retrigger logins.
-  const updateSessionStable = useRef(updateSession);
-  updateSessionStable.current = updateSession;
-
-  const queryCache = useRef(queryClient.getQueryCache());
-  const mutationCache = useRef(queryClient.getMutationCache());
-
-  // Update session when login is performed.
-  useEffect(() => {
-    // Token has not changed, or login data does not contain a token, no need to update.
-    const loginAccessToken = createAnonymousSession.data?.accessToken;
-
-    if (loginAccessToken) {
-      setSession((prevSession) => ({
-        ...prevSession,
-        accessToken: loginAccessToken,
-      }));
-    }
-  }, [createAnonymousSession.data?.accessToken, setSession]);
-
-  // Services should return a 401 status code to indicate missing / invalid checkSession. When this happens, we
-  // trigger a new checkSession update.
-  useEffect(() => {
-    const callback: Parameters<(typeof queryCache.current)["subscribe"]>[0] = (event) => {
-      if (isUnauthorizedError(event.query.state.error)) updateSessionStable.current();
-    };
-    queryCache.current.subscribe(callback);
-  }, []);
-
-  // Same logic as above but for mutations (react query has a separate cache for both).
-  useEffect(() => {
-    const callback: Parameters<(typeof mutationCache.current)["subscribe"]>[0] = (event) => {
-      if (isUnauthorizedError(event.mutation?.state.error)) updateSessionStable.current();
-    };
-    mutationCache.current.subscribe(callback);
-  }, []);
-
-  // Login with an anonymous checkSession if no checkSession is available.
-  useEffect(() => {
-    if (synced && !session && !createAnonymousSession.isError && !createAnonymousSession.isPending) {
-      updateSessionStable.current();
-    }
-  }, [session, createAnonymousSession.isError, createAnonymousSession.isPending, synced]);
-
-  // When authenticating, try to get a refresh token.
-  useEffect(() => {
-    if (!isAnonymousSession && accessToken && synced && !session?.refreshToken) {
-      doGetRefreshToken()
-        .then((res) => {
-          setSession((prevSession) => ({
-            ...prevSession,
-            refreshToken: res,
-          }));
-        })
-        .catch((err) => {
-          console.error("Error while getting refresh token", err);
-        });
-    }
-  }, [synced, accessToken, doGetRefreshToken, isAnonymousSession, session?.refreshToken, setSession]);
+  const { mutate: getNewSession } = useRefreshAnonymousSession();
 
   // Rendering.
-  if (createAnonymousSession.isError || (!checkSession.isPending && checkSession.isError)) {
+  if (error) {
     return (
       <StatusPage
         icon={<MaterialSymbol icon="heart_broken" />}
         color="error"
         footer={
-          <Button color="error" onClick={() => updateSession()}>
+          <Button color="error" onClick={() => getNewSession()}>
             <T keyName="actions.retry" ns="authenticator.session" />
           </Button>
         }

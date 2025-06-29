@@ -1,4 +1,4 @@
-import { AuthFormProvider, SessionProvider, SessionSuspense, SyncSessionClaims } from "./contexts";
+import { AuthFormProvider, SessionProvider, SessionSuspense } from "./contexts";
 
 import { init as initAuthAPI } from "@a-novel/connector-authentication";
 
@@ -21,7 +21,6 @@ export interface WithSessionProps {
 
 export const WithSession = ({ children, layout, setTitle }: WithSessionProps) => (
   <SessionProvider>
-    <SyncSessionClaims />
     <SessionSuspense>
       <AuthFormProvider setTitle={setTitle} layout={layout}>
         {children}
