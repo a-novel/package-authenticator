@@ -1,17 +1,8 @@
 import { AuthFormProvider, SessionProvider, SessionSuspense } from "./contexts";
 
-import { init as initAuthAPI } from "@a-novel/connector-authentication";
-
 import type { ComponentType, ReactNode } from "react";
 
-export interface InitProps {
-  authURL: string;
-}
-
-export const init = (props: InitProps) => {
-  // Initialize the base URL for the API
-  initAuthAPI({ baseURL: props.authURL });
-};
+export { init, type InitProps } from "./shared";
 
 export interface WithSessionProps {
   children: ReactNode;
