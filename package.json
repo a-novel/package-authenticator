@@ -43,7 +43,7 @@
     "node": ">=23.11.0"
   },
   "peerDependencies": {
-    "@a-novel/connector-authentication": "^1.2.5",
+    "@a-novel/connector-authentication": "^1.2.8",
     "@a-novel/neon-ui": "^2.8.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
