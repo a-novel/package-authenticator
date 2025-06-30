@@ -1,3 +1,5 @@
+import { useTolgeeNamespaces } from "~/shared";
+
 import { PopupForm, PopupFormFooter } from "./common";
 
 import {
@@ -8,7 +10,7 @@ import { SPACINGS } from "@a-novel/neon-ui";
 import { MaterialSymbol, Modal } from "@a-novel/neon-ui/ui";
 import { EmailInput } from "@a-novel/neon-ui/ux";
 
-import { type MouseEventHandler, useEffect } from "react";
+import { type MouseEventHandler } from "react";
 
 import { Button, Stack, Typography } from "@mui/material";
 import {
@@ -17,7 +19,7 @@ import {
   type ReactFormExtendedApi,
   useStore,
 } from "@tanstack/react-form";
-import { T, useTolgee, useTranslate } from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 import { z } from "zod";
 
 export interface RequestRegisterFormConnector<
@@ -70,6 +72,8 @@ export interface RequestRegisterFormProps<
   >;
 }
 
+const ns = ["authenticator.register", "form"];
+
 export const RequestRegisterForm = <
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
@@ -93,14 +97,8 @@ export const RequestRegisterForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { addActiveNs, removeActiveNs } = useTolgee();
   const { t } = useTranslate("form");
-
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["authenticator.register", "form"]).catch(console.error);
-    return () => removeActiveNs(["authenticator.register", "form"]);
-  }, [addActiveNs, removeActiveNs]);
+  useTolgeeNamespaces(ns);
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
   const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);

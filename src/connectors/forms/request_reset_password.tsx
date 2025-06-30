@@ -1,11 +1,11 @@
 import { type RequestResetPasswordFormConnector } from "~/components/forms";
 import { useAccessToken } from "~/contexts";
-import { getLang } from "~/shared";
+import { getLang, useTolgeeNamespaces } from "~/shared";
 
 import { BINDINGS_VALIDATION, isUserNotFoundError, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestPasswordReset } from "@a-novel/connector-authentication/hooks";
 
-import { type MouseEventHandler, useEffect } from "react";
+import { type MouseEventHandler } from "react";
 
 import { useForm } from "@tanstack/react-form";
 import { useTolgee, useTranslate, type UseTranslateResult } from "@tolgee/react";
@@ -59,6 +59,8 @@ const handleSubmitError = (t: FormTFunction) => (error: any) => {
   return `${t("form.errors.generic", { ns: "authenticator.resetPassword" })} ${t("error", { ns: "generic" })}`;
 };
 
+const ns = ["form", "generic", "authenticator.resetPassword"];
+
 export const useRequestResetPasswordFormConnector = ({
   loginAction,
 }: RequestResetPasswordFormConnectorParams): RequestResetPasswordFormConnector<
@@ -72,14 +74,9 @@ export const useRequestResetPasswordFormConnector = ({
   any,
   any
 > => {
-  const { addActiveNs, removeActiveNs, getLanguage, getPendingLanguage } = useTolgee();
-  const { t } = useTranslate(["form", "generic", "authenticator.resetPassword"]);
-
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["form", "generic", "authenticator.resetPassword"]).catch(console.error);
-    return () => removeActiveNs(["form", "generic", "authenticator.resetPassword"]);
-  }, [addActiveNs, removeActiveNs]);
+  const { getLanguage, getPendingLanguage } = useTolgee();
+  const { t } = useTranslate(ns);
+  useTolgeeNamespaces(ns);
 
   const accessToken = useAccessToken();
   const requestResetPasswordLink = RequestPasswordReset.useAPI(accessToken);

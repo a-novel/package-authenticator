@@ -1,11 +1,11 @@
 import { type RequestRegisterFormConnector } from "~/components/forms";
 import { useAccessToken } from "~/contexts";
-import { getLang } from "~/shared";
+import { getLang, useTolgeeNamespaces } from "~/shared";
 
 import { BINDINGS_VALIDATION, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestRegister } from "@a-novel/connector-authentication/hooks";
 
-import { type MouseEventHandler, useEffect } from "react";
+import { type MouseEventHandler } from "react";
 
 import { useForm } from "@tanstack/react-form";
 import { useTolgee, useTranslate, type UseTranslateResult } from "@tolgee/react";
@@ -52,17 +52,14 @@ const formValidator = (t: FormTFunction) =>
 const handleSubmitError = (t: FormTFunction) => () =>
   `${t("form.errors.generic", { ns: "authenticator.register" })} ${t("error", { ns: "generic" })}`;
 
+const ns = ["form", "generic", "authenticator.register"];
+
 export const useRequestRegisterFormConnector = ({
   loginAction,
 }: RequestRegisterFormConnectorParams): RequestRegisterFormConnector<any, any, any, any, any, any, any, any, any> => {
-  const { addActiveNs, removeActiveNs, getLanguage, getPendingLanguage } = useTolgee();
-  const { t } = useTranslate(["form", "generic", "authenticator.register"]);
-
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["form", "generic", "authenticator.register"]).catch(console.error);
-    return () => removeActiveNs(["form", "generic", "authenticator.register"]);
-  }, [addActiveNs, removeActiveNs]);
+  const { getLanguage, getPendingLanguage } = useTolgee();
+  const { t } = useTranslate(ns);
+  useTolgeeNamespaces(ns);
 
   const accessToken = useAccessToken();
   const requestRegistrationLink = RequestRegister.useAPI(accessToken);

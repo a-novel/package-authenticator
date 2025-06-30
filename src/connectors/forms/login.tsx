@@ -1,13 +1,14 @@
 import { type LoginFormConnector } from "~/components/forms";
 import { useSession } from "~/contexts";
+import { useTolgeeNamespaces } from "~/shared";
 
 import { BINDINGS_VALIDATION, isForbiddenError, isUserNotFoundError } from "@a-novel/connector-authentication/api";
 import { CreateSession } from "@a-novel/connector-authentication/hooks";
 
-import { type MouseEventHandler, useEffect } from "react";
+import { type MouseEventHandler } from "react";
 
 import { useForm } from "@tanstack/react-form";
-import { useTolgee, useTranslate, type UseTranslateResult } from "@tolgee/react";
+import { useTranslate, type UseTranslateResult } from "@tolgee/react";
 import { z } from "zod";
 
 export interface LoginFormConnectorParams {
@@ -88,19 +89,15 @@ const handleSubmitError = (t: FormTFunction) => (error: any) => {
   return `${t("form.errors.generic", { ns: "authenticator.login" })} ${t("error", { ns: "generic" })}`;
 };
 
+const ns = ["form", "generic", "authenticator.login"];
+
 export const useLoginFormConnector = ({
   resetPasswordAction,
   registerAction,
   onLogin,
 }: LoginFormConnectorParams): LoginFormConnector<any, any, any, any, any, any, any, any, any> => {
-  const { addActiveNs, removeActiveNs } = useTolgee();
-  const { t } = useTranslate(["form", "generic", "authenticator.login"]);
-
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["form", "generic", "authenticator.login"]).catch(console.error);
-    return () => removeActiveNs(["form", "generic", "authenticator.login"]);
-  }, [addActiveNs, removeActiveNs]);
+  const { t } = useTranslate(ns);
+  useTolgeeNamespaces(ns);
 
   const createSession = CreateSession.useAPI();
   const { setSession } = useSession();

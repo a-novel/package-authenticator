@@ -1,9 +1,11 @@
+import { useTolgeeNamespaces } from "~/shared";
+
 import { PopupForm, PopupFormFooter } from "./common";
 
 import { BINDINGS_VALIDATION, LoginForm as LoginRequest } from "@a-novel/connector-authentication/api";
 import { EmailInput, PasswordInput } from "@a-novel/neon-ui/ux";
 
-import { type MouseEventHandler, useEffect } from "react";
+import { type MouseEventHandler } from "react";
 
 import { Button, Typography } from "@mui/material";
 import {
@@ -12,7 +14,7 @@ import {
   type ReactFormExtendedApi,
   useStore,
 } from "@tanstack/react-form";
-import { T, useTolgee, useTranslate } from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 import { z } from "zod";
 
 export interface LoginFormConnector<
@@ -66,6 +68,8 @@ export interface LoginFormProps<
   >;
 }
 
+const ns = ["authenticator.login", "form"];
+
 export const LoginForm = <
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof LoginRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof LoginRequest>>,
@@ -89,14 +93,8 @@ export const LoginForm = <
   TOnServer,
   TSubmitMeta
 >) => {
-  const { addActiveNs, removeActiveNs } = useTolgee();
   const { t } = useTranslate("form");
-
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["authenticator.login", "form"]).catch(console.error);
-    return () => removeActiveNs(["authenticator.login", "form"]);
-  }, [addActiveNs, removeActiveNs]);
+  useTolgeeNamespaces(ns);
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
 
