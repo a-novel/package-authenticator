@@ -1,4 +1,4 @@
-import { FONTS, SPACINGS } from "@a-novel/neon-ui";
+import { SPACINGS } from "@a-novel/neon-ui";
 import { Section } from "@a-novel/neon-ui/ui";
 import { TanstackFormWrapper } from "@a-novel/neon-ui/ux";
 
@@ -24,15 +24,7 @@ export const PopupForm: FC<PopupFormProps> = ({ children, title, form, submitBut
     boxSizing="border-box"
     maxWidth="100vw"
   >
-    <Typography
-      textAlign="center"
-      fontFamily={FONTS.BUNGEE}
-      variant="h2"
-      component="h1"
-      margin={0}
-      padding={0}
-      color="primary"
-    >
+    <Typography textAlign="center" variant="h2" component="h1" margin={0} padding={0} color="primary">
       {title}
     </Typography>
 
