@@ -24,7 +24,6 @@ storybook-static
 *.sln
 *.sw?
 
-.npmrc
 .envrc
 
 coverage

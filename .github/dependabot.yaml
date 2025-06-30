@@ -3,7 +3,7 @@ registries:
   # The registry is technically public, but GitHub
   # still requires authentication to access it.
   # https://github.com/orgs/community/discussions/23386#discussioncomment-3240193
-  "@a-novel":
+  npm-github:
     type: npm-registry
     url: https://npm.pkg.github.com
     token: ${{ secrets.ACTION_PAT }}
@@ -14,8 +14,7 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-    registries:
-      - "@a-novel"
+    registries: "*"
     groups:
       react:
         applies-to: version-updates
