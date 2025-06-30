@@ -1,6 +1,6 @@
 import { MockReplyHeaders } from "#/mocks/query_client";
 
-import { init } from "../../src";
+import { init } from "@a-novel/connector-authentication";
 
 import nock from "nock";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
@@ -10,7 +10,7 @@ export interface GenericSetupProps {
 }
 
 beforeAll(() => {
-  init({ authURL: "http://localhost:8081" });
+  init({ baseURL: "http://localhost:8081" });
 
   if (!nock.isActive()) nock.activate();
 

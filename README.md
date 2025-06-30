@@ -41,7 +41,9 @@ pnpm add @tanstack/react-query @emotion/react @emotion/styled @mui/material
 pnpm add @a-novel/neon-ui @a-novel/connector-authentication @a-novel/package-authenticator
 ```
 
-You also need to import material symbols in your app.
+### Requirements
+
+You need to import material symbols in your app.
 
 ```html
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -54,17 +56,32 @@ In your entry file.
 ```tsx
 import i18n from "./locale_i18n_instance";
 
+import { init as initAuthAPI } from "@a-novel/connector-authentication";
 import { theme } from "@a-novel/neon-ui";
-import { init, WithSession, useAuthNavConnector, AuthNav } from "@a-novel/package-authenticator";
+import { init as initAuthenticator, WithSession, useAuthNavConnector, AuthNav } from "@a-novel/package-authenticator";
 
 import { FC, ReactNode } from "react";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { FormatIcu } from "@tolgee/format-icu";
+import { BackendFetch, Tolgee, TolgeeProvider } from "@tolgee/react";
 
-init({
-  authURL: "https://auth.example.com",
-  i18n,
-});
+const cdn = "https://cdn.tolg.ee/74c1bb8828074430ae95b462ab95374b";
+
+// A Tolgee instance is required for translations.
+const tolgee = Tolgee()
+  .use(BackendFetch({ prefix: cdn }))
+  .use(FormatIcu())
+  .init({
+    defaultLanguage: "en",
+    fallbackLanguage: "en",
+    availableLanguages: ["en", "fr"],
+    defaultNs: "generic",
+  });
+
+// Make sure the global context is properly set up.
+initAuthAPI({ baseURL: import.meta.env.VITE_AUTH_API_URL });
+initAuthenticator({ logo: "/path/to/logo.png" });
 
 const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
   const authConnector = useAuthNavConnector();
@@ -78,10 +95,12 @@ const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 export const App: FC<{ children: ReactNode }> = ({ children }) => (
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <WithSession layout={AppLayout}>{children}</WithSession>
-  </ThemeProvider>
+  <TolgeeProvider tolgee={tolgee}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <WithSession layout={AppLayout}>{children}</WithSession>
+    </ThemeProvider>
+  </TolgeeProvider>
 );
 ```
 
