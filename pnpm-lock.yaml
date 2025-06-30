@@ -52,8 +52,8 @@ importers:
         specifier: 9.1.0-alpha.6
         version: 9.1.0-alpha.6(@types/react@19.1.8)(storybook@9.1.0-alpha.1(@testing-library/dom@10.4.0)(prettier@3.6.2))
       '@storybook/addon-onboarding':
-        specifier: 9.1.0-alpha.1
-        version: 9.1.0-alpha.1(storybook@9.1.0-alpha.1(@testing-library/dom@10.4.0)(prettier@3.6.2))
+        specifier: 9.1.0-alpha.6
+        version: 9.1.0-alpha.6(storybook@9.1.0-alpha.1(@testing-library/dom@10.4.0)(prettier@3.6.2))
       '@storybook/react-vite':
         specifier: 9.1.0-alpha.1
         version: 9.1.0-alpha.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.44.1)(storybook@9.1.0-alpha.1(@testing-library/dom@10.4.0)(prettier@3.6.2))(typescript@5.8.3)(vite@7.0.0(@types/node@24.0.7)(yaml@2.8.0))
@@ -1285,10 +1285,10 @@ packages:
     peerDependencies:
       storybook: ^9.1.0-alpha.6
 
-  '@storybook/addon-onboarding@9.1.0-alpha.1':
-    resolution: {integrity: sha512-WwnaY2ro/rtEl95Z99eIkYtCKMWrUs+yuXZFAQrSgyXuC1qfENdeE5PIMcql7yUg4cS1nckYiB05htowMKpuSQ==}
+  '@storybook/addon-onboarding@9.1.0-alpha.6':
+    resolution: {integrity: sha512-P+SMCAxiH5/LdbSpREU3lboFZJf2kTlvTjrV0J02DBH67IYOlnla8ocGcvkDNyB9T7Io0DYA8trO5t76cKqKhQ==}
     peerDependencies:
-      storybook: ^9.1.0-alpha.1
+      storybook: ^9.1.0-alpha.6
 
   '@storybook/builder-vite@9.1.0-alpha.1':
     resolution: {integrity: sha512-vjse+cpKwAiFxbdhrI1YsscjnUbenQdz3InJkecKzsb6kN4OGsHLhRv9g3Fi+Fgh93lwB53WFBtPUprPmtgXnA==}
@@ -4847,7 +4847,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@storybook/addon-onboarding@9.1.0-alpha.1(storybook@9.1.0-alpha.1(@testing-library/dom@10.4.0)(prettier@3.6.2))':
+  '@storybook/addon-onboarding@9.1.0-alpha.6(storybook@9.1.0-alpha.1(@testing-library/dom@10.4.0)(prettier@3.6.2))':
     dependencies:
       storybook: 9.1.0-alpha.1(@testing-library/dom@10.4.0)(prettier@3.6.2)
 
