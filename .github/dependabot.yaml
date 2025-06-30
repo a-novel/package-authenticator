@@ -14,12 +14,19 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-    registries: "*"
     ignore:
       # Ignore storybook major updates, as they require a migration script
       - dependency-name: "@storybook/*"
         update-types:
           - version-update:semver-major
+      - dependency-name: "storybook"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "eslint-plugin-storybook"
+        update-types:
+          - version-update:semver-major
+    registries:
+      - npm-github
     groups:
       react:
         applies-to: version-updates

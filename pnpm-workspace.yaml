@@ -1,5 +1,1 @@
-onlyBuiltDependencies:
-  - "@a-novel/connector-authentication"
-  - "@a-novel/neon-ui"
-  - esbuild
 gitChecks: false
