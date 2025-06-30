@@ -15,12 +15,31 @@ updates:
     schedule:
       interval: daily
     registries: "*"
+    ignore:
+      # Ignore storybook major updates, as they require a migration script
+      - dependency-name: "@storybook/*"
+        update-types:
+          - version-update:semver-major
     groups:
       react:
         applies-to: version-updates
         patterns:
           - "react"
           - "react-dom"
+      storybook:
+        applies-to: version-updates
+        patterns:
+          - storybook
+          - "@storybook/*"
+          - eslint-plugin-storybook
+      emotion:
+        applies-to: version-updates
+        patterns:
+          - "@emotion/*"
+      tolgee:
+        applies-to: version-updates
+        patterns:
+          - "@tolgee/*"
   - package-ecosystem: "github-actions"
     rebase-strategy: auto
     open-pull-requests-limit: 25
