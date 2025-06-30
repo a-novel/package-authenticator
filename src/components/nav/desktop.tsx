@@ -1,12 +1,14 @@
+import { useTolgeeNamespaces } from "~/shared";
+
 import type { AuthNavDisplayProps } from "./common";
 
 import { SPACINGS } from "@a-novel/neon-ui";
 import { MaterialSymbol } from "@a-novel/neon-ui/ui";
 
-import { type FC, useEffect } from "react";
+import { type FC } from "react";
 
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
-import { T, useTolgee } from "@tolgee/react";
+import { T } from "@tolgee/react";
 
 const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "account">> = ({ user, account }) => {
   if (!user?.data) {
@@ -60,13 +62,7 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "account">> = ({ user, a
 };
 
 export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, account }) => {
-  const { addActiveNs, removeActiveNs } = useTolgee();
-
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["authenticator.nav"]).catch(console.error);
-    return () => removeActiveNs(["authenticator.nav"]);
-  }, [addActiveNs, removeActiveNs]);
+  useTolgeeNamespaces("authenticator.nav");
 
   if (!user) {
     return (

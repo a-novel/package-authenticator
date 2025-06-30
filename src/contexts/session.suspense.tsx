@@ -1,3 +1,5 @@
+import { useTolgeeNamespaces } from "~/shared";
+
 import { useAccessToken, useSession } from "./session";
 
 import { isUnauthorizedError } from "@a-novel/connector-authentication/api";
@@ -11,9 +13,9 @@ import { StatusPage, MaterialSymbol } from "@a-novel/neon-ui/ui";
 
 import { type FC, type ReactNode, useCallback, useEffect, useRef } from "react";
 
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { T, useTolgee } from "@tolgee/react";
+import { T } from "@tolgee/react";
 
 export interface SessionSuspenseProps {
   children?: ReactNode;
@@ -26,20 +28,15 @@ const LOGIN_BUFFERING_INTERVAL = 100;
  * Fetch a new anonymous session, and sync the new session with the context.
  */
 const useRefreshAnonymousSession = () => {
-  const { setSession, setError } = useSession();
+  const { setSession } = useSession();
   const { mutateAsync: doCreateAnonymousSession } = CreateAnonymousSession.useAPI();
 
   const refresh = useCallback(
     () =>
-      doCreateAnonymousSession()
-        .then((result) => {
-          setError(false);
-          setSession({ accessToken: result.accessToken });
-        })
-        .catch(() => {
-          setError(true);
-        }),
-    [doCreateAnonymousSession, setSession, setError]
+      doCreateAnonymousSession().then((result) => {
+        setSession({ accessToken: result.accessToken });
+      }),
+    [doCreateAnonymousSession, setSession]
   );
 
   return {
@@ -141,15 +138,15 @@ const useSyncReactQuery = () => {
  * Retrieve an anonymous session if no session is available.
  */
 const useAutoSession = () => {
-  const { synced, session, error } = useSession();
+  const { synced, session } = useSession();
   const { mutate } = useRefreshAnonymousSession();
 
   // Don't try to fetch a new session if the last attempt failed.
   useEffect(() => {
-    if (synced && !session?.accessToken && !error) {
-      mutate().catch(console.error);
+    if (synced && !session?.accessToken) {
+      mutate().then();
     }
-  }, [synced, session?.accessToken, error, mutate]);
+  }, [synced, session?.accessToken, mutate]);
 };
 
 /**
@@ -205,40 +202,12 @@ const useAutoRefreshToken = () => {
  */
 export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
   const accessToken = useAccessToken();
-  const { error } = useSession();
-  const { addActiveNs, removeActiveNs } = useTolgee();
-
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["authenticator.session"]).catch(console.error);
-    return () => removeActiveNs(["authenticator.session"]);
-  }, [addActiveNs, removeActiveNs]);
+  useTolgeeNamespaces("authenticator.session");
 
   useSyncReactQuery();
   useAutoSession();
   useSyncSessionClaims();
   useAutoRefreshToken();
-
-  const { mutate: getNewSession } = useRefreshAnonymousSession();
-
-  // Rendering.
-  if (error) {
-    return (
-      <StatusPage
-        icon={<MaterialSymbol icon="heart_broken" />}
-        color="error"
-        footer={
-          <Button color="error" onClick={() => getNewSession()}>
-            <T keyName="actions.retry" ns="authenticator.session" />
-          </Button>
-        }
-      >
-        <Typography>
-          <T keyName="status.error" ns="authenticator.session" />
-        </Typography>
-      </StatusPage>
-    );
-  }
 
   if (!accessToken) {
     return (

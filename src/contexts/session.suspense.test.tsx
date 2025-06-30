@@ -10,7 +10,7 @@ import { MockFreshSession, MockSession } from "./session.test";
 import { UnauthorizedError } from "@a-novel/connector-authentication/api";
 
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { act, render, renderHook, type RenderResult, waitFor } from "@testing-library/react";
+import { render, renderHook, type RenderResult, waitFor } from "@testing-library/react";
 import nock from "nock";
 import { describe, expect, it } from "vitest";
 
@@ -123,37 +123,6 @@ describe("session suspense", async () => {
         },
       ],
       expectRender: "Hello world!",
-    },
-    "renders an error on login error": {
-      expectAPICalls: [
-        {
-          name: "login",
-          nock: () => nockAPI.put("/session/anon").reply(500, {}),
-        },
-      ],
-      expectRender: /authenticator\.session:status\.error/,
-      then: (screen) => ({
-        preAction: async () => {
-          const retryButton = screen.getByRole("button", { name: /session:actions\.retry/ });
-          act(() => {
-            retryButton.click();
-          });
-        },
-        expectAPICalls: [
-          {
-            name: "login retry",
-            nock: () => nockAPI.put("/session/anon").reply(200, { accessToken: "access-token" }),
-          },
-          {
-            name: "session retry",
-            nock: () =>
-              nockAPI
-                .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-                .reply(200, { roles: ["auth:anon"] }),
-          },
-        ],
-        expectRender: "Hello world!",
-      }),
     },
     "fetches a refresh token on a new authenticated session": {
       initialStorageSession: MockFreshSession,

@@ -5,6 +5,7 @@ import {
   useRequestRegisterFormConnector,
   useRequestResetPasswordFormConnector,
 } from "~/connectors/forms";
+import { useTolgeeNamespaces } from "~/shared";
 
 import {
   type ComponentType,
@@ -17,7 +18,7 @@ import {
   useState,
 } from "react";
 
-import { useTolgee, useTranslate } from "@tolgee/react";
+import { useTranslate } from "@tolgee/react";
 
 export type AuthFormSelect = "login" | "register" | "resetPassword";
 
@@ -52,15 +53,11 @@ const FORM_TITLES = {
   },
 };
 
-export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: Layout, setTitle, ...props }) => {
-  const { addActiveNs, removeActiveNs } = useTolgee();
-  const { t } = useTranslate(["authenticator.login", "authenticator.register", "authenticator.resetPassword"]);
+const ns = ["authenticator.login", "authenticator.register", "authenticator.resetPassword"];
 
-  // Load / unload translations.
-  useEffect(() => {
-    addActiveNs(["authenticator.login", "authenticator.register", "authenticator.resetPassword"]).catch(console.error);
-    return () => removeActiveNs(["authenticator.login", "authenticator.register", "authenticator.resetPassword"]);
-  }, [addActiveNs, removeActiveNs]);
+export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: Layout, setTitle, ...props }) => {
+  const { t } = useTranslate(ns);
+  useTolgeeNamespaces(ns);
 
   const [showForm, setShowForm] = useState<AuthFormSelect>();
 

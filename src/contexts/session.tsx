@@ -35,17 +35,15 @@ export interface SessionContextType {
    * True when session has synced with local storage. Takes at least one update cycle with SSR.
    */
   synced: boolean;
-  /**
-   * True if the session is invalid or an error occurred while parsing it.
-   */
-  error?: boolean;
-  setError: (error: boolean) => void;
 }
 
+const errFn = () => {
+  throw new Error("Session context called prior to initialization. Make sure SessionProvider is set.");
+};
+
 export const SessionContext = createContext<SessionContextType>({
-  setSession: (() => console.warn(`no session provider found`)) as Dispatch<SetStateAction<SessionState>>,
+  setSession: errFn as Dispatch<SetStateAction<SessionState>>,
   synced: false as boolean,
-  setError: () => console.warn(`no session provider found`),
 });
 
 export interface SessionProviderProps {
@@ -92,7 +90,6 @@ const parseSession = (
 export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
   const [session, setSessionDirect] = useState<z.infer<typeof SessionSync> | undefined>();
   const [synced, setSynced] = useState(false);
-  const [error, setError] = useState(false);
 
   // Wait past the initial server render to access DOM APIs.
   useEffect(() => {
@@ -127,11 +124,7 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
     });
   }, []);
 
-  return (
-    <SessionContext.Provider value={{ session, setSession, synced, error, setError }}>
-      {children}
-    </SessionContext.Provider>
-  );
+  return <SessionContext.Provider value={{ session, setSession, synced }}>{children}</SessionContext.Provider>;
 };
 
 /**

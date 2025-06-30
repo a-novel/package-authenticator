@@ -21,7 +21,7 @@ export const TolgeeDecorator: Decorator = (Story, context) => {
 
   // When the locale global changes
   useEffect(() => {
-    tolgee.changeLanguage(locale).catch(console.error);
+    tolgee.changeLanguage(locale).then(() => console.log(`lang changed to ${locale}`));
   }, [locale]);
 
   return (

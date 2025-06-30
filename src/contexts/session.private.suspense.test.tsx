@@ -22,7 +22,6 @@ describe("session private provider", () => {
       session: undefined,
       synced: true,
       setSession: vi.fn(),
-      setError: vi.fn(),
     }));
 
     const screen = render(
@@ -50,7 +49,6 @@ describe("session private provider", () => {
       session: MockSession,
       synced: true,
       setSession: vi.fn(),
-      setError: vi.fn(),
     }));
 
     const screen = render(
@@ -80,7 +78,6 @@ describe("session private provider", () => {
       },
       synced: true,
       setSession: vi.fn(),
-      setError: vi.fn(),
     }));
 
     const screen = render(
