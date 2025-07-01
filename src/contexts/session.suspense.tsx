@@ -3,12 +3,7 @@ import { useTolgeeNamespaces } from "~/shared";
 import { useAccessToken, useSession } from "./session";
 
 import { isUnauthorizedError } from "@a-novel/connector-authentication/api";
-import {
-  CheckSession,
-  CreateAnonymousSession,
-  NewRefreshToken,
-  RefreshSession,
-} from "@a-novel/connector-authentication/hooks";
+import { CheckSession, CreateAnonymousSession, RefreshSession } from "@a-novel/connector-authentication/hooks";
 import { StatusPage, MaterialSymbol } from "@a-novel/neon-ui/ui";
 
 import { type FC, type ReactNode, useCallback, useEffect, useRef } from "react";
@@ -165,35 +160,6 @@ const useSyncSessionClaims = () => {
 };
 
 /**
- * Retrieve a refresh token if none, for every authenticated session.
- */
-const useAutoRefreshToken = () => {
-  const { synced, session, setSession } = useSession();
-
-  const needsRefreshToken =
-    // Session is synced.
-    synced &&
-    // Session is authenticated (not anonymous).
-    session?.claims?.userID &&
-    // Session has an access token.
-    session?.accessToken &&
-    // Session does not have a refresh token.
-    !session?.refreshToken;
-
-  const { mutateAsync: doGetRefreshToken } = NewRefreshToken.useAPI(session?.accessToken ?? "");
-
-  useEffect(() => {
-    if (needsRefreshToken) {
-      doGetRefreshToken()
-        .then((res) => {
-          setSession((prevSession) => ({ ...prevSession, refreshToken: res }));
-        })
-        .catch(console.error);
-    }
-  }, [needsRefreshToken, doGetRefreshToken, setSession, session?.accessToken, synced]);
-};
-
-/**
  * Hold the rendering of the children until a proper session is available. If no session is available locally,
  * a new anonymous session is created.
  *
@@ -207,7 +173,6 @@ export const SessionSuspense: FC<SessionSuspenseProps> = ({ children }) => {
   useSyncReactQuery();
   useAutoSession();
   useSyncSessionClaims();
-  useAutoRefreshToken();
 
   if (!accessToken) {
     return (

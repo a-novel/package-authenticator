@@ -5,7 +5,7 @@ import { QueryWrapper } from "#/utils/wrapper";
 
 import { SESSION_STORAGE_KEY, type SessionContextType, SessionProvider } from "./session";
 import { SessionSuspense } from "./session.suspense";
-import { MockFreshSession, MockSession } from "./session.test";
+import { MockSession } from "./session.test";
 
 import { UnauthorizedError } from "@a-novel/connector-authentication/api";
 
@@ -120,27 +120,6 @@ describe("session suspense", async () => {
             nockAPI
               .get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
               .reply(200, { roles: ["auth:anon"] }),
-        },
-      ],
-      expectRender: "Hello world!",
-    },
-    "fetches a refresh token on a new authenticated session": {
-      initialStorageSession: MockFreshSession,
-      expectAPICalls: [
-        {
-          name: "session",
-          nock: () =>
-            nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
-              userID: "00000000-0000-0000-0000-000000000001",
-              roles: ["auth:anon"],
-            }),
-        },
-        {
-          name: "refresh token",
-          nock: () =>
-            nockAPI
-              .put("/session/refresh", undefined, { reqheaders: { Authorization: "Bearer access-token" } })
-              .reply(200, { refreshToken: "refresh-token" }),
         },
       ],
       expectRender: "Hello world!",

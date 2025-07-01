@@ -119,7 +119,7 @@ export const useLoginFormConnector = ({
         createSession
           .mutateAsync(value)
           .then((res) => {
-            setSession({ accessToken: res.accessToken });
+            setSession({ accessToken: res.accessToken, refreshToken: res.refreshToken });
           })
           .catch(handleSubmitError(t)),
     },
