@@ -37,15 +37,6 @@ export const MockSession: SessionContextType["session"] = {
   refreshToken: "refresh-token",
 };
 
-export const MockFreshSession: SessionContextType["session"] = {
-  claims: {
-    userID: "00000000-0000-0000-0000-000000000001",
-    roles: [ClaimsRoleEnum.User],
-    refreshTokenID: "00000000-0000-0000-0000-000000000002",
-  },
-  accessToken: "access-token",
-};
-
 describe("session provider", () => {
   genericSetup({});
 

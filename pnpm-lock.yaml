@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@a-novel/connector-authentication':
-        specifier: ^1.2.8
-        version: 1.2.8(@tanstack/react-query@5.81.5(react@19.1.0))(react@19.1.0)
+        specifier: ^1.3.0
+        version: 1.3.0(@tanstack/react-query@5.81.5(react@19.1.0))(react@19.1.0)
       '@a-novel/neon-ui':
         specifier: ^2.8.2
         version: 2.8.2(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@mui/material@7.2.0(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-form@1.12.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tolgee/format-icu@6.2.6)(@tolgee/react@6.2.6(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -135,8 +135,8 @@ importers:
 
 packages:
 
-  '@a-novel/connector-authentication@1.2.8':
-    resolution: {integrity: sha512-ppNnhRNdW7+jh22iT1T9cuCEbPlko00b62XuduQVICrSrePCWKwee1OkKdJXQPJyo6mXbEDCWWgiFxoawsSMpQ==, tarball: https://npm.pkg.github.com/download/@a-novel/connector-authentication/1.2.8/df926e45053de781b0cfb5479b6c8220ae52d605}
+  '@a-novel/connector-authentication@1.3.0':
+    resolution: {integrity: sha512-dc96YKv4iRb4nDZ3IP4nMpIqW+UAfOKuU13geT0xzVRhKrW8Rv1qoosNyDFp3nixB4MnhAzIxh2vQkyfOozDKQ==, tarball: https://npm.pkg.github.com/download/@a-novel/connector-authentication/1.3.0/75b73d658fa167509ca37813b9cc225310c2a2d5}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@tanstack/react-query': ^5.75.0
@@ -3576,7 +3576,7 @@ packages:
 
 snapshots:
 
-  '@a-novel/connector-authentication@1.2.8(@tanstack/react-query@5.81.5(react@19.1.0))(react@19.1.0)':
+  '@a-novel/connector-authentication@1.3.0(@tanstack/react-query@5.81.5(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tanstack/react-query': 5.81.5(react@19.1.0)
       react: 19.1.0

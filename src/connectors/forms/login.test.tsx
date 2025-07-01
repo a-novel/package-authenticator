@@ -270,7 +270,9 @@ describe("LoginForm", () => {
 
     for (const [name, { form, responseStatus, expectErrors }] of Object.entries(forms)) {
       it(name, async () => {
-        const nockLogin = nockAPI.put("/session", form).reply(responseStatus, { accessToken: "access-token" });
+        const nockLogin = nockAPI
+          .put("/session", form)
+          .reply(responseStatus, { accessToken: "access-token", refreshToken: "refresh-token" });
 
         const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
         const passwordInput = screen.getByLabelText(/form:fields\.password\.label/) as HTMLInputElement;
@@ -295,7 +297,9 @@ describe("LoginForm", () => {
         await waitFor(() => {
           const sessionData = screen.getByTestId("session") as HTMLElement;
           expect(sessionData.innerHTML).toBe(
-            expectErrors.length === 0 ? JSON.stringify({ accessToken: "access-token" }) : ""
+            expectErrors.length === 0
+              ? JSON.stringify({ accessToken: "access-token", refreshToken: "refresh-token" })
+              : ""
           );
         });
 
