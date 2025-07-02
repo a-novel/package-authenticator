@@ -151,7 +151,7 @@ export const RequestRegisterForm = <
         <br />
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={SPACINGS.MEDIUM}>
           <Button type="button" color="primary" onClick={connector.loginAction}>
-            <T keyName="form.success.action.login" ns="authenticator.register" />
+            <T keyName="form.success.action" ns="authenticator.register" />
           </Button>
         </Stack>
       </Modal>
