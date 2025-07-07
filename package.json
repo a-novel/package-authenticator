@@ -55,7 +55,7 @@
     "react-dom": "^19.1.0"
   },
   "dependencies": {
-    "@tanstack/react-form": "^1.12.4",
+    "@tanstack/react-form": "^1.14.0",
     "zod": "^3.25.75"
   },
   "devDependencies": {
