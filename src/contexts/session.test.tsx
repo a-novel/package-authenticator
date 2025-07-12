@@ -29,9 +29,9 @@ const TestAccessTokenRenderer: FC = () => {
 
 export const MockSession: SessionContextType["session"] = {
   claims: {
-    userID: "00000000-0000-0000-0000-000000000001",
+    userID: "94b4d288-dbff-4eca-805a-f45311a34e15",
     roles: [ClaimsRoleEnum.User],
-    refreshTokenID: "00000000-0000-0000-0000-000000000002",
+    refreshTokenID: "0fb41629-58c7-4e11-9d23-dd04aec01bf2",
   },
   accessToken: "access-token",
   refreshToken: "refresh-token",

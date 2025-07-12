@@ -104,7 +104,7 @@ describe("session suspense", async () => {
           name: "session",
           nock: () =>
             nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
-              userID: "00000000-0000-0000-0000-000000000001",
+              userID: "94b4d288-dbff-4eca-805a-f45311a34e15",
               roles: ["auth:anon"],
             }),
         },
@@ -176,7 +176,7 @@ describe("session suspense", async () => {
           name: "session",
           nock: () =>
             nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
-              userID: "00000000-0000-0000-0000-000000000001",
+              userID: "94b4d288-dbff-4eca-805a-f45311a34e15",
               roles: ["auth:anon"],
             }),
         },
@@ -211,7 +211,7 @@ describe("session suspense", async () => {
             name: "new session",
             nock: () =>
               nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
-                userID: "00000000-0000-0000-0000-000000000001",
+                userID: "94b4d288-dbff-4eca-805a-f45311a34e15",
                 roles: ["auth:anon"],
               }),
           },
@@ -226,7 +226,7 @@ describe("session suspense", async () => {
           name: "session",
           nock: () =>
             nockAPI.get("/session", undefined, { reqheaders: { Authorization: "Bearer access-token" } }).reply(200, {
-              userID: "00000000-0000-0000-0000-000000000001",
+              userID: "94b4d288-dbff-4eca-805a-f45311a34e15",
               roles: ["auth:anon"],
             }),
         },
