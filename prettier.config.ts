@@ -23,7 +23,7 @@ const config: Config = {
     "<THIRD_PARTY_MODULES>",
   ],
   importOrderSeparation: true,
-  plugins: ["@trivago/prettier-plugin-sort-imports"],
+  plugins: ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-packagejson"],
 };
 
 export default config;

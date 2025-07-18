@@ -31,14 +31,10 @@ Create a `.npmrc` file in the root of your project if it doesn't exist, and make
 Then, install the package using pnpm:
 
 ```bash
-# React
-pnpm add react react-dom
-# i18next
-pnpm add i18next react-i18next
-# Other dependencies
-pnpm add @tanstack/react-query @emotion/react @emotion/styled @mui/material
-# A-Novel packages
-pnpm add @a-novel/neon-ui @a-novel/connector-authentication @a-novel/package-authenticator
+# pnpm config set auto-install-peers true
+#  Or
+# pnpm config set auto-install-peers true --location project
+pnpm add @a-novel/package-authenticator
 ```
 
 ### Requirements
