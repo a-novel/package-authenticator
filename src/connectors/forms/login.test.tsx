@@ -1,7 +1,7 @@
 import { MockQueryClient } from "#/mocks/query_client";
 import "#/mocks/tolgee";
 import { writeField } from "#/utils/field";
-import { genericSetup } from "#/utils/setup";
+import { server } from "#/utils/setup";
 import { StandardWrapper } from "#/utils/wrapper";
 
 import { LoginForm, type LoginFormConnector } from "~/components/forms";
@@ -11,6 +11,7 @@ import { TestSessionRenderer } from "~/contexts/session.test";
 import { useLoginFormConnector } from "./login";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
+import { http } from "@a-novel/nodelib/msw";
 
 import type { ReactNode } from "react";
 
@@ -24,10 +25,8 @@ import {
   type RenderResult,
   waitFor,
 } from "@testing-library/react";
-import nock from "nock";
+import { HttpResponse } from "msw";
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-
-let nockAPI: nock.Scope;
 
 let loginFormConnector: RenderHookResult<
   LoginFormConnector<any, any, any, any, any, any, any, any, any>,
@@ -46,12 +45,6 @@ const registerAction = vi.fn();
 const loginAction = vi.fn();
 
 describe("LoginForm", () => {
-  genericSetup({
-    setNockAPI: (newScope) => {
-      nockAPI = newScope;
-    },
-  });
-
   beforeEach(() => {
     queryClient = new QueryClient(MockQueryClient);
 
@@ -270,9 +263,16 @@ describe("LoginForm", () => {
 
     for (const [name, { form, responseStatus, expectErrors }] of Object.entries(forms)) {
       it(name, async () => {
-        const nockLogin = nockAPI
-          .put("/session", form)
-          .reply(responseStatus, { accessToken: "access-token", refreshToken: "refresh-token" });
+        server.use(
+          http
+            .put("http://localhost:3000/session")
+            .resolve(() =>
+              HttpResponse.json(
+                { accessToken: "access-token", refreshToken: "refresh-token" },
+                { status: responseStatus }
+              )
+            )
+        );
 
         const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
         const passwordInput = screen.getByLabelText(/form:fields\.password\.label/) as HTMLInputElement;
@@ -286,11 +286,6 @@ describe("LoginForm", () => {
         // Submit the form.
         act(() => {
           fireEvent.click(submitButton);
-        });
-
-        // Wait for the form to submit.
-        await waitFor(() => {
-          nockLogin.done();
         });
 
         // Check the session context.

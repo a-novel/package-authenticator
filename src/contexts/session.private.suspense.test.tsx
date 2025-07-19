@@ -1,4 +1,4 @@
-import { genericSetup } from "#/utils/setup";
+import "#/utils/setup";
 
 import * as authForm from "./auth.form";
 import * as session from "./session";
@@ -9,8 +9,6 @@ import { render, waitFor } from "@testing-library/react";
 import { it, describe, expect, vi } from "vitest";
 
 describe("session private provider", () => {
-  genericSetup({});
-
   it("renders login form when not authenticated", async () => {
     const selectForm = vi.fn();
 

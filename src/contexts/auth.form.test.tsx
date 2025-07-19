@@ -1,5 +1,5 @@
 import "#/mocks/tolgee";
-import { genericSetup } from "#/utils/setup";
+import "#/utils/setup";
 
 import * as forms from "~/components/forms";
 import * as formsConnectors from "~/connectors/forms";
@@ -30,8 +30,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => (
 );
 
 describe("auth form provider", () => {
-  genericSetup({});
-
   vi.spyOn(formsConnectors, "useLoginFormConnector").mockImplementation(() => ({
     form: NewMockForm({
       values: { email: "", password: "" },

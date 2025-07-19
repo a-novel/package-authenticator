@@ -1,7 +1,7 @@
 import { MockQueryClient } from "#/mocks/query_client";
 import "#/mocks/tolgee";
 import { writeField } from "#/utils/field";
-import { genericSetup } from "#/utils/setup";
+import { server } from "#/utils/setup";
 import { QueryWrapperLight, StandardWrapper } from "#/utils/wrapper";
 
 import { RequestResetPasswordForm, type RequestResetPasswordFormConnector } from "~/components/forms";
@@ -10,6 +10,7 @@ import { SESSION_STORAGE_KEY } from "~/contexts";
 import { useRequestResetPasswordFormConnector } from "./request_reset_password";
 
 import { BINDINGS_VALIDATION, LangEnum } from "@a-novel/connector-authentication/api";
+import { http } from "@a-novel/nodelib/msw";
 
 import { QueryClient } from "@tanstack/react-query";
 import {
@@ -21,10 +22,8 @@ import {
   type RenderResult,
   waitFor,
 } from "@testing-library/react";
-import nock from "nock";
+import { HttpResponse } from "msw";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
-
-let nockAPI: nock.Scope;
 
 let requestRegisterFormConnector: RenderHookResult<
   RequestResetPasswordFormConnector<any, any, any, any, any, any, any, any, any>,
@@ -39,12 +38,6 @@ let queryClient: QueryClient;
 const loginAction = vi.fn();
 
 describe("RequestResetPasswordForm", () => {
-  genericSetup({
-    setNockAPI: (newScope) => {
-      nockAPI = newScope;
-    },
-  });
-
   beforeEach(() => {
     queryClient = new QueryClient(MockQueryClient);
 
@@ -218,13 +211,13 @@ describe("RequestResetPasswordForm", () => {
       it(name, async () => {
         localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ accessToken: "anon-access-token" }));
 
-        const nockResetPassword = nockAPI
-          .put(
-            "/short-code/update-password",
-            { ...form, lang: LangEnum.En },
-            { reqheaders: { Authorization: "Bearer anon-access-token" } }
-          )
-          .reply(responseStatus);
+        server.use(
+          http
+            .put("http://localhost:3000/short-code/update-password")
+            .headers(new Headers({ Authorization: "Bearer anon-access-token" }), HttpResponse.error())
+            .bodyJSON({ ...form, lang: LangEnum.En }, HttpResponse.error())
+            .resolve(() => HttpResponse.json(undefined, { status: responseStatus }))
+        );
 
         const emailInput = screen.getByLabelText(/form:fields\.email\.label/) as HTMLInputElement;
         const submitButton = screen.getByText(/authenticator\.resetPassword:form\.submit/, { selector: "button" });
@@ -235,11 +228,6 @@ describe("RequestResetPasswordForm", () => {
         // Submit the form.
         act(() => {
           fireEvent.click(submitButton);
-        });
-
-        // Wait for the form to submit.
-        await waitFor(() => {
-          nockResetPassword.done();
         });
 
         // Check the form errors.

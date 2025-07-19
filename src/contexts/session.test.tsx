@@ -1,4 +1,4 @@
-import { genericSetup } from "#/utils/setup";
+import "#/utils/setup";
 import { StandardWrapper } from "#/utils/wrapper";
 
 import { SESSION_STORAGE_KEY, type SessionContextType, SessionProvider, useAccessToken, useSession } from "./session";
@@ -38,8 +38,6 @@ export const MockSession: SessionContextType["session"] = {
 };
 
 describe("session provider", () => {
-  genericSetup({});
-
   it("returns session from context", async () => {
     const screen = render(
       <SessionProvider>
