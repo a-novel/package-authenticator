@@ -34,7 +34,7 @@ type FormTFunction = UseTranslateResult["t"];
 const formValidator = (t: FormTFunction) =>
   z.object({
     email: z
-      .string()
+      .email(t("fields.email.errors.invalid", { ns: "form" }))
       .nonempty(t("text.errors.required", { ns: "form" }))
       .min(
         BINDINGS_VALIDATION.EMAIL.MIN,
@@ -49,8 +49,7 @@ const formValidator = (t: FormTFunction) =>
           ns: "form",
           count: BINDINGS_VALIDATION.EMAIL.MAX,
         })
-      )
-      .email(t("fields.email.errors.invalid", { ns: "form" })),
+      ),
     password: z
       .string()
       .nonempty(t("text.errors.required", { ns: "form" }))
