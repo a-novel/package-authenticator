@@ -38,7 +38,7 @@
     "@tanstack/react-form": "^1.14.1"
   },
   "devDependencies": {
-    "@a-novel/connector-authentication": "^1.4.2",
+    "@a-novel/connector-authentication": "^1.4.3",
     "@a-novel/neon-ui": "^2.8.5",
     "@a-novel/nodelib": "^0.5.0",
     "@emotion/react": "^11.14.0",
