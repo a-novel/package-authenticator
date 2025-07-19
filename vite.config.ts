@@ -20,7 +20,7 @@ export default defineConfig({
       name,
       formats: ["es"],
       fileName: (format, entryName) =>
-        entryName === "index" ? `${entryName}.${format}.js` : `${entryName}/${entryName}.${format}.js`,
+        entryName === "index" ? `index.${format}.js` : `${entryName}/index.${format}.js`,
     },
     sourcemap: true,
     rollupOptions: {
