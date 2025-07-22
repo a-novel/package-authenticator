@@ -19,14 +19,11 @@ export interface AuthNavConnector {
 export interface AuthNavProps<
   Langs extends readonly string[] = readonly string[],
   HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
 > extends NavBarProps<Langs, HomeButtonProps> {
-  login?: Omit<ButtonProps<LoginButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
-  register?: Omit<ButtonProps<RegisterButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
-  logout?: Omit<ButtonProps<LogoutButtonProps>, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+  login?: Omit<ButtonProps<"button">, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+  register?: Omit<ButtonProps<"button">, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
+  logout?: Omit<ButtonProps<"button">, "children" | "variant" | "color" | "sx" | "onClick" | "component">;
   account: Omit<ButtonProps<ManageAccountButtonProps>, "children" | "variant" | "color" | "sx">;
   connector: AuthNavConnector;
 }
@@ -34,9 +31,6 @@ export interface AuthNavProps<
 export function AuthNav<
   Langs extends readonly string[] = readonly string[],
   HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
 >({
   login,
@@ -47,14 +41,7 @@ export function AuthNav<
   desktopActions,
   mobileActions,
   ...props
-}: AuthNavProps<
-  Langs,
-  HomeButtonProps,
-  LoginButtonProps,
-  RegisterButtonProps,
-  LogoutButtonProps,
-  ManageAccountButtonProps
->) {
+}: AuthNavProps<Langs, HomeButtonProps, ManageAccountButtonProps>) {
   return (
     <NavBar
       desktopActions={
