@@ -32,23 +32,8 @@ export function SessionProvider({ children, layout }: SessionProviderProps) {
 export function DefaultSessionLayout<
   Langs extends readonly string[] = readonly string[],
   HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
->(
-  preset: Omit<
-    AuthNavProps<
-      Langs,
-      HomeButtonProps,
-      LoginButtonProps,
-      RegisterButtonProps,
-      LogoutButtonProps,
-      ManageAccountButtonProps
-    >,
-    "connector"
-  >
-) {
+>(preset: Omit<AuthNavProps<Langs, HomeButtonProps, ManageAccountButtonProps>, "connector">) {
   return function SessionLayout({ children }: { children: ReactNode }) {
     return (
       <>
