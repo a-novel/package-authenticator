@@ -2,7 +2,7 @@ import { AuthFormProvider, SessionProvider as BaseSessionProvider, SessionSuspen
 
 import { useClientTag } from "@a-novel/package-ui/tanstack/start";
 
-import { type ComponentType, type ReactNode, useMemo, useState } from "react";
+import { type ComponentType, type ReactNode, useState } from "react";
 
 export interface SessionProviderProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ export interface SessionProviderProps {
 
 export function SessionProvider({ children, layout }: SessionProviderProps) {
   const [title, setTitle] = useState<string>();
-  useClientTag(useMemo(() => (title ? { title } : undefined), [title]));
+  useClientTag(() => (title ? [{ title }] : []), [title]);
 
   return (
     <BaseSessionProvider>
