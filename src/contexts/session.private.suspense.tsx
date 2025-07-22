@@ -1,7 +1,7 @@
 import { useAuthForm } from "./auth.form";
 import { useSession } from "./session";
 
-import { type ReactNode, useEffect } from "react";
+import { type ComponentType, type JSX, type ReactNode, useEffect } from "react";
 
 export interface SessionPrivateSuspenseProps {
   children?: ReactNode;
@@ -24,4 +24,14 @@ export function SessionPrivateSuspense({ children }: SessionPrivateSuspenseProps
   }
 
   return <>{children}</>;
+}
+
+export function WithPrivateSession<Props>(Component: ComponentType<Props>) {
+  return function PrivateSessionWrapper(props: Props & JSX.IntrinsicAttributes) {
+    return (
+      <SessionPrivateSuspense>
+        <Component {...props} />
+      </SessionPrivateSuspense>
+    );
+  };
 }

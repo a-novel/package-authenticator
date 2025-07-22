@@ -1,13 +1,8 @@
-import { AuthNav, type AuthNavProps } from "~/components/nav";
-import { useAuthNavConnector } from "~/connectors/nav";
-
 import { AuthFormProvider, SessionProvider as BaseSessionProvider, SessionSuspense } from "./contexts";
 
 import { useClientTag } from "@a-novel/package-ui/tanstack/start";
 
-import { type ComponentType, type ElementType, type ReactNode, useMemo, useState } from "react";
-
-import type { ButtonTypeMap } from "@mui/material";
+import { type ComponentType, type ReactNode, useMemo, useState } from "react";
 
 export interface SessionProviderProps {
   children: ReactNode;
@@ -29,23 +24,9 @@ export function SessionProvider({ children, layout }: SessionProviderProps) {
   );
 }
 
-export function DefaultSessionLayout<
-  Langs extends readonly string[] = readonly string[],
-  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
-  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
->(preset: Omit<AuthNavProps<Langs, HomeButtonProps, ManageAccountButtonProps>, "connector">) {
-  return function SessionLayout({ children }: { children: ReactNode }) {
-    return (
-      <>
-        <AuthNav connector={useAuthNavConnector()} {...preset} />
-        {children}
-      </>
-    );
-  };
-}
-
 export {
   SessionPrivateSuspense,
+  WithPrivateSession,
   SessionContext,
   useSession,
   useAccessToken,
