@@ -3,9 +3,9 @@ import { useAuthNavConnector } from "~/connectors/nav";
 
 import { AuthFormProvider, SessionProvider as BaseSessionProvider, SessionSuspense } from "./contexts";
 
-import { useTagManager } from "@a-novel/package-ui/tanstack/start";
+import { useClientTag } from "@a-novel/package-ui/tanstack/start";
 
-import { type ComponentType, type ElementType, type ReactNode, useState } from "react";
+import { type ComponentType, type ElementType, type ReactNode, useMemo, useState } from "react";
 
 import type { ButtonTypeMap } from "@mui/material";
 
@@ -16,7 +16,7 @@ export interface SessionProviderProps {
 
 export function SessionProvider({ children, layout }: SessionProviderProps) {
   const [title, setTitle] = useState<string>();
-  useTagManager({ tag: "title", children: title ?? "" }, title != null);
+  useClientTag(useMemo(() => (title ? { title } : undefined), [title]));
 
   return (
     <BaseSessionProvider>
