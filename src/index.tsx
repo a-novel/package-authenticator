@@ -52,3 +52,6 @@ export {
   SESSION_STORAGE_KEY,
   SessionSync,
 } from "./contexts";
+
+export { AuthNav, type AuthNavProps } from "~/components/nav";
+export { useAuthNavConnector } from "~/connectors/nav";
