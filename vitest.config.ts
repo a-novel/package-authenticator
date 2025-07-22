@@ -22,7 +22,7 @@ export default defineConfig({
     server: {
       deps: {
         // Mock the tolgee instance used by the UI components.
-        inline: ["@a-novel/neon-ui"],
+        inline: ["@a-novel/package-ui"],
       },
     },
     coverage: {

@@ -1,4 +1,4 @@
-import { theme } from "@a-novel/neon-ui";
+import { theme } from "@a-novel/package-ui/mui";
 
 import type { FC, ReactNode } from "react";
 

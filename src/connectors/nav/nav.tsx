@@ -6,7 +6,7 @@ import { GetUser } from "@a-novel/connector-authentication/hooks";
 
 import { useMemo } from "react";
 
-export const useAuthNavConnector = (): AuthNavConnector => {
+export function useAuthNavConnector(): AuthNavConnector {
   const authForm = useAuthForm();
 
   const sessionContext = useSession();
@@ -32,4 +32,4 @@ export const useAuthNavConnector = (): AuthNavConnector => {
     context: authForm,
     sessionContext,
   };
-};
+}

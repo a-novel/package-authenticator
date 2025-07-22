@@ -1,14 +1,13 @@
-import { useTolgeeNamespaces } from "~/shared";
-
 import { PopupForm, PopupFormFooter } from "./common";
 
 import {
   BINDINGS_VALIDATION,
   RequestRegistrationForm as RequestRegistrationRequest,
 } from "@a-novel/connector-authentication/api";
-import { SPACINGS } from "@a-novel/neon-ui";
-import { MaterialSymbol, Modal } from "@a-novel/neon-ui/ui";
-import { EmailInput } from "@a-novel/neon-ui/ux";
+import { MaterialSymbol, Modal } from "@a-novel/package-ui/mui/components";
+import { SPACINGS } from "@a-novel/package-ui/mui/utils";
+import { EmailInput } from "@a-novel/package-ui/tanstack/form";
+import { WithTolgeeNs } from "@a-novel/package-ui/translations";
 
 import { type MouseEventHandler } from "react";
 
@@ -72,9 +71,7 @@ export interface RequestRegisterFormProps<
   >;
 }
 
-const ns = ["authenticator.register", "form"];
-
-export const RequestRegisterForm = <
+function InnerRequestRegisterForm<
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
   TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
@@ -96,9 +93,8 @@ export const RequestRegisterForm = <
   TOnSubmitAsync,
   TOnServer,
   TSubmitMeta
->) => {
+>) {
   const { t } = useTranslate("form");
-  useTolgeeNamespaces(ns);
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
   const isSubmitSuccessful = useStore(connector.form.store, (state) => state.isSubmitSuccessful);
@@ -157,4 +153,6 @@ export const RequestRegisterForm = <
       </Modal>
     </>
   );
-};
+}
+
+export const RequestRegisterForm = WithTolgeeNs(InnerRequestRegisterForm, ["authenticator.register", "form"]);

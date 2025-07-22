@@ -3,8 +3,8 @@ import logo from "~/assets/images/banner.png";
 import { AuthNavDesktopAction, AuthNavMobileAction } from "~/components/nav";
 
 import { CredentialsRoleEnum } from "@a-novel/connector-authentication/api";
-import { SPACINGS } from "@a-novel/neon-ui";
-import { NavBar } from "@a-novel/neon-ui/ui";
+import { NavBar } from "@a-novel/package-ui/mui/components";
+import { SPACINGS } from "@a-novel/package-ui/mui/utils";
 
 import { Stack, Typography } from "@mui/material";
 import { type Meta, type StoryObj } from "@storybook/react-vite";
@@ -29,12 +29,12 @@ const meta: Meta<typeof AuthNavDesktopAction> = {
         lang={{
           langs: {
             en: {
-              displayCode: "ENG",
+              shortLabel: "ENG",
               flag: "us",
               label: "English",
             },
             fr: {
-              displayCode: "FRA",
+              shortLabel: "FRA",
               flag: "fr",
               label: "Français",
             },

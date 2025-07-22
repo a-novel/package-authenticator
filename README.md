@@ -45,80 +45,15 @@ You need to import material symbols in your app.
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 ```
 
-## Usage
+Also create the following `mui.d.ts` file (make sure it is included in your `tsconfig.json`):
 
-In your entry file.
+```typescript
+import type { AgoraUIButtonPropsVariant } from "@a-novel/package-ui/mui";
 
-```tsx
-import i18n from "./locale_i18n_instance";
+import "@mui/material";
 
-import { init as initAuthAPI } from "@a-novel/connector-authentication";
-import { theme } from "@a-novel/neon-ui";
-import { init as initAuthenticator, WithSession, useAuthNavConnector, AuthNav } from "@a-novel/package-authenticator";
-
-import { FC, ReactNode } from "react";
-
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { FormatIcu } from "@tolgee/format-icu";
-import { BackendFetch, Tolgee, TolgeeProvider } from "@tolgee/react";
-
-const cdn = "https://cdn.tolg.ee/74c1bb8828074430ae95b462ab95374b";
-
-// A Tolgee instance is required for translations.
-const tolgee = Tolgee()
-  .use(BackendFetch({ prefix: cdn }))
-  .use(FormatIcu())
-  .init({
-    defaultLanguage: "en",
-    fallbackLanguage: "en",
-    availableLanguages: ["en", "fr"],
-    defaultNs: "generic",
-  });
-
-// Make sure the global context is properly set up.
-initAuthAPI({ baseURL: import.meta.env.VITE_AUTH_API_URL });
-initAuthenticator({ logo: "/path/to/logo.png" });
-
-const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
-  const authConnector = useAuthNavConnector();
-
-  return (
-    <>
-      <AuthNav connector={authConnector} account={{ onClick: () => goTo("/manage/account/page") }} />
-      {children}
-    </>
-  );
-};
-
-export const App: FC<{ children: ReactNode }> = ({ children }) => (
-  <TolgeeProvider tolgee={tolgee}>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <WithSession layout={AppLayout}>{children}</WithSession>
-    </ThemeProvider>
-  </TolgeeProvider>
-);
-```
-
-### Make a page private
-
-Private pages are only accessible to authenticated users. If an anonymous user tries to load a private page, it will
-be presented with the login screen instead.
-
-```tsx
-import { SessionPrivateSuspense } from "@a-novel/package-authenticator";
-
-import { FC } from "react";
-
-const MyPage: FC = () => {
-  // ...
-
-  return (
-    <SessionPrivateSuspense>
-      <div>My private page</div>
-    </SessionPrivateSuspense>
-  );
-};
-
-export default MyPage;
+declare module "@mui/material" {
+  //eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface ButtonPropsVariantOverrides extends AgoraUIButtonPropsVariant {}
+}
 ```

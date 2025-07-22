@@ -2,7 +2,7 @@ import { LoginForm, type LoginFormProps } from "~/components/forms";
 import { FormPage } from "~/components/pages";
 
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
-import { FormRenderer, NewMockForm } from "@a-novel/neon-ui/storybook";
+import { FormRenderer, NewMockForm } from "@a-novel/package-ui/storybook";
 
 import { type FC } from "react";
 

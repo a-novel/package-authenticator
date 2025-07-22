@@ -3,7 +3,6 @@ import { Claims, Token } from "@a-novel/connector-authentication/api";
 import {
   createContext,
   type Dispatch,
-  type FC,
   type ReactNode,
   type SetStateAction,
   useCallback,
@@ -37,10 +36,6 @@ export interface SessionContextType {
   synced: boolean;
 }
 
-const errFn = () => {
-  throw new Error("Session context called prior to initialization. Make sure SessionProvider is set.");
-};
-
 export const SessionContext = createContext<SessionContextType>({
   setSession: errFn as Dispatch<SetStateAction<SessionState>>,
   synced: false as boolean,
@@ -56,38 +51,12 @@ export interface SessionProviderProps {
 export const SESSION_STORAGE_KEY = "a-novel-session";
 
 /**
- * Validates a session object, and return it if valid. Returns undefined if the session is invalid.
- */
-const parseSession = (
-  input: unknown,
-  /**
-   * Callback to be called if the session is valid.
-   */
-  callback?: (input: z.infer<typeof SessionSync>) => void,
-  /**
-   * Callback to be called if the session is invalid.
-   */
-  errorCallback?: (error: unknown) => void
-): z.infer<typeof SessionSync> | undefined => {
-  try {
-    // This line will throw an error if the provided input is not a valid session.
-    const session = SessionSync.parse(input);
-    // All good from here.
-    callback?.(session);
-    return session;
-  } catch (error) {
-    console.error(`invalid session: ${JSON.stringify(input, null, 2)}`);
-    errorCallback?.(error);
-  }
-};
-
-/**
  * Manages session information for the current user.
  *
  * This provider is only responsible from syncing and retrieving session from the environment. It does not perform API
  * calls nor does it manage the session lifecycle.
  */
-export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
+export function SessionProvider({ children }: SessionProviderProps) {
   const [session, setSessionDirect] = useState<z.infer<typeof SessionSync> | undefined>();
   const [synced, setSynced] = useState(false);
 
@@ -125,17 +94,49 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
   }, []);
 
   return <SessionContext.Provider value={{ session, setSession, synced }}>{children}</SessionContext.Provider>;
-};
+}
 
 /**
  * Return the current active session. This can be null if no session is active.
  */
-export const useSession = (): SessionContextType => useContext(SessionContext);
+export function useSession(): SessionContextType {
+  return useContext(SessionContext);
+}
 
 /**
  * Return the current access token. This can be an empty string if no session is active.
  */
-export const useAccessToken = (): string => {
+export function useAccessToken(): string {
   const { session } = useSession();
   return session?.accessToken ?? "";
-};
+}
+
+/**
+ * Validates a session object, and return it if valid. Returns undefined if the session is invalid.
+ */
+function parseSession(
+  input: unknown,
+  /**
+   * Callback to be called if the session is valid.
+   */
+  callback?: (input: z.infer<typeof SessionSync>) => void,
+  /**
+   * Callback to be called if the session is invalid.
+   */
+  errorCallback?: (error: unknown) => void
+): z.infer<typeof SessionSync> | undefined {
+  try {
+    // This line will throw an error if the provided input is not a valid session.
+    const session = SessionSync.parse(input);
+    // All good from here.
+    callback?.(session);
+    return session;
+  } catch (error) {
+    console.error(`invalid session: ${JSON.stringify(input, null, 2)}`);
+    errorCallback?.(error);
+  }
+}
+
+function errFn() {
+  throw new Error("Session context called prior to initialization. Make sure SessionProvider is set.");
+}

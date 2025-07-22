@@ -39,8 +39,8 @@
   },
   "devDependencies": {
     "@a-novel/connector-authentication": "^1.4.3",
-    "@a-novel/neon-ui": "^2.8.5",
     "@a-novel/nodelib": "^0.5.0",
+    "@a-novel/package-ui": "^0.2.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@eslint/js": "^9.31.0",
@@ -83,7 +83,7 @@
   },
   "peerDependencies": {
     "@a-novel/connector-authentication": "^1.4.0",
-    "@a-novel/neon-ui": "^2.8.4",
+    "@a-novel/package-ui": "^0.2.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.1.0",
@@ -105,8 +105,8 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@a-novel/connector-authentication",
-      "@a-novel/neon-ui",
       "@a-novel/nodelib",
+      "@a-novel/package-ui",
       "esbuild",
       "msw"
     ]

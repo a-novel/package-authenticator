@@ -1,16 +1,41 @@
-import { useTolgeeNamespaces } from "~/shared";
-
 import type { AuthNavDisplayProps } from "./common";
 
-import { SPACINGS } from "@a-novel/neon-ui";
-import { MaterialSymbol } from "@a-novel/neon-ui/ui";
-
-import { type FC } from "react";
+import { MaterialSymbol } from "@a-novel/package-ui/mui/components";
+import { SPACINGS } from "@a-novel/package-ui/mui/utils";
+import { WithTolgeeNs } from "@a-novel/package-ui/translations";
 
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { T } from "@tolgee/react";
 
-const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "account">> = ({ user, account }) => {
+function InnerAuthNavDesktopAction({ user, login, register, logout, account }: AuthNavDisplayProps) {
+  if (!user) {
+    return (
+      <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
+        <Button variant="contained" color="primary" {...login}>
+          <Typography>
+            <T keyName="action.login" ns="authenticator.nav" />
+          </Typography>
+        </Button>
+        <Button variant="contained" color="success" {...register}>
+          <Typography>
+            <T keyName="action.register" ns="authenticator.nav" />
+          </Typography>
+        </Button>
+      </Stack>
+    );
+  }
+
+  return (
+    <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
+      <UserButton user={user} account={account} />
+      <Button variant="contained" color="error" {...logout}>
+        <MaterialSymbol icon="logout" style={{ fontSize: "1.2rem", width: "1rem" }} />
+      </Button>
+    </Stack>
+  );
+}
+
+function UserButton({ user, account }: Pick<AuthNavDisplayProps, "user" | "account">) {
   if (!user?.data) {
     return (
       <Button
@@ -59,34 +84,6 @@ const UserButton: FC<Pick<AuthNavDisplayProps, "user" | "account">> = ({ user, a
       </Typography>
     </Button>
   );
-};
+}
 
-export const AuthNavDesktopAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, account }) => {
-  useTolgeeNamespaces("authenticator.nav");
-
-  if (!user) {
-    return (
-      <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
-        <Button variant="contained" color="primary" {...login}>
-          <Typography>
-            <T keyName="action.login" ns="authenticator.nav" />
-          </Typography>
-        </Button>
-        <Button variant="contained" color="success" {...register}>
-          <Typography>
-            <T keyName="action.register" ns="authenticator.nav" />
-          </Typography>
-        </Button>
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack flexDirection="row" alignItems="center" padding={0} gap={SPACINGS.MEDIUM}>
-      <UserButton user={user} account={account} />
-      <Button variant="contained" color="error" {...logout}>
-        <MaterialSymbol icon="logout" style={{ fontSize: "1.2rem", width: "1rem" }} />
-      </Button>
-    </Stack>
-  );
-};
+export const AuthNavDesktopAction = WithTolgeeNs(InnerAuthNavDesktopAction, ["authenticator.nav"]);

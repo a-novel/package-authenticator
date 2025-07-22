@@ -1,9 +1,8 @@
-import { useTolgeeNamespaces } from "~/shared";
-
 import { PopupForm, PopupFormFooter } from "./common";
 
 import { BINDINGS_VALIDATION, LoginForm as LoginRequest } from "@a-novel/connector-authentication/api";
-import { EmailInput, PasswordInput } from "@a-novel/neon-ui/ux";
+import { EmailInput, PasswordInput } from "@a-novel/package-ui/tanstack/form";
+import { WithTolgeeNs } from "@a-novel/package-ui/translations";
 
 import { type MouseEventHandler } from "react";
 
@@ -68,9 +67,7 @@ export interface LoginFormProps<
   >;
 }
 
-const ns = ["authenticator.login", "form"];
-
-export const LoginForm = <
+function InnerLoginForm<
   TOnMount extends undefined | FormValidateOrFn<z.infer<typeof LoginRequest>>,
   TOnChange extends undefined | FormValidateOrFn<z.infer<typeof LoginRequest>>,
   TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof LoginRequest>>,
@@ -92,9 +89,8 @@ export const LoginForm = <
   TOnSubmitAsync,
   TOnServer,
   TSubmitMeta
->) => {
+>) {
   const { t } = useTranslate("form");
-  useTolgeeNamespaces(ns);
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);
 
@@ -145,4 +141,6 @@ export const LoginForm = <
       </connector.form.Field>
     </PopupForm>
   );
-};
+}
+
+export const LoginForm = WithTolgeeNs(InnerLoginForm, ["authenticator.login", "form"]);

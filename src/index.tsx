@@ -1,33 +1,62 @@
-import { AuthFormProvider, SessionProvider, SessionSuspense } from "./contexts";
+import { AuthNav, type AuthNavProps } from "~/components/nav";
+import { useAuthNavConnector } from "~/connectors/nav";
 
-import type { ComponentType, ReactNode } from "react";
+import { AuthFormProvider, SessionProvider as BaseSessionProvider, SessionSuspense } from "./contexts";
 
-export { init, type InitProps } from "./shared";
+import { useTagManager } from "@a-novel/package-ui/tanstack/start";
 
-export interface WithSessionProps {
+import { type ComponentType, type ElementType, type ReactNode, useState } from "react";
+
+import type { ButtonTypeMap } from "@mui/material";
+
+export interface SessionProviderProps {
   children: ReactNode;
   layout?: ComponentType<{ children: ReactNode }>;
-  setTitle?: (title: string | undefined) => void;
 }
 
-export const WithSession = ({ children, layout, setTitle }: WithSessionProps) => (
-  <SessionProvider>
-    <SessionSuspense>
-      <AuthFormProvider setTitle={setTitle} layout={layout}>
+export function SessionProvider({ children, layout }: SessionProviderProps) {
+  const [title, setTitle] = useState<string>();
+  useTagManager({ tag: "title", children: title ?? "" }, title != null);
+
+  return (
+    <BaseSessionProvider>
+      <SessionSuspense>
+        <AuthFormProvider setTitle={setTitle} layout={layout}>
+          {children}
+        </AuthFormProvider>
+      </SessionSuspense>
+    </BaseSessionProvider>
+  );
+}
+
+export function DefaultSessionLayout<
+  Langs extends readonly string[] = readonly string[],
+  HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  LogoutButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+  ManageAccountButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
+>(
+  preset: Omit<
+    AuthNavProps<
+      Langs,
+      HomeButtonProps,
+      LoginButtonProps,
+      RegisterButtonProps,
+      LogoutButtonProps,
+      ManageAccountButtonProps
+    >,
+    "connector"
+  >
+) {
+  return function SessionLayout({ children }: { children: ReactNode }) {
+    return (
+      <>
+        <AuthNav connector={useAuthNavConnector()} {...preset} />
         {children}
-      </AuthFormProvider>
-    </SessionSuspense>
-  </SessionProvider>
-);
+      </>
+    );
+  };
+}
 
-export { useAuthNavConnector } from "./connectors/nav";
-export { AuthNav } from "./components/nav";
-
-export {
-  SessionPrivateSuspense,
-  SessionContext,
-  useSession,
-  useAccessToken,
-  SessionSync,
-  SESSION_STORAGE_KEY,
-} from "./contexts";
+export { SessionPrivateSuspense, SessionContext, useSession, useAccessToken } from "./contexts";
