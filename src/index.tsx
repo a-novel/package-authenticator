@@ -59,4 +59,11 @@ export function DefaultSessionLayout<
   };
 }
 
-export { SessionPrivateSuspense, SessionContext, useSession, useAccessToken } from "./contexts";
+export {
+  SessionPrivateSuspense,
+  SessionContext,
+  useSession,
+  useAccessToken,
+  SESSION_STORAGE_KEY,
+  SessionSync,
+} from "./contexts";
