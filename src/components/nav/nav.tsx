@@ -4,7 +4,7 @@ import type { AuthNavDisplayProps } from "./common";
 import { AuthNavDesktopAction } from "./desktop";
 import { AuthNavMobileAction } from "./mobile";
 
-import { type CountryType, NavBar, type NavBarProps } from "@a-novel/neon-ui/ui";
+import { NavBar, type NavBarProps } from "@a-novel/package-ui/mui/components";
 
 import type { ElementType } from "react";
 
@@ -17,7 +17,7 @@ export interface AuthNavConnector {
 }
 
 export interface AuthNavProps<
-  Langs extends Record<string, CountryType> = Record<string, CountryType>,
+  Langs extends readonly string[] = readonly string[],
   HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
@@ -31,8 +31,8 @@ export interface AuthNavProps<
   connector: AuthNavConnector;
 }
 
-export const AuthNav = <
-  Langs extends Record<string, CountryType> = Record<string, CountryType>,
+export function AuthNav<
+  Langs extends readonly string[] = readonly string[],
   HomeButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   LoginButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
   RegisterButtonProps extends ElementType = ButtonTypeMap["defaultComponent"],
@@ -54,32 +54,34 @@ export const AuthNav = <
   RegisterButtonProps,
   LogoutButtonProps,
   ManageAccountButtonProps
->) => (
-  <NavBar
-    desktopActions={
-      <>
-        {desktopActions}
-        <AuthNavDesktopAction
-          user={connector.user}
-          login={{ onClick: () => connector.context.selectForm("login"), ...login }}
-          register={{ onClick: () => connector.context.selectForm("register"), ...register }}
-          logout={{ onClick: () => connector.sessionContext.setSession(undefined), ...logout }}
-          account={account}
-        />
-      </>
-    }
-    mobileActions={
-      <>
-        {mobileActions}
-        <AuthNavMobileAction
-          user={connector.user}
-          login={{ onClick: () => connector.context.selectForm("login"), ...login }}
-          register={{ onClick: () => connector.context.selectForm("register"), ...register }}
-          logout={{ onClick: () => connector.sessionContext.setSession(undefined), ...logout }}
-          account={account}
-        />
-      </>
-    }
-    {...props}
-  />
-);
+>) {
+  return (
+    <NavBar
+      desktopActions={
+        <>
+          {desktopActions}
+          <AuthNavDesktopAction
+            user={connector.user}
+            login={{ onClick: () => connector.context.selectForm("login"), ...login }}
+            register={{ onClick: () => connector.context.selectForm("register"), ...register }}
+            logout={{ onClick: () => connector.sessionContext.setSession(undefined), ...logout }}
+            account={account}
+          />
+        </>
+      }
+      mobileActions={
+        <>
+          {mobileActions}
+          <AuthNavMobileAction
+            user={connector.user}
+            login={{ onClick: () => connector.context.selectForm("login"), ...login }}
+            register={{ onClick: () => connector.context.selectForm("register"), ...register }}
+            logout={{ onClick: () => connector.sessionContext.setSession(undefined), ...logout }}
+            account={account}
+          />
+        </>
+      }
+      {...props}
+    />
+  );
+}

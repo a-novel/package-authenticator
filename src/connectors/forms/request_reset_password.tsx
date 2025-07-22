@@ -1,9 +1,10 @@
 import { type RequestResetPasswordFormConnector } from "~/components/forms";
 import { useAccessToken } from "~/contexts";
-import { getLang, useTolgeeNamespaces } from "~/shared";
+import { getLang } from "~/shared";
 
 import { BINDINGS_VALIDATION, isUserNotFoundError, Lang, LangEnum } from "@a-novel/connector-authentication/api";
 import { RequestPasswordReset } from "@a-novel/connector-authentication/hooks";
+import { useTolgeeNs } from "@a-novel/package-ui/translations";
 
 import { type MouseEventHandler } from "react";
 
@@ -20,47 +21,9 @@ export interface RequestResetPasswordFormConnectorParams {
 
 type FormTFunction = UseTranslateResult["t"];
 
-/**
- * Extends the original form with translated error messages.
- */
-const formValidator = (t: FormTFunction) =>
-  z.object({
-    email: z
-      .email(t("fields.email.errors.invalid", { ns: "form" }))
-      .nonempty(t("text.errors.required", { ns: "form" }))
-      .min(
-        BINDINGS_VALIDATION.EMAIL.MIN,
-        t("text.errors.tooShort", {
-          ns: "form",
-          count: BINDINGS_VALIDATION.EMAIL.MIN,
-        })
-      )
-      .max(
-        BINDINGS_VALIDATION.EMAIL.MAX,
-        t("text.errors.tooLong", {
-          ns: "form",
-          count: BINDINGS_VALIDATION.EMAIL.MAX,
-        })
-      ),
-    lang: Lang,
-  });
-
-/**
- * Handle error from login form submit. Properly sets field errors for tanstack depending on the returned value.
- */
-const handleSubmitError = (t: FormTFunction) => (error: any) => {
-  if (isUserNotFoundError(error)) {
-    return {
-      fields: { email: t("fields.email.errors.notFound", { ns: "form" }) },
-    };
-  }
-
-  return `${t("form.errors.generic", { ns: "authenticator.resetPassword" })} ${t("error", { ns: "generic" })}`;
-};
-
 const ns = ["form", "generic", "authenticator.resetPassword"];
 
-export const useRequestResetPasswordFormConnector = ({
+export function useRequestResetPasswordFormConnector({
   loginAction,
 }: RequestResetPasswordFormConnectorParams): RequestResetPasswordFormConnector<
   any,
@@ -72,10 +35,11 @@ export const useRequestResetPasswordFormConnector = ({
   any,
   any,
   any
-> => {
+> {
+  useTolgeeNs(ns);
+
   const { getLanguage, getPendingLanguage } = useTolgee();
   const { t } = useTranslate(ns);
-  useTolgeeNamespaces(ns);
 
   const accessToken = useAccessToken();
   const requestResetPasswordLink = RequestPasswordReset.useAPI(accessToken);
@@ -102,7 +66,7 @@ export const useRequestResetPasswordFormConnector = ({
             lang: getLang(getLanguage() ?? getPendingLanguage() ?? LangEnum.En),
           })
           .then(() => null)
-          .catch(handleSubmitError(t)),
+          .catch(newSubmitErrorHandler(t)),
     },
   });
 
@@ -110,4 +74,45 @@ export const useRequestResetPasswordFormConnector = ({
     form,
     loginAction,
   };
-};
+}
+
+/**
+ * Extends the original form with translated error messages.
+ */
+function formValidator(t: FormTFunction) {
+  return z.object({
+    email: z
+      .email(t("fields.email.errors.invalid", { ns: "form" }))
+      .nonempty(t("text.errors.required", { ns: "form" }))
+      .min(
+        BINDINGS_VALIDATION.EMAIL.MIN,
+        t("text.errors.tooShort", {
+          ns: "form",
+          count: BINDINGS_VALIDATION.EMAIL.MIN,
+        })
+      )
+      .max(
+        BINDINGS_VALIDATION.EMAIL.MAX,
+        t("text.errors.tooLong", {
+          ns: "form",
+          count: BINDINGS_VALIDATION.EMAIL.MAX,
+        })
+      ),
+    lang: Lang,
+  });
+}
+
+/**
+ * Handle error from login form submit. Properly sets field errors for tanstack depending on the returned value.
+ */
+function newSubmitErrorHandler(t: FormTFunction) {
+  return function handleSubmitError(error: any) {
+    if (isUserNotFoundError(error)) {
+      return {
+        fields: { email: t("fields.email.errors.notFound", { ns: "form" }) },
+      };
+    }
+
+    return `${t("form.errors.generic", { ns: "authenticator.resetPassword" })} ${t("error", { ns: "generic" })}`;
+  };
+}

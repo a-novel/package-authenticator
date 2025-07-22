@@ -5,18 +5,10 @@ import {
   useRequestRegisterFormConnector,
   useRequestResetPasswordFormConnector,
 } from "~/connectors/forms";
-import { useTolgeeNamespaces } from "~/shared";
 
-import {
-  type ComponentType,
-  createContext,
-  type FC,
-  type ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useTolgeeNs } from "@a-novel/package-ui/translations";
+
+import { type ComponentType, createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslate } from "@tolgee/react";
 
@@ -55,9 +47,9 @@ const FORM_TITLES = {
 
 const ns = ["authenticator.login", "authenticator.register", "authenticator.resetPassword"];
 
-export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: Layout, setTitle, ...props }) => {
+export function AuthFormProvider({ children, layout: Layout, setTitle, ...props }: AuthFormProviderProps) {
   const { t } = useTranslate(ns);
-  useTolgeeNamespaces(ns);
+  useTolgeeNs(ns);
 
   const [showForm, setShowForm] = useState<AuthFormSelect>();
 
@@ -114,6 +106,8 @@ export const AuthFormProvider: FC<AuthFormProviderProps> = ({ children, layout: 
       {Layout ? <Layout>{actualChildren}</Layout> : actualChildren}
     </AuthFormContext.Provider>
   );
-};
+}
 
-export const useAuthForm = () => useContext(AuthFormContext);
+export function useAuthForm() {
+  return useContext(AuthFormContext);
+}

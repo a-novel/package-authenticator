@@ -1,6 +1,6 @@
 import logo from "~/assets/images/banner.png?inline";
 
-import { SPACINGS } from "@a-novel/neon-ui";
+import { SPACINGS } from "@a-novel/package-ui/mui/utils";
 
 import { type FC, type ReactNode } from "react";
 

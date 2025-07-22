@@ -1,13 +1,13 @@
 import { useAuthForm } from "./auth.form";
 import { useSession } from "./session";
 
-import { type FC, type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 
 export interface SessionPrivateSuspenseProps {
   children?: ReactNode;
 }
 
-export const SessionPrivateSuspense: FC<SessionPrivateSuspenseProps> = ({ children }) => {
+export function SessionPrivateSuspense({ children }: SessionPrivateSuspenseProps) {
   const { session, synced } = useSession();
   const { selectForm } = useAuthForm();
 
@@ -24,4 +24,4 @@ export const SessionPrivateSuspense: FC<SessionPrivateSuspenseProps> = ({ childr
   }
 
   return <>{children}</>;
-};
+}

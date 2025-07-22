@@ -1,54 +1,12 @@
-import { useTolgeeNamespaces } from "~/shared";
-
 import type { AuthNavDisplayProps } from "./common";
 
-import { SPACINGS } from "@a-novel/neon-ui";
-
-import { type FC } from "react";
+import { SPACINGS } from "@a-novel/package-ui/mui/utils";
+import { WithTolgeeNs } from "@a-novel/package-ui/translations";
 
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { T } from "@tolgee/react";
 
-const UserInfo: FC<Pick<AuthNavDisplayProps, "user">> = ({ user }) => {
-  useTolgeeNamespaces("authenticator.nav");
-
-  if (user?.data) {
-    return (
-      <Typography
-        color="textSecondary"
-        whiteSpace="break-spaces"
-        textAlign="center"
-        sx={(theme) => ({
-          wordBreak: "break-all",
-          "> strong": {
-            color: theme.palette.text.primary,
-          },
-        })}
-      >
-        <T keyName="userInfo.connectedAs" ns="authenticator.nav" params={{ user: user.data.email }} />
-      </Typography>
-    );
-  }
-
-  if (user?.error) {
-    return (
-      <Typography color="error" textAlign="center">
-        <T keyName="userInfo.error" ns="authenticator.nav" />
-      </Typography>
-    );
-  }
-
-  return (
-    <>
-      <Skeleton variant="rounded" width="100%" height="1rem" />
-      <Skeleton variant="rounded" width="100%" height="1rem" />
-    </>
-  );
-};
-
-export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, register, logout, account }) => {
-  useTolgeeNamespaces("authenticator.nav");
-
+function InnerAuthNavMobileAction({ user, login, register, logout, account }: AuthNavDisplayProps) {
   if (!user) {
     return (
       <Stack flexDirection="column" alignItems="stretch" padding={0} gap={SPACINGS.MEDIUM}>
@@ -82,4 +40,41 @@ export const AuthNavMobileAction: FC<AuthNavDisplayProps> = ({ user, login, regi
       </Button>
     </Stack>
   );
-};
+}
+
+function UserInfo({ user }: Pick<AuthNavDisplayProps, "user">) {
+  if (user?.data) {
+    return (
+      <Typography
+        color="textSecondary"
+        whiteSpace="break-spaces"
+        textAlign="center"
+        sx={(theme) => ({
+          wordBreak: "break-all",
+          "> strong": {
+            color: theme.palette.text.primary,
+          },
+        })}
+      >
+        <T keyName="userInfo.connectedAs" ns="authenticator.nav" params={{ user: user.data.email }} />
+      </Typography>
+    );
+  }
+
+  if (user?.error) {
+    return (
+      <Typography color="error" textAlign="center">
+        <T keyName="userInfo.error" ns="authenticator.nav" />
+      </Typography>
+    );
+  }
+
+  return (
+    <>
+      <Skeleton variant="rounded" width="100%" height="1rem" />
+      <Skeleton variant="rounded" width="100%" height="1rem" />
+    </>
+  );
+}
+
+export const AuthNavMobileAction = WithTolgeeNs(InnerAuthNavMobileAction, ["authenticator.nav"]);

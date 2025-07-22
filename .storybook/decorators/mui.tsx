@@ -1,4 +1,4 @@
-import { theme } from "@a-novel/neon-ui";
+import { theme } from "@a-novel/package-ui/mui";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import type { Decorator } from "@storybook/react-vite";

@@ -6,7 +6,7 @@ import * as formsConnectors from "~/connectors/forms";
 
 import { AuthFormProvider, type AuthFormSelect, useAuthForm } from "./auth.form";
 
-import { NewMockForm } from "@a-novel/neon-ui/storybook";
+import { NewMockForm } from "@a-novel/package-ui/storybook";
 
 import { type FC, type ReactNode, useEffect } from "react";
 
