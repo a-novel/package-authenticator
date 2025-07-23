@@ -25,7 +25,7 @@ export function PopupForm({ children, title, form, submitButton, footer }: Popup
       boxSizing="border-box"
       maxWidth="100vw"
     >
-      <Typography textAlign="center" variant="h2" component="h1" margin={0} padding={0} color="primary">
+      <Typography textAlign="center" variant="h1" margin={0} padding={0} color="primary">
         {title}
       </Typography>
 
