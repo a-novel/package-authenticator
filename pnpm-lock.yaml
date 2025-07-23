@@ -13,14 +13,14 @@ importers:
         version: 1.14.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@a-novel/connector-authentication':
-        specifier: ^1.4.3
-        version: 1.4.3(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.5)
+        specifier: ^1.4.4
+        version: 1.4.4(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.5)
       '@a-novel/nodelib':
-        specifier: ^0.6.2
-        version: 0.6.2(@tanstack/react-query@5.83.0(react@19.1.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))
+        specifier: ^0.6.3
+        version: 0.6.3(@tanstack/react-query@5.83.0(react@19.1.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))
       '@a-novel/package-ui':
-        specifier: ^0.6.0
-        version: 0.6.0(eaadba7a7822237a8921f96e990fa116)
+        specifier: ^0.6.2
+        version: 0.6.2(eaadba7a7822237a8921f96e990fa116)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.8)(react@19.1.0)
@@ -141,16 +141,16 @@ importers:
 
 packages:
 
-  '@a-novel/connector-authentication@1.4.3':
-    resolution: {integrity: sha512-dBVqk3zR9loBNtZ3Sjxgx6MsYIuIif2Vor/dJFVmeZwO0KIkhX06cnXlpNcxuVoggVShYa6uGJYJCG+dUsqQCg==, tarball: https://npm.pkg.github.com/download/@a-novel/connector-authentication/1.4.3/47090afd3181454e55c94b6c8c16208d8b94b460}
+  '@a-novel/connector-authentication@1.4.4':
+    resolution: {integrity: sha512-ApujyKf6TDmbcGA+b9bKrGDS8nY89hmjDQxY5AOZu/DQU4VOeykV5983JCFvlNw2KWheHeMLHoee5uIz/appew==, tarball: https://npm.pkg.github.com/download/@a-novel/connector-authentication/1.4.4/5f314b12a98a60704dcc89936e9ba8ef19225530}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
       react: ^19.0.0
       zod: ^4.0.0
 
-  '@a-novel/nodelib@0.6.2':
-    resolution: {integrity: sha512-WiIYxRslkH+z+omrCn62vqeXlDFT4tlFEuGht4JsGcNbKpsIONzO0kh/cU6+HE4KM+XSJH9eVElloiWt0Ty5vg==, tarball: https://npm.pkg.github.com/download/@a-novel/nodelib/0.6.2/7d7bd532fe57d8a87b20a41b3156d6e7692c5dec}
+  '@a-novel/nodelib@0.6.3':
+    resolution: {integrity: sha512-d61DpCrdgC3qHVxb5LvqWlaMJi+Alm04nFQ5gAwmhIxEBGu6RL2Me5Hxf2q8MA14mz8HbkKSc4AX6pWZXg3itg==, tarball: https://npm.pkg.github.com/download/@a-novel/nodelib/0.6.3/d4cf709398cffe0e92b48fc9e6d9f863e69b5594}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@tanstack/react-query': ^5.83.0
@@ -158,15 +158,15 @@ packages:
       msw: ^2.10.4
       vitest: ^3.2.4
 
-  '@a-novel/package-ui@0.6.0':
-    resolution: {integrity: sha512-ZXjjIHiTh2JaraiZb0iDtKbYeBNGKVW3p/zcFEkmGjYp/1VXVbgT/ouZJPL+NG3+tE+5fOIpNuBRqIsoAMdhfg==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.6.0/9cacb099ab5303bb32867223f1753af5e56ffb67}
+  '@a-novel/package-ui@0.6.2':
+    resolution: {integrity: sha512-n/DqS12RZawogc4bHj8pIJeMrL10RZsa2S1AnykNXVOOv0AwdVSkKJBzQ6iSW0VC3nljOSsPzk9BGt3Y8ryA0Q==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.6.2/5780d2f8ed7468d93e0af545672b478ce5a55b46}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@emotion/react': ^11.14.0
       '@emotion/styled': ^11.14.0
       '@fontsource/arimo': ^5.2.6
       '@mui/material': ^7.1.0
-      '@tanstack/react-form': ^1.14.1
+      '@tanstack/react-form': ^1.14.2
       '@tanstack/react-query': ^5.83.0
       '@tanstack/react-router': ^1.128.3
       '@tanstack/react-router-with-query': ^1.128.3
@@ -1837,6 +1837,10 @@ packages:
 
   aria-query@5.3.0:
     resolution: {integrity: sha512-b0P0sZPKtyu8HkeRAfCq0IfURZK+SuwMjY1UXGBU27wpAiTwQAIlq56IbIO+ytk/JjS1fMR14ee5WBBfKi5J6A==}
+
+  aria-query@5.3.2:
+    resolution: {integrity: sha512-COROpnaoap1E2F000S62r6A60uHZnmlvomhfyT2DlTcrY1OrBKn2UhH7qn5wTC9zMvD0AY7csdPSNwKP+7WiQw==}
+    engines: {node: '>= 0.4'}
 
   array-buffer-byte-length@1.0.2:
     resolution: {integrity: sha512-LHE+8BuR7RYGDKvnrmcuSq3tDcKv9OFEXQt/HpbZhY7V6h0zlUXutnAD82GiFx9rdieCMjkvtcsPqBwgUl1Iiw==}
@@ -3822,13 +3826,13 @@ packages:
 
 snapshots:
 
-  '@a-novel/connector-authentication@1.4.3(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.5)':
+  '@a-novel/connector-authentication@1.4.4(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.5)':
     dependencies:
       '@tanstack/react-query': 5.83.0(react@19.1.0)
       react: 19.1.0
       zod: 4.0.5
 
-  '@a-novel/nodelib@0.6.2(@tanstack/react-query@5.83.0(react@19.1.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))':
+  '@a-novel/nodelib@0.6.3(@tanstack/react-query@5.83.0(react@19.1.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))':
     dependencies:
       '@tanstack/react-query': 5.83.0(react@19.1.0)
       '@testing-library/react': 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -3837,7 +3841,7 @@ snapshots:
       msw: 2.10.4(@types/node@24.1.0)(typescript@5.8.3)
       vitest: 3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))
 
-  '@a-novel/package-ui@0.6.0(eaadba7a7822237a8921f96e990fa116)':
+  '@a-novel/package-ui@0.6.2(eaadba7a7822237a8921f96e990fa116)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.8)(react@19.1.0)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
@@ -5363,7 +5367,7 @@ snapshots:
   '@testing-library/jest-dom@6.6.3':
     dependencies:
       '@adobe/css-tools': 4.4.3
-      aria-query: 5.3.0
+      aria-query: 5.3.2
       chalk: 3.0.0
       css.escape: 1.5.1
       dom-accessibility-api: 0.6.3
@@ -5684,6 +5688,8 @@ snapshots:
   aria-query@5.3.0:
     dependencies:
       dequal: 2.0.3
+
+  aria-query@5.3.2: {}
 
   array-buffer-byte-length@1.0.2:
     dependencies:
