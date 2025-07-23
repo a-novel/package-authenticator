@@ -103,7 +103,6 @@ function InnerRequestRegisterForm<
   return (
     <>
       <PopupForm
-        title={<T keyName="title" ns="authenticator.register" />}
         form={connector.form}
         submitButton={<T keyName={isSubmitting ? "form.submitting" : "form.submit"} ns="authenticator.register" />}
         footer={

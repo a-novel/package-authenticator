@@ -103,7 +103,6 @@ function InnerRequestResetPasswordForm<
   return (
     <>
       <PopupForm
-        title={<T keyName="title" ns="authenticator.resetPassword" />}
         form={connector.form}
         submitButton={<T keyName={isSubmitting ? "form.submitting" : "form.submit"} ns="authenticator.resetPassword" />}
         footer={

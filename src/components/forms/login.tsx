@@ -96,7 +96,6 @@ function InnerLoginForm<
 
   return (
     <PopupForm
-      title={<T keyName="title" ns="authenticator.login" />}
       form={connector.form}
       submitButton={<T keyName={isSubmitting ? "form.submitting" : "form.submit"} ns="authenticator.login" />}
       footer={
