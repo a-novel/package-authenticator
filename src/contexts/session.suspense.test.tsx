@@ -1,4 +1,3 @@
-import { MockQueryClient } from "#/mocks/query_client";
 import "#/mocks/tolgee";
 import { server } from "#/utils/setup";
 import { QueryWrapper } from "#/utils/wrapper";
@@ -8,6 +7,7 @@ import { SessionSuspense } from "./session.suspense";
 import { MockSession } from "./session.test";
 
 import { UnauthorizedError } from "@a-novel/connector-authentication/api";
+import { MockQueryClient } from "@a-novel/nodelib/mocks/query_client";
 import { http } from "@a-novel/nodelib/msw";
 
 import { QueryClient, useQuery } from "@tanstack/react-query";
