@@ -26,7 +26,7 @@ function InnerAuthNavDesktopAction({ user, login, register, logout, account }: A
   }
 
   return (
-    <Stack flexDirection="row" alignItems="center" alignSelf="stretch" padding={0} gap={SPACINGS.MEDIUM}>
+    <Stack flexDirection="row" alignItems="stretch" padding={0} gap={SPACINGS.MEDIUM}>
       <UserButton user={user} account={account} />
       <Button variant="contained" color="error" {...logout}>
         <MaterialSymbol icon="logout" style={{ fontSize: "1.2rem", width: "1rem" }} />
