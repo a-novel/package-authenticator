@@ -5,23 +5,24 @@ import { useClientTag } from "@a-novel/package-ui/tanstack/start";
 import { type ComponentType, type ReactNode, useState } from "react";
 
 export interface SessionProviderProps {
-  children: ReactNode;
   layout?: ComponentType<{ children: ReactNode }>;
 }
 
-export function SessionProvider({ children, layout }: SessionProviderProps) {
-  const [title, setTitle] = useState<string>();
-  useClientTag(() => (title ? [{ title }] : []), [title]);
+export function DefaultSessionProvider({ layout }: SessionProviderProps) {
+  return function SessionProvider({ children }: { children: ReactNode }) {
+    const [title, setTitle] = useState<string>();
+    useClientTag(() => (title ? [{ title }] : []), [title]);
 
-  return (
-    <BaseSessionProvider>
-      <SessionSuspense>
-        <AuthFormProvider setTitle={setTitle} layout={layout}>
-          {children}
-        </AuthFormProvider>
-      </SessionSuspense>
-    </BaseSessionProvider>
-  );
+    return (
+      <BaseSessionProvider>
+        <SessionSuspense>
+          <AuthFormProvider setTitle={setTitle} layout={layout}>
+            {children}
+          </AuthFormProvider>
+        </SessionSuspense>
+      </BaseSessionProvider>
+    );
+  };
 }
 
 export {
