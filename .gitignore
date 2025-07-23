@@ -1,32 +1,17 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-storybook-static
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+# IDE
 .idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
 
-.envrc
+# Build files
+dist
 
-coverage
+# Storybook files
 storybook-static
+
+# Coverage and test files
+coverage
+test-results
+
+# Node modules
+node_modules
 
 *storybook.log

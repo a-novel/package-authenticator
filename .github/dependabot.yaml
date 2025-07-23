@@ -15,16 +15,10 @@ updates:
     schedule:
       interval: daily
     ignore:
-      # Ignore storybook major updates, as they require a migration script
+      # Ignore storybook updates, as they require a migration script
       - dependency-name: "@storybook/*"
-        update-types:
-          - version-update:semver-major
       - dependency-name: "storybook"
-        update-types:
-          - version-update:semver-major
       - dependency-name: "eslint-plugin-storybook"
-        update-types:
-          - version-update:semver-major
     registries:
       - npm-github
     groups:
@@ -33,12 +27,6 @@ updates:
         patterns:
           - "react"
           - "react-dom"
-      storybook:
-        applies-to: version-updates
-        patterns:
-          - storybook
-          - "@storybook/*"
-          - eslint-plugin-storybook
       emotion:
         applies-to: version-updates
         patterns:
