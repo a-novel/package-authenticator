@@ -3,8 +3,8 @@
   "assignAutomerge": true,
   "assignees": ["kushuh"],
   "postUpgradeTasks": {
-    "commands": ["pnpm i --frozen-lockfile", "pnpm format"],
-    "executionMode": "update"
+    "commands": ["pnpm format"],
+    "executionMode": "branch"
   },
   "packageRules": [
     {
