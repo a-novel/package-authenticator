@@ -18,5 +18,7 @@ jobs:
           RENOVATE_REPOSITORIES: "['a-novel/package-authenticator']"
           RENOVATE_DETECT_HOST_RULES_FROM_ENV: true
           RENOVATE_NPM_NPM_PKG_GITHUB_COM_TOKEN: ${{ secrets.ACTION_PAT }}
+          RENOVATE_SECRETS: "{GITHUB_TOKEN: ${{ secrets.ACTION_PAT }}"
+          RENOVATE_CUSTOM_ENV_VARIABLES: "{GITHUB_TOKEN: '{{ secrets.GITHUB_TOKEN }}'}"
           RENOVATE_PR_HOURLY_LIMIT: 0
           LOG_LEVEL: debug
