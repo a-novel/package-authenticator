@@ -14,13 +14,13 @@ importers:
     devDependencies:
       '@a-novel/connector-authentication':
         specifier: ^1.4.4
-        version: 1.4.4(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.8)
+        version: 1.4.4(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.10)
       '@a-novel/nodelib':
         specifier: ^0.7.3
         version: 0.7.3(@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))(@playwright/test@1.54.1)(@tanstack/react-query@5.83.0(react@19.1.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))
       '@a-novel/package-ui':
         specifier: ^0.6.2
-        version: 0.6.2(072cd20d6c26f67be3467562c18a2fcf)
+        version: 0.6.2(442b9d40a0b29c098949a7ae4322a419)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.8)(react@19.1.0)
@@ -137,7 +137,7 @@ importers:
         version: 3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))
       zod:
         specifier: ^4.0.8
-        version: 4.0.8
+        version: 4.0.10
 
 packages:
 
@@ -1148,6 +1148,10 @@ packages:
 
   '@mswjs/interceptors@0.39.3':
     resolution: {integrity: sha512-9bw/wBL7pblsnOCIqvn1788S9o4h+cC5HWXg0Xhh0dOzsZ53IyfmBM+FYqpDDPbm0xjCqEqvCITloF3Dm4TXRQ==}
+    engines: {node: '>=18'}
+
+  '@mswjs/interceptors@0.39.4':
+    resolution: {integrity: sha512-B82DbrGVCIBrNEfRJbqUFB0eNz0wVzqbenEpmbE71XLVU4yKZbDnRBuxz+7udc/uM7LDWDD4sRJ5tISzHf2QkQ==}
     engines: {node: '>=18'}
 
   '@mui/core-downloads-tracker@7.2.0':
@@ -3862,16 +3866,16 @@ packages:
     resolution: {integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==}
     engines: {node: '>=18'}
 
-  zod@4.0.8:
-    resolution: {integrity: sha512-+MSh9cZU9r3QKlHqrgHMTSr3QwMGv4PLfR0M4N/sYWV5/x67HgXEhIGObdBkpnX8G78pTgWnIrBL2lZcNJOtfg==}
+  zod@4.0.10:
+    resolution: {integrity: sha512-3vB+UU3/VmLL2lvwcY/4RV2i9z/YU0DTV/tDuYjrwmx5WeJ7hwy+rGEEx8glHp6Yxw7ibRbKSaIFBgReRPe5KA==}
 
 snapshots:
 
-  '@a-novel/connector-authentication@1.4.4(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.8)':
+  '@a-novel/connector-authentication@1.4.4(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)(zod@4.0.10)':
     dependencies:
       '@tanstack/react-query': 5.83.0(react@19.1.0)
       react: 19.1.0
-      zod: 4.0.8
+      zod: 4.0.10
 
   '@a-novel/nodelib@0.7.3(@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))(@playwright/test@1.54.1)(@tanstack/react-query@5.83.0(react@19.1.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3)))':
     dependencies:
@@ -3886,7 +3890,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))
 
-  '@a-novel/package-ui@0.6.2(072cd20d6c26f67be3467562c18a2fcf)':
+  '@a-novel/package-ui@0.6.2(442b9d40a0b29c098949a7ae4322a419)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.8)(react@19.1.0)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
@@ -3900,7 +3904,7 @@ snapshots:
       '@tolgee/react': 6.2.6(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-      zod: 4.0.8
+      zod: 4.0.10
 
   '@adobe/css-tools@4.4.3': {}
 
@@ -4984,11 +4988,20 @@ snapshots:
 
   '@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.1.0)(typescript@5.8.3))':
     dependencies:
-      '@mswjs/interceptors': 0.39.3
+      '@mswjs/interceptors': 0.39.4
       msw: 2.10.4(@types/node@24.1.0)(typescript@5.8.3)
       outvariant: 1.4.3
 
   '@mswjs/interceptors@0.39.3':
+    dependencies:
+      '@open-draft/deferred-promise': 2.2.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      is-node-process: 1.2.0
+      outvariant: 1.4.3
+      strict-event-emitter: 0.5.1
+
+  '@mswjs/interceptors@0.39.4':
     dependencies:
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/logger': 0.3.0
@@ -8006,4 +8019,4 @@ snapshots:
 
   yoctocolors-cjs@2.1.2: {}
 
-  zod@4.0.8: {}
+  zod@4.0.10: {}
