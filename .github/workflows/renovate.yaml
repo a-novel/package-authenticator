@@ -14,7 +14,7 @@ jobs:
         with:
           token: ${{ secrets.ACTION_PAT }}
         env:
-          RENOVATE_ALLOWED_COMMANDS: '["^sh scripts/post-upgrade-renovate.sh$"]'
+          RENOVATE_ALLOWED_COMMANDS: '["^sh \\./scripts/post-upgrade-renovate.sh$"]'
           RENOVATE_REPOSITORIES: "['a-novel/package-authenticator']"
           RENOVATE_DETECT_HOST_RULES_FROM_ENV: true
           RENOVATE_NPM_NPM_PKG_GITHUB_COM_TOKEN: ${{ secrets.ACTION_PAT }}
