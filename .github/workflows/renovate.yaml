@@ -9,16 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: setup github registry
-        shell: bash
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.ACTION_PAT }}" >> ./.npmrc
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v43.0.4
         with:
           token: ${{ secrets.ACTION_PAT }}
         env:
-          RENOVATE_ALLOWED_COMMANDS: '["^pnpm .+"]'
+          RENOVATE_ALLOWED_COMMANDS: '["^sh scripts/post-upgrade-renovate.sh$"]'
           RENOVATE_REPOSITORIES: "['a-novel/package-authenticator']"
           RENOVATE_DETECT_HOST_RULES_FROM_ENV: true
           RENOVATE_NPM_NPM_PKG_GITHUB_COM_TOKEN: ${{ secrets.ACTION_PAT }}

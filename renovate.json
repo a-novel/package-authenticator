@@ -3,7 +3,7 @@
   "assignAutomerge": true,
   "assignees": ["kushuh"],
   "postUpgradeTasks": {
-    "commands": ["pnpm i --frozen-lockfile", "pnpm format"],
+    "commands": ["sh scripts/post-upgrade-renovate.sh"],
     "fileFilters": ["package.json", "pnpm-lock.yaml"],
     "executionMode": "branch"
   },
