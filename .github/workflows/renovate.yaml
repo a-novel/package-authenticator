@@ -9,18 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Required for post run commands.
-      - uses: actions/setup-node@v4
-        with:
-          node-version: latest
-      - name: install pnpm
-        shell: bash
-        run: npm install -g pnpm
       - name: setup github registry
         shell: bash
         run: |
-          pnpm config set "@a-novel:registry" "https://npm.pkg.github.com"
-          pnpm config set "//npm.pkg.github.com/:_authToken" "${{ secrets.ACTION_PAT }}"
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.ACTION_PAT }}" >> ./.npmrc
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v43.0.4
         with:
