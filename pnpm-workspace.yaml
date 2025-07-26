@@ -2,3 +2,5 @@ gitChecks: false
 strictPeerDependencies: false
 autoInstallPeers: true
 dedupePeerDependents: true
+packages:
+  - "."
