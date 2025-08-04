@@ -28,26 +28,36 @@ export interface AuthFormProviderProps extends Omit<FormPageProps, "children"> {
   children: ReactNode;
   layout?: ComponentType<{ children: ReactNode }>;
   setTitle?: (title: string | undefined) => void;
+  setDescription?: (description: string | undefined) => void;
 }
 
 const FORM_TITLES = {
   login: {
-    key: "metadata.title",
+    titleKey: "metadata.title",
+    descriptionKey: "metadata.description",
     ns: "authenticator.login",
   },
   register: {
-    key: "metadata.title",
+    titleKey: "metadata.title",
+    descriptionKey: "metadata.description",
     ns: "authenticator.register",
   },
   resetPassword: {
-    key: "metadata.title",
+    titleKey: "metadata.title",
+    descriptionKey: "metadata.description",
     ns: "authenticator.resetPassword",
   },
 };
 
 const ns = ["authenticator.login", "authenticator.register", "authenticator.resetPassword"];
 
-export function AuthFormProvider({ children, layout: Layout, setTitle, ...props }: AuthFormProviderProps) {
+export function AuthFormProvider({
+  children,
+  layout: Layout,
+  setTitle,
+  setDescription,
+  ...props
+}: AuthFormProviderProps) {
   const { t } = useTranslate(ns);
   useTolgeeNs(ns);
 
@@ -59,8 +69,9 @@ export function AuthFormProvider({ children, layout: Layout, setTitle, ...props 
   const closeForm = useCallback(() => setShowForm(undefined), []);
 
   useEffect(() => {
-    setTitle?.(showForm ? t(FORM_TITLES[showForm].key, { ns: FORM_TITLES[showForm].ns }) : undefined);
-  }, [t, showForm, setTitle]);
+    setTitle?.(showForm ? t(FORM_TITLES[showForm].titleKey, { ns: FORM_TITLES[showForm].ns }) : undefined);
+    setDescription?.(showForm ? t(FORM_TITLES[showForm].descriptionKey, { ns: FORM_TITLES[showForm].ns }) : undefined);
+  }, [t, showForm, setTitle, setDescription]);
 
   const loginFormConnector = useLoginFormConnector({
     resetPasswordAction: toResetPasswordForm,

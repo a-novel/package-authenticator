@@ -19,8 +19,8 @@ importers:
         specifier: ^0.7.3
         version: 0.7.3(@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2)))
       '@a-novel/package-ui':
-        specifier: ^0.6.2
-        version: 0.6.4(3196901bd4b863faf4a3599d4bedb849)
+        specifier: ^0.7.0
+        version: 0.7.0(3196901bd4b863faf4a3599d4bedb849)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.9)(react@19.1.1)
@@ -162,8 +162,8 @@ packages:
       v8-to-istanbul: ^9.3.0
       vitest: ^3.2.4
 
-  '@a-novel/package-ui@0.6.4':
-    resolution: {integrity: sha512-5wGPRFyW4haqTpJs4hgvkPUDR9S9EuRRNJKnE6ah0u6buFV/yhl8mguOW+9jrQJeWnLvfZ2BZMR36KIXWe21VA==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.6.4/52b5d5518cc40ba5e794848fa6fa853f5bdf6edc}
+  '@a-novel/package-ui@0.7.0':
+    resolution: {integrity: sha512-U1dFoG2iAReeTRwI5I9c0kYFs7Vet2i40oPxYKZ47guz3dkgVQDwy/+SCyVbJaKpHe+AWFeypt2LyUOj89CD+g==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.7.0/548dddbe4a7e8f4e157001391911a1877dcd303e}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@emotion/react': ^11.14.0
@@ -178,7 +178,7 @@ packages:
       '@tolgee/react': ^6.2.6
       react: ^19.1.0
       react-dom: ^19.1.0
-      zod: ^4.0.5
+      zod: ^4.0.8
 
   '@adobe/css-tools@4.4.3':
     resolution: {integrity: sha512-VQKMkwriZbaOgVCby1UDY/LDk5fIjhQicCvVPFqfe+69fWaPWydbWJ3wRt59/YzIwda1I81loas3oCoHxnqvdA==}
@@ -3890,7 +3890,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2))
 
-  '@a-novel/package-ui@0.6.4(3196901bd4b863faf4a3599d4bedb849)':
+  '@a-novel/package-ui@0.7.0(3196901bd4b863faf4a3599d4bedb849)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.9)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.1))(@types/react@19.1.9)(react@19.1.1)

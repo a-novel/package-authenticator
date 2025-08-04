@@ -40,7 +40,7 @@
   "devDependencies": {
     "@a-novel/connector-authentication": "^1.4.4",
     "@a-novel/nodelib": "^0.7.3",
-    "@a-novel/package-ui": "^0.6.2",
+    "@a-novel/package-ui": "^0.7.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@eslint/js": "^9.31.0",
@@ -83,7 +83,7 @@
   },
   "peerDependencies": {
     "@a-novel/connector-authentication": "^1.4.0",
-    "@a-novel/package-ui": "^0.6.0",
+    "@a-novel/package-ui": "^0.7.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.1.0",
