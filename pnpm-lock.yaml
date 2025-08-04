@@ -19,8 +19,8 @@ importers:
         specifier: ^0.7.3
         version: 0.7.4(@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2)))
       '@a-novel/package-ui':
-        specifier: ^0.7.0
-        version: 0.7.0(42d3c21c4ef2df84e2ae7bb132ae03d0)
+        specifier: ^0.8.0
+        version: 0.8.0(42d3c21c4ef2df84e2ae7bb132ae03d0)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.9)(react@19.1.1)
@@ -163,8 +163,8 @@ packages:
       v8-to-istanbul: ^9.3.0
       vitest: ^3.2.4
 
-  '@a-novel/package-ui@0.7.0':
-    resolution: {integrity: sha512-U1dFoG2iAReeTRwI5I9c0kYFs7Vet2i40oPxYKZ47guz3dkgVQDwy/+SCyVbJaKpHe+AWFeypt2LyUOj89CD+g==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.7.0/548dddbe4a7e8f4e157001391911a1877dcd303e}
+  '@a-novel/package-ui@0.8.0':
+    resolution: {integrity: sha512-w0SF3hyhk6a0Q4dxdig7ZQWsi2wRXQSVhdqM48P9NLmYlRs+xU4Vo47BqdV7v2aZoGvIgbhxIqz1Z1dE7IcmpA==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.8.0/4f71c1f7a4b24ff0f20dd530cc5964d7902d93e2}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@emotion/react': ^11.14.0
@@ -3892,7 +3892,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.1.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2))
 
-  '@a-novel/package-ui@0.7.0(42d3c21c4ef2df84e2ae7bb132ae03d0)':
+  '@a-novel/package-ui@0.8.0(42d3c21c4ef2df84e2ae7bb132ae03d0)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.9)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.1))(@types/react@19.1.9)(react@19.1.1)
