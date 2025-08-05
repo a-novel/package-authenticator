@@ -34,7 +34,7 @@ export function useLoginFormConnector({
   resetPasswordAction,
   registerAction,
   onLogin,
-}: LoginFormConnectorParams): LoginFormConnector<any, any, any, any, any, any, any, any, any> {
+}: LoginFormConnectorParams): LoginFormConnector {
   const { t } = useTranslate(ns);
   useTolgeeNs(ns);
 

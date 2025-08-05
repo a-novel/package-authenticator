@@ -26,7 +26,7 @@ import { HttpResponse } from "msw";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 
 let requestRegisterFormConnector: RenderHookResult<
-  RequestRegisterFormConnector<any, any, any, any, any, any, any, any, any>,
+  RequestRegisterFormConnector,
   {
     loginAction: Mock<any>;
   }

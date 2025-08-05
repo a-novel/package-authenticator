@@ -29,7 +29,7 @@ import { HttpResponse } from "msw";
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 
 let loginFormConnector: RenderHookResult<
-  LoginFormConnector<any, any, any, any, any, any, any, any, any>,
+  LoginFormConnector,
   {
     resetPasswordAction: Mock<any>;
     registerAction: Mock<any>;

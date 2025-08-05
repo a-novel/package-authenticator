@@ -25,7 +25,7 @@ const ns = ["form", "generic", "authenticator.register"];
 
 export function useRequestRegisterFormConnector({
   loginAction,
-}: RequestRegisterFormConnectorParams): RequestRegisterFormConnector<any, any, any, any, any, any, any, any, any> {
+}: RequestRegisterFormConnectorParams): RequestRegisterFormConnector {
   const { getLanguage, getPendingLanguage } = useTolgee();
   const { t } = useTranslate(ns);
   useTolgeeNs(ns);

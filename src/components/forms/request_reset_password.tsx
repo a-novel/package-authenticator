@@ -6,94 +6,26 @@ import {
 } from "@a-novel/connector-authentication/api";
 import { MaterialSymbol, Modal } from "@a-novel/package-ui/mui/components";
 import { SPACINGS } from "@a-novel/package-ui/mui/utils";
-import { EmailInput } from "@a-novel/package-ui/tanstack/form";
+import { type AnyReactFormWithData, EmailInput } from "@a-novel/package-ui/tanstack/form";
 import { WithTolgeeNs } from "@a-novel/package-ui/translations";
 
 import { type MouseEventHandler } from "react";
 
 import { Button, Stack, Typography } from "@mui/material";
-import {
-  type FormAsyncValidateOrFn,
-  type FormValidateOrFn,
-  type ReactFormExtendedApi,
-  useStore,
-} from "@tanstack/react-form";
+import { useStore } from "@tanstack/react-form";
 import { T, useTranslate } from "@tolgee/react";
 import { z } from "zod";
 
-export interface RequestResetPasswordFormConnector<
-  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TSubmitMeta,
-> {
-  form: ReactFormExtendedApi<
-    z.infer<typeof RequestPasswordResetRequest>,
-    TOnMount,
-    TOnChange,
-    TOnChangeAsync,
-    TOnBlur,
-    TOnBlurAsync,
-    TOnSubmit,
-    TOnSubmitAsync,
-    TOnServer,
-    TSubmitMeta
-  >;
+export interface RequestResetPasswordFormConnector {
+  form: AnyReactFormWithData<z.infer<typeof RequestPasswordResetRequest>>;
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
-export interface RequestResetPasswordFormProps<
-  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TSubmitMeta,
-> {
-  connector: RequestResetPasswordFormConnector<
-    TOnMount,
-    TOnChange,
-    TOnChangeAsync,
-    TOnBlur,
-    TOnBlurAsync,
-    TOnSubmit,
-    TOnSubmitAsync,
-    TOnServer,
-    TSubmitMeta
-  >;
+export interface RequestResetPasswordFormProps {
+  connector: RequestResetPasswordFormConnector;
 }
 
-function InnerRequestResetPasswordForm<
-  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestPasswordResetRequest>>,
-  TSubmitMeta,
->({
-  connector,
-}: RequestResetPasswordFormProps<
-  TOnMount,
-  TOnChange,
-  TOnChangeAsync,
-  TOnBlur,
-  TOnBlurAsync,
-  TOnSubmit,
-  TOnSubmitAsync,
-  TOnServer,
-  TSubmitMeta
->) {
+function InnerRequestResetPasswordForm({ connector }: RequestResetPasswordFormProps) {
   const { t } = useTranslate("form");
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);

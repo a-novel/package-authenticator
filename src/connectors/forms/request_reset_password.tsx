@@ -25,17 +25,7 @@ const ns = ["form", "generic", "authenticator.resetPassword"];
 
 export function useRequestResetPasswordFormConnector({
   loginAction,
-}: RequestResetPasswordFormConnectorParams): RequestResetPasswordFormConnector<
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any
-> {
+}: RequestResetPasswordFormConnectorParams): RequestResetPasswordFormConnector {
   useTolgeeNs(ns);
 
   const { getLanguage, getPendingLanguage } = useTolgee();

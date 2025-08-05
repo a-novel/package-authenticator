@@ -6,94 +6,26 @@ import {
 } from "@a-novel/connector-authentication/api";
 import { MaterialSymbol, Modal } from "@a-novel/package-ui/mui/components";
 import { SPACINGS } from "@a-novel/package-ui/mui/utils";
-import { EmailInput } from "@a-novel/package-ui/tanstack/form";
+import { type AnyReactFormWithData, EmailInput } from "@a-novel/package-ui/tanstack/form";
 import { WithTolgeeNs } from "@a-novel/package-ui/translations";
 
 import { type MouseEventHandler } from "react";
 
 import { Button, Stack, Typography } from "@mui/material";
-import {
-  type FormAsyncValidateOrFn,
-  type FormValidateOrFn,
-  type ReactFormExtendedApi,
-  useStore,
-} from "@tanstack/react-form";
+import { useStore } from "@tanstack/react-form";
 import { T, useTranslate } from "@tolgee/react";
 import { z } from "zod";
 
-export interface RequestRegisterFormConnector<
-  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TSubmitMeta,
-> {
-  form: ReactFormExtendedApi<
-    z.infer<typeof RequestRegistrationRequest>,
-    TOnMount,
-    TOnChange,
-    TOnChangeAsync,
-    TOnBlur,
-    TOnBlurAsync,
-    TOnSubmit,
-    TOnSubmitAsync,
-    TOnServer,
-    TSubmitMeta
-  >;
+export interface RequestRegisterFormConnector {
+  form: AnyReactFormWithData<z.infer<typeof RequestRegistrationRequest>>;
   loginAction: MouseEventHandler<HTMLButtonElement>;
 }
 
-export interface RequestRegisterFormProps<
-  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TSubmitMeta,
-> {
-  connector: RequestRegisterFormConnector<
-    TOnMount,
-    TOnChange,
-    TOnChangeAsync,
-    TOnBlur,
-    TOnBlurAsync,
-    TOnSubmit,
-    TOnSubmitAsync,
-    TOnServer,
-    TSubmitMeta
-  >;
+export interface RequestRegisterFormProps {
+  connector: RequestRegisterFormConnector;
 }
 
-function InnerRequestRegisterForm<
-  TOnMount extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnChange extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnChangeAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnBlur extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnBlurAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnSubmit extends undefined | FormValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnSubmitAsync extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TOnServer extends undefined | FormAsyncValidateOrFn<z.infer<typeof RequestRegistrationRequest>>,
-  TSubmitMeta,
->({
-  connector,
-}: RequestRegisterFormProps<
-  TOnMount,
-  TOnChange,
-  TOnChangeAsync,
-  TOnBlur,
-  TOnBlurAsync,
-  TOnSubmit,
-  TOnSubmitAsync,
-  TOnServer,
-  TSubmitMeta
->) {
+function InnerRequestRegisterForm({ connector }: RequestRegisterFormProps) {
   const { t } = useTranslate("form");
 
   const isSubmitting = useStore(connector.form.store, (state) => state.isSubmitting);

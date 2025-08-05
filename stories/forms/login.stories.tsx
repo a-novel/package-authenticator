@@ -4,14 +4,13 @@ import { FormPage } from "~/components/pages";
 import { BINDINGS_VALIDATION } from "@a-novel/connector-authentication/api";
 import { FormRenderer, NewMockForm } from "@a-novel/package-ui/storybook";
 
-import { type FC } from "react";
+import { type ComponentProps, type FC } from "react";
 
 import { type Meta, type StoryObj } from "@storybook/react-vite";
-import { type ReactFormExtendedApi } from "@tanstack/react-form";
 
 const RenderComponents: FC<
-  LoginFormProps<any, any, any, any, any, any, any, any, any> & {
-    form: ReactFormExtendedApi<any, any, any, any, any, any, any, any, any, any>;
+  LoginFormProps & {
+    form: ComponentProps<typeof FormRenderer>["form"];
   }
 > = (props) => (
   <FormPage minHeight="100vh">
