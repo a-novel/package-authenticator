@@ -20,7 +20,7 @@ importers:
         version: 0.7.5(@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.2.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2)))
       '@a-novel/package-ui':
         specifier: ^0.8.0
-        version: 0.8.3(512843aca375de80eb0598978b47a3eb)
+        version: 0.8.3(ab523892545f8f2052175e15cfb5caac)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.9)(react@19.1.1)
@@ -56,7 +56,7 @@ importers:
         version: 6.2.7
       '@tolgee/react':
         specifier: ^6.2.6
-        version: 6.2.6(react@19.1.1)
+        version: 6.2.7(react@19.1.1)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.2
         version: 5.2.2(prettier@3.6.2)
@@ -1611,19 +1611,19 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
-  '@tolgee/core@6.2.6':
-    resolution: {integrity: sha512-AI0UG2zt/AG7g/ja8tL0yZ8Wbuzeeyhz90GpzDub5Af+uRznGNcYzEUdZLkTpwTHWqc+6EDVUBaJM53KgVio0w==}
+  '@tolgee/core@6.2.7':
+    resolution: {integrity: sha512-0Au+m9R23/gmeaLJY0X6lKcR2LSy9dW7hEFrpFvPdJoGvxc8XCNZpKlgnm1N534CwmtIBJ4rzOK6vOrSKbl45w==}
 
   '@tolgee/format-icu@6.2.7':
     resolution: {integrity: sha512-rLa8EZZVX3pDYC3I6HLnLvTgwLr2PAyOw+7SanS7d7SXp9cvcxbX8O6nqHubv6K7YDqVblcj9FoFbvGBQ22PgQ==}
 
-  '@tolgee/react@6.2.6':
-    resolution: {integrity: sha512-hE7SwPCAlZUE+oIEUanVhufweBvAX1/9dM2nwx/mMifZLI6xYwSWxR5CgNrnaMtuFPbharU0yh0pGfzL2c/GIA==}
+  '@tolgee/react@6.2.7':
+    resolution: {integrity: sha512-acZ2bThetoFp/VIWxStrza4RtXX+M7Bfy/f3uMBu2h+fXj3u+BxTR/3YAX67umbhF5RNoOTBPt74EOD+bDtcpQ==}
     peerDependencies:
       react: ^16.14.0 || ^17.0.1 || ^18.1.0 || ^19
 
-  '@tolgee/web@6.2.6':
-    resolution: {integrity: sha512-YtVycDyb9OYyJxzTLGjAzat2dOVnVFq+1jX3tSDD286WRoWsQSEBH395t9zI9OGbW+wPnjdKmLIdrj+iryb9Ug==}
+  '@tolgee/web@6.2.7':
+    resolution: {integrity: sha512-MAgHGkL5RYREwAjUansJt98fCuQFV4uDfP11NLOCHan2Hx9rpuszv88eXX7enq9CE8eS/Ed2pELiSwb5rlYiKg==}
 
   '@trivago/prettier-plugin-sort-imports@5.2.2':
     resolution: {integrity: sha512-fYDQA9e6yTNmA13TLVSA+WMQRc5Bn/c0EUBditUHNfMMxN7M82c38b1kEggVE3pLpZ0FwkwJkUEKMiOi52JXFA==}
@@ -3932,7 +3932,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.2.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))
 
-  '@a-novel/package-ui@0.8.3(512843aca375de80eb0598978b47a3eb)':
+  '@a-novel/package-ui@0.8.3(ab523892545f8f2052175e15cfb5caac)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.9)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.1))(@types/react@19.1.9)(react@19.1.1)
@@ -3943,7 +3943,7 @@ snapshots:
       '@tanstack/react-router': 1.129.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@tanstack/react-router-with-query': 1.129.0(@tanstack/react-query@5.84.1(react@19.1.1))(@tanstack/react-router@1.129.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@tanstack/router-core@1.129.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@tolgee/format-icu': 6.2.7
-      '@tolgee/react': 6.2.6(react@19.1.1)
+      '@tolgee/react': 6.2.7(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       zod: 4.0.14
@@ -5505,18 +5505,18 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.0
 
-  '@tolgee/core@6.2.6': {}
+  '@tolgee/core@6.2.7': {}
 
   '@tolgee/format-icu@6.2.7': {}
 
-  '@tolgee/react@6.2.6(react@19.1.1)':
+  '@tolgee/react@6.2.7(react@19.1.1)':
     dependencies:
-      '@tolgee/web': 6.2.6
+      '@tolgee/web': 6.2.7
       react: 19.1.1
 
-  '@tolgee/web@6.2.6':
+  '@tolgee/web@6.2.7':
     dependencies:
-      '@tolgee/core': 6.2.6
+      '@tolgee/core': 6.2.7
 
   '@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.6.2)':
     dependencies:
