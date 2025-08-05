@@ -20,7 +20,7 @@ importers:
         version: 0.7.5(@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.2.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2)))
       '@a-novel/package-ui':
         specifier: ^0.8.0
-        version: 0.8.3(9b3cd626162a3ea8605a8d092279d7dd)
+        version: 0.8.3(512843aca375de80eb0598978b47a3eb)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.9)(react@19.1.1)
@@ -53,7 +53,7 @@ importers:
         version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@tolgee/format-icu':
         specifier: ^6.2.6
-        version: 6.2.6
+        version: 6.2.7
       '@tolgee/react':
         specifier: ^6.2.6
         version: 6.2.6(react@19.1.1)
@@ -1614,8 +1614,8 @@ packages:
   '@tolgee/core@6.2.6':
     resolution: {integrity: sha512-AI0UG2zt/AG7g/ja8tL0yZ8Wbuzeeyhz90GpzDub5Af+uRznGNcYzEUdZLkTpwTHWqc+6EDVUBaJM53KgVio0w==}
 
-  '@tolgee/format-icu@6.2.6':
-    resolution: {integrity: sha512-ojEiLrr9DMgpL/v5NIkacK8DDOEyrMfdmT4kgfievHh/IQ6/2FNyOGW069VExf6bpJSzzQ4y3vAiBBgeM5Ftvg==}
+  '@tolgee/format-icu@6.2.7':
+    resolution: {integrity: sha512-rLa8EZZVX3pDYC3I6HLnLvTgwLr2PAyOw+7SanS7d7SXp9cvcxbX8O6nqHubv6K7YDqVblcj9FoFbvGBQ22PgQ==}
 
   '@tolgee/react@6.2.6':
     resolution: {integrity: sha512-hE7SwPCAlZUE+oIEUanVhufweBvAX1/9dM2nwx/mMifZLI6xYwSWxR5CgNrnaMtuFPbharU0yh0pGfzL2c/GIA==}
@@ -3932,7 +3932,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.2.0)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.2.0)(typescript@5.9.2))
 
-  '@a-novel/package-ui@0.8.3(9b3cd626162a3ea8605a8d092279d7dd)':
+  '@a-novel/package-ui@0.8.3(512843aca375de80eb0598978b47a3eb)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.9)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.1))(@types/react@19.1.9)(react@19.1.1)
@@ -3942,7 +3942,7 @@ snapshots:
       '@tanstack/react-query': 5.84.1(react@19.1.1)
       '@tanstack/react-router': 1.129.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@tanstack/react-router-with-query': 1.129.0(@tanstack/react-query@5.84.1(react@19.1.1))(@tanstack/react-router@1.129.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@tanstack/router-core@1.129.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@tolgee/format-icu': 6.2.6
+      '@tolgee/format-icu': 6.2.7
       '@tolgee/react': 6.2.6(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
@@ -5507,7 +5507,7 @@ snapshots:
 
   '@tolgee/core@6.2.6': {}
 
-  '@tolgee/format-icu@6.2.6': {}
+  '@tolgee/format-icu@6.2.7': {}
 
   '@tolgee/react@6.2.6(react@19.1.1)':
     dependencies:
