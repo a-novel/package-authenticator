@@ -1,14 +1,18 @@
 import { AuthFormProvider, SessionProvider as BaseSessionProvider, SessionSuspense } from "./contexts";
 
-import { useOverrideRouteMetaTitle, useOverrideRouteMetaDescription } from "@a-novel/package-ui/tanstack/start";
-
 import { type ComponentType, type ReactNode, useState } from "react";
 
 export interface SessionProviderProps {
   layout?: ComponentType<{ children: ReactNode }>;
+  useOverrideRouteMetaTitle: (title: string | undefined) => void;
+  useOverrideRouteMetaDescription: (description: string | undefined) => void;
 }
 
-export function DefaultSessionProvider({ layout }: SessionProviderProps) {
+export function DefaultSessionProvider({
+  layout,
+  useOverrideRouteMetaTitle,
+  useOverrideRouteMetaDescription,
+}: SessionProviderProps) {
   return function SessionProvider({ children }: { children: ReactNode }) {
     const [title, setTitle] = useState<string>();
     useOverrideRouteMetaTitle(title);
