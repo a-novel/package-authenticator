@@ -20,7 +20,7 @@ importers:
         version: 0.7.7(@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.2.1)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.85.0(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.10.4(@types/node@24.2.1)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.2.1)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.2.1)(typescript@5.9.2)))
       '@a-novel/package-ui':
         specifier: ^0.8.5
-        version: 0.8.7(bdc48cec67d46ae548f68cedf1c8277c)
+        version: 0.8.8(bdc48cec67d46ae548f68cedf1c8277c)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.10)(react@19.1.1)
@@ -163,8 +163,8 @@ packages:
       v8-to-istanbul: ^9.3.0
       vitest: ^3.2.4
 
-  '@a-novel/package-ui@0.8.7':
-    resolution: {integrity: sha512-pbHFCb3CkkepnRvT2RQOcuGVMP9R3iGnHPVMzYxdfwC8j5gQwIYmIspiqHeYw6yXV70vWjrRU9LWtRFgY+qMwQ==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.8.7/ed7a2e98eb3f626643aad16fd358e50f54cfd053}
+  '@a-novel/package-ui@0.8.8':
+    resolution: {integrity: sha512-qMGGpu8hOZbrVG97lc6pH8m2XtTbbvgEsbSEoI7jcx0dzgwx0wVy8jbFG9Rb8a1zY1INb/417gcBJ04DHhfD2g==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.8.8/a0a1b2a2e862d9966b4131348053e8d337bc5be2}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@emotion/react': ^11.14.0
@@ -1143,8 +1143,8 @@ packages:
     peerDependencies:
       msw: ^2.10.3
 
-  '@mswjs/interceptors@0.39.5':
-    resolution: {integrity: sha512-B9nHSJYtsv79uo7QdkZ/b/WoKm20IkVSmTc/WCKarmDtFwM0dRx2ouEniqwNkzCSLn3fydzKmnMzjtfdOWt3VQ==}
+  '@mswjs/interceptors@0.39.6':
+    resolution: {integrity: sha512-bndDP83naYYkfayr/qhBHMhk0YGwS1iv6vaEGcr0SQbO0IZtbOPqjKjds/WcG+bJA+1T5vCx6kprKOzn5Bg+Vw==}
     engines: {node: '>=18'}
 
   '@mui/core-downloads-tracker@7.3.1':
@@ -3877,7 +3877,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.2.1)(jsdom@26.1.0)(msw@2.10.4(@types/node@24.2.1)(typescript@5.9.2))
 
-  '@a-novel/package-ui@0.8.7(bdc48cec67d46ae548f68cedf1c8277c)':
+  '@a-novel/package-ui@0.8.8(bdc48cec67d46ae548f68cedf1c8277c)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.10)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.10)(react@19.1.1))(@types/react@19.1.10)(react@19.1.1)
@@ -4973,11 +4973,11 @@ snapshots:
 
   '@msw/playwright@0.4.2(msw@2.10.4(@types/node@24.2.1)(typescript@5.9.2))':
     dependencies:
-      '@mswjs/interceptors': 0.39.5
+      '@mswjs/interceptors': 0.39.6
       msw: 2.10.4(@types/node@24.2.1)(typescript@5.9.2)
       outvariant: 1.4.3
 
-  '@mswjs/interceptors@0.39.5':
+  '@mswjs/interceptors@0.39.6':
     dependencies:
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/logger': 0.3.0
@@ -6962,7 +6962,7 @@ snapshots:
       '@bundled-es-modules/statuses': 1.0.1
       '@bundled-es-modules/tough-cookie': 0.1.6
       '@inquirer/confirm': 5.1.14(@types/node@24.2.1)
-      '@mswjs/interceptors': 0.39.5
+      '@mswjs/interceptors': 0.39.6
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/until': 2.1.0
       '@types/cookie': 0.6.0
