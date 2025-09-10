@@ -20,7 +20,7 @@ importers:
         version: 0.7.14(@msw/playwright@0.4.2(msw@2.11.1(@types/node@24.3.1)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.87.1(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.11.1(@types/node@24.3.1)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.3.1)(jsdom@26.1.0)(msw@2.11.1(@types/node@24.3.1)(typescript@5.9.2)))
       '@a-novel/package-ui':
         specifier: ^0.8.5
-        version: 0.8.14(aa311295aa4b629695927e3c15346982)
+        version: 0.8.15(aa311295aa4b629695927e3c15346982)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.12)(react@19.1.1)
@@ -163,8 +163,8 @@ packages:
       v8-to-istanbul: ^9.3.0
       vitest: ^3.2.4
 
-  '@a-novel/package-ui@0.8.14':
-    resolution: {integrity: sha512-IVEZJIwhfu0NFaHokMEyMzJuJXmgmnlQLtWj1Ym9zezrT50Ssxlc1HlEQ4nXvU/qd3+TGMZndRbQVIQKav0vDg==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.8.14/59ce6dc5661de1f4a69171373bdf154c18206bea}
+  '@a-novel/package-ui@0.8.15':
+    resolution: {integrity: sha512-jVEzd0jmlqch1SqzAhGGyV585BcSZ+4+p4B3cXqS+tkQKR4ec9mGj9azi0DQrJwmKTeZ90SFfJhwpT00htwy2A==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.8.15/068b47973d84768134bdadc82c0ca59a7815c96c}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@emotion/react': ^11.14.0
@@ -3867,7 +3867,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.3.1)(jsdom@26.1.0)(msw@2.11.1(@types/node@24.3.1)(typescript@5.9.2))
 
-  '@a-novel/package-ui@0.8.14(aa311295aa4b629695927e3c15346982)':
+  '@a-novel/package-ui@0.8.15(aa311295aa4b629695927e3c15346982)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.12)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.12)(react@19.1.1))(@types/react@19.1.12)(react@19.1.1)
