@@ -14,13 +14,13 @@ importers:
     devDependencies:
       '@a-novel/connector-authentication':
         specifier: ^1.4.4
-        version: 1.4.14(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.7)
+        version: 1.4.14(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.8)
       '@a-novel/nodelib':
         specifier: ^0.7.3
         version: 0.7.14(@msw/playwright@0.4.2(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.87.4(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.3.1)(jsdom@26.1.0)(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2)))
       '@a-novel/package-ui':
         specifier: ^0.8.5
-        version: 0.8.15(bc39553bab88f50d61ce186f40e6a60b)
+        version: 0.8.15(18404c32bc1ba8fc4d902807c0420bbe)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.12)(react@19.1.1)
@@ -137,7 +137,7 @@ importers:
         version: 3.2.4(@types/node@24.3.1)(jsdom@26.1.0)(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2))
       zod:
         specifier: ^4.0.8
-        version: 4.1.7
+        version: 4.1.8
 
 packages:
 
@@ -3845,17 +3845,17 @@ packages:
     resolution: {integrity: sha512-U/PBtDf35ff0D8X8D0jfdzHYEPFxAI7jJlxZXwCSez5M3190m+QobIfh+sWDWSHMCWWJN2AWamkegn6vr6YBTw==}
     engines: {node: '>=18'}
 
-  zod@4.1.7:
-    resolution: {integrity: sha512-6qi6UYyzAl7W9uV29KvcSFXqK4QCYNYUz2YASPNBWpJE1RY6R1nArmmFPgGY/CBYWzpeMw3EOER+DR9a05O4IA==}
+  zod@4.1.8:
+    resolution: {integrity: sha512-5R1P+WwQqmmMIEACyzSvo4JXHY5WiAFHRMg+zBZKgKS+Q1viRa0C1hmUKtHltoIFKtIdki3pRxkmpP74jnNYHQ==}
 
 snapshots:
 
-  '@a-novel/connector-authentication@1.4.14(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.7)':
+  '@a-novel/connector-authentication@1.4.14(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.8)':
     dependencies:
       '@tanstack/react-query': 5.87.4(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      zod: 4.1.7
+      zod: 4.1.8
 
   '@a-novel/nodelib@0.7.14(@msw/playwright@0.4.2(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.87.4(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.3.1)(jsdom@26.1.0)(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2)))':
     dependencies:
@@ -3870,7 +3870,7 @@ snapshots:
       v8-to-istanbul: 9.3.0
       vitest: 3.2.4(@types/node@24.3.1)(jsdom@26.1.0)(msw@2.11.2(@types/node@24.3.1)(typescript@5.9.2))
 
-  '@a-novel/package-ui@0.8.15(bc39553bab88f50d61ce186f40e6a60b)':
+  '@a-novel/package-ui@0.8.15(18404c32bc1ba8fc4d902807c0420bbe)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.1.12)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.12)(react@19.1.1))(@types/react@19.1.12)(react@19.1.1)
@@ -3884,7 +3884,7 @@ snapshots:
       '@tolgee/react': 6.2.7(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      zod: 4.1.7
+      zod: 4.1.8
 
   '@adobe/css-tools@4.4.4': {}
 
@@ -7976,4 +7976,4 @@ snapshots:
 
   yoctocolors-cjs@2.1.3: {}
 
-  zod@4.1.7: {}
+  zod@4.1.8: {}
