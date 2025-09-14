@@ -14,7 +14,7 @@ importers:
     devDependencies:
       '@a-novel/connector-authentication':
         specifier: ^1.4.4
-        version: 1.4.14(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.8)
+        version: 1.4.15(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.8)
       '@a-novel/nodelib':
         specifier: ^0.7.3
         version: 0.7.14(@msw/playwright@0.4.2(msw@2.11.2(@types/node@24.3.3)(typescript@5.9.2)))(@playwright/test@1.54.1)(@tanstack/react-query@5.87.4(react@19.1.1))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(msw@2.11.2(@types/node@24.3.3)(typescript@5.9.2))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.3.3)(jsdom@27.0.0(postcss@8.5.6))(msw@2.11.2(@types/node@24.3.3)(typescript@5.9.2)))
@@ -141,8 +141,8 @@ importers:
 
 packages:
 
-  '@a-novel/connector-authentication@1.4.14':
-    resolution: {integrity: sha512-NFHMi123p0JsqpG2sWhq8s09UcStU5816Z/SL5Rvc1uWq+EtsnyBerfVKRE5GtB10H4G0qgnTps6YGGCZpCIbQ==, tarball: https://npm.pkg.github.com/download/@a-novel/connector-authentication/1.4.14/ce5c4444a04f25ff02b768fa3d02e63503f5fdf4}
+  '@a-novel/connector-authentication@1.4.15':
+    resolution: {integrity: sha512-oE/liULOgfaY+S3ylvXhi69IT3+acE8NK/6nTaP44gHySgoSBgUgruT700lxLkoZN9xoa3UmeMP0OlFAzD6N3w==, tarball: https://npm.pkg.github.com/download/@a-novel/connector-authentication/1.4.15/07c125cd44061ac5b13ca24271279283c5714781}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
@@ -3866,7 +3866,7 @@ packages:
 
 snapshots:
 
-  '@a-novel/connector-authentication@1.4.14(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.8)':
+  '@a-novel/connector-authentication@1.4.15(@tanstack/react-query@5.87.4(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(zod@4.1.8)':
     dependencies:
       '@tanstack/react-query': 5.87.4(react@19.1.1)
       react: 19.1.1
