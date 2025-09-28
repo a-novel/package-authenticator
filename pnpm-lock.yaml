@@ -44,7 +44,7 @@ importers:
         version: 8.1.0(rollup@4.52.0)(typescript@5.9.2)
       '@tanstack/eslint-plugin-query':
         specifier: ^5.81.2
-        version: 5.90.2(eslint@9.36.0)(typescript@5.9.2)
+        version: 5.91.0(eslint@9.36.0)(typescript@5.9.2)
       '@tanstack/react-query':
         specifier: ^5.83.0
         version: 5.90.2(react@19.1.1)
@@ -1534,8 +1534,8 @@ packages:
     resolution: {integrity: sha512-gkvph/YMCFUfAca75EsJBJnhbKitDGix7vdEcT/3lAV+eyGSv+uECYG43apVQN4yLJKnV6mzcNvGzOhDhb72gg==}
     engines: {node: '>=18'}
 
-  '@tanstack/eslint-plugin-query@5.90.2':
-    resolution: {integrity: sha512-SqhxxMQu8+0Z8HuiHXh34cztvaOCU5PySwSPvnMKDSWBMbH2jhuCzKZQcFFJ3dZ3lTBCoT54uzUYHGyorT6jqg==}
+  '@tanstack/eslint-plugin-query@5.91.0':
+    resolution: {integrity: sha512-Kn6yWyRe3dIPf7NqyDMhcsTBz2Oh8jPSOpBdlnLQhGBJ6iTMBFYA4B1UreGJ/WdfzQskSMh5imcyWF+wqa/Q5g==}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
@@ -5372,7 +5372,7 @@ snapshots:
 
   '@tanstack/devtools-event-client@0.3.2': {}
 
-  '@tanstack/eslint-plugin-query@5.90.2(eslint@9.36.0)(typescript@5.9.2)':
+  '@tanstack/eslint-plugin-query@5.91.0(eslint@9.36.0)(typescript@5.9.2)':
     dependencies:
       '@typescript-eslint/utils': 8.44.1(eslint@9.36.0)(typescript@5.9.2)
       eslint: 9.36.0
