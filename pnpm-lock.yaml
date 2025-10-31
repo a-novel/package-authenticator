@@ -17,7 +17,7 @@ importers:
         version: 1.4.23(@tanstack/react-query@5.90.3(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(zod@4.1.12)
       '@a-novel/nodelib':
         specifier: ^0.7.3
-        version: 0.7.23(@msw/playwright@0.4.2(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))(@playwright/test@1.54.1)(@tanstack/react-query@5.90.3(react@19.2.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.7.2)(jsdom@27.0.0(postcss@8.5.6))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))
+        version: 0.7.28(@msw/playwright@0.4.2(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))(@playwright/test@1.54.1)(@tanstack/react-query@5.90.3(react@19.2.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.7.2)(jsdom@27.0.0(postcss@8.5.6))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))
       '@a-novel/package-ui':
         specifier: ^0.8.5
         version: 0.8.24(720b6f52e6d0832dd3c1fd0421ab5d25)
@@ -150,8 +150,8 @@ packages:
       react-dom: ^19.1.0
       zod: ^4.0.0
 
-  '@a-novel/nodelib@0.7.23':
-    resolution: {integrity: sha512-Hztvr3GCdFgRxHp2+nxm6X0Ni42h1gnidXVkGv1mOwwTv2S2L3jrQ4xH972UkgIDBz0Ba1ABKaOCgb/doR76Ng==, tarball: https://npm.pkg.github.com/download/@a-novel/nodelib/0.7.23/842dadc7e59b8acb85b88732209001f334dcb2ca}
+  '@a-novel/nodelib@0.7.28':
+    resolution: {integrity: sha512-rUlk4zkTte0f6CvS7e2JnobbPsAgz94a+qNeVRB4NZO0FJtDCVEoivrBtSZ05erd0GyWA5DVnQWA+klGY9gvdg==, tarball: https://npm.pkg.github.com/download/@a-novel/nodelib/0.7.28/0486d624a89e10ac3fa1e770a96b7b9dd31235a7}
     engines: {node: '>=23.11.0', npm: '>=10.9.2'}
     peerDependencies:
       '@msw/playwright': ^0.4.2
@@ -161,7 +161,7 @@ packages:
       msw: ^2.10.4
       playwright: ^1.54.1
       v8-to-istanbul: ^9.3.0
-      vitest: ^3.2.4
+      vitest: ^3.2.4 || ^4.0.0
 
   '@a-novel/package-ui@0.8.24':
     resolution: {integrity: sha512-h2ODOwKXq+oZ67fu/qrkEtHqtJnjfqGihoFLSAlpxXkYDomhcXN7AUkqADdU3v1aIGaglbjX0dQevfMv7qTw2w==, tarball: https://npm.pkg.github.com/download/@a-novel/package-ui/0.8.24/922f4174fe6bdf24751dd3edfe2aada4ff5283cc}
@@ -3898,7 +3898,7 @@ snapshots:
       react-dom: 19.2.0(react@19.2.0)
       zod: 4.1.12
 
-  '@a-novel/nodelib@0.7.23(@msw/playwright@0.4.2(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))(@playwright/test@1.54.1)(@tanstack/react-query@5.90.3(react@19.2.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.7.2)(jsdom@27.0.0(postcss@8.5.6))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))':
+  '@a-novel/nodelib@0.7.28(@msw/playwright@0.4.2(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))(@playwright/test@1.54.1)(@tanstack/react-query@5.90.3(react@19.2.0))(@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3))(playwright@1.54.1)(v8-to-istanbul@9.3.0)(vitest@3.2.4(@types/node@24.7.2)(jsdom@27.0.0(postcss@8.5.6))(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3)))':
     dependencies:
       '@msw/playwright': 0.4.2(msw@2.11.5(@types/node@24.7.2)(typescript@5.9.3))
       '@playwright/test': 1.54.1
